@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,6 +33,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, Interaction>
+     */
+    #[ORM\OneToMany(targetEntity: Interaction::class, mappedBy: 'associatedUser')]
+    private Collection $interactions;
+
+    public function __construct()
+    {
+        $this->interactions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -111,5 +124,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // @deprecated, to be removed when upgrading to Symfony 8
+    }
+
+    /**
+     * @return Collection<int, Interaction>
+     */
+    public function getInteractions(): Collection
+    {
+        return $this->interactions;
+    }
+
+    public function addInteraction(Interaction $interaction): static
+    {
+        if (!$this->interactions->contains($interaction)) {
+            $this->interactions->add($interaction);
+            $interaction->setAssociatedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInteraction(Interaction $interaction): static
+    {
+        if ($this->interactions->removeElement($interaction)) {
+            // set the owning side to null (unless already changed)
+            if ($interaction->getAssociatedUser() === $this) {
+                $interaction->setAssociatedUser(null);
+            }
+        }
+
+        return $this;
     }
 }

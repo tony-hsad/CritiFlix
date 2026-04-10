@@ -26,6 +26,14 @@ class Interaction
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $date = null;
 
+    #[ORM\ManyToOne(inversedBy: 'interactions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $associatedUser = null;
+
+    #[ORM\ManyToOne(inversedBy: 'interactions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Content $associatedContent = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +83,30 @@ class Interaction
     public function setDate(\DateTime $date): static
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getAssociatedUser(): ?User
+    {
+        return $this->associatedUser;
+    }
+
+    public function setAssociatedUser(?User $associatedUser): static
+    {
+        $this->associatedUser = $associatedUser;
+
+        return $this;
+    }
+
+    public function getAssociatedContent(): ?Content
+    {
+        return $this->associatedContent;
+    }
+
+    public function setAssociatedContent(?Content $associatedContent): static
+    {
+        $this->associatedContent = $associatedContent;
 
         return $this;
     }

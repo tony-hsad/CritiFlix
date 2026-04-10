@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ContentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -36,6 +38,17 @@ class Content
 
     #[ORM\Column(length: 30, nullable: true)]
     private ?string $type = null;
+
+    /**
+     * @var Collection<int, Interaction>
+     */
+    #[ORM\OneToMany(targetEntity: Interaction::class, mappedBy: 'associatedContent')]
+    private Collection $interactions;
+
+    public function __construct()
+    {
+        $this->interactions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -122,6 +135,36 @@ class Content
     public function setType(?string $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Interaction>
+     */
+    public function getInteractions(): Collection
+    {
+        return $this->interactions;
+    }
+
+    public function addInteraction(Interaction $interaction): static
+    {
+        if (!$this->interactions->contains($interaction)) {
+            $this->interactions->add($interaction);
+            $interaction->setAssociatedContent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInteraction(Interaction $interaction): static
+    {
+        if ($this->interactions->removeElement($interaction)) {
+            // set the owning side to null (unless already changed)
+            if ($interaction->getAssociatedContent() === $this) {
+                $interaction->setAssociatedContent(null);
+            }
+        }
 
         return $this;
     }
