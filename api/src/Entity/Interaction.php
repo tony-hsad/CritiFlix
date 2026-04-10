@@ -20,7 +20,7 @@ class Interaction
     private ?bool $isLiked = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $mark = null;
+    private ?float $rate = null;
 
     #[ORM\Column(length: 1000, nullable: true)]
     private ?string $comment = null;
@@ -53,14 +53,14 @@ class Interaction
         return $this;
     }
 
-    public function getMark(): ?float
+    public function getRate(): ?float
     {
-        return $this->mark;
+        return $this->rate;
     }
 
-    public function setMark(?float $mark): static
+    public function setRate(?float $rate): static
     {
-        $this->mark = $mark;
+        $this->rate = $rate;
 
         return $this;
     }
