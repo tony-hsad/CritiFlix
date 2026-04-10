@@ -9,8 +9,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ContentRepository::class)]
 #[ApiResource]
+#[ORM\Entity(repositoryClass: ContentRepository::class)]
 class Content
 {
     #[ORM\Id]
@@ -45,9 +45,16 @@ class Content
     #[ORM\OneToMany(targetEntity: Interaction::class, mappedBy: 'associatedContent')]
     private Collection $interactions;
 
+    /**
+     * @var Collection<int, Actor>
+     */
+    #[ORM\ManyToMany(targetEntity: Actor::class, mappedBy: 'contents')]
+    private Collection $actors;
+
     public function __construct()
     {
         $this->interactions = new ArrayCollection();
+        $this->actors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -164,6 +171,33 @@ class Content
             if ($interaction->getAssociatedContent() === $this) {
                 $interaction->setAssociatedContent(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Actor>
+     */
+    public function getActors(): Collection
+    {
+        return $this->actors;
+    }
+
+    public function addActor(Actor $actor): static
+    {
+        if (!$this->actors->contains($actor)) {
+            $this->actors->add($actor);
+            $actor->addContent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActor(Actor $actor): static
+    {
+        if ($this->actors->removeElement($actor)) {
+            $actor->removeContent($this);
         }
 
         return $this;

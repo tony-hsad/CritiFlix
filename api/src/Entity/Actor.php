@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\ActorsRepository;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\ActorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ActorsRepository::class)]
-class Actors
+#[ApiResource]
+#[ORM\Entity(repositoryClass: ActorRepository::class)]
+class Actor
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
