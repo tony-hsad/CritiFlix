@@ -3,24 +3,39 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\ActorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(
+            normalizationContext: ['groups' => ['actor:item:read']]
+        ),
+        new GetCollection(
+            normalizationContext: ['groups' => ['actor:collection:read']]
+        ),
+    ],
+    normalizationContext: ['groups' => ['actor:item:read']]
+)]
 #[ORM\Entity(repositoryClass: ActorRepository::class)]
 class Actor
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['actor:item:read', 'actor:collection:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['actor:item:read', 'actor:collection:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['actor:item:read', 'actor:collection:read'])]
     private ?string $lastname = null;
 
     /**
