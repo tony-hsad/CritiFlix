@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,8 +12,19 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(
+            normalizationContext: ['groups' => ['user:item:read']]
+        ),
+        new GetCollection(
+            normalizationContext: ['groups' => ['user:collection:read']]
+        ),
+    ],
+    normalizationContext: ['groups' => ['user:item:read']]
+)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -20,6 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:item:read', 'user:collection:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
@@ -56,15 +70,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $users;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['user:item:read', 'user:collection:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['user:item:read', 'user:collection:read'])]
     private ?string $lastname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['user:item:read'])]
     private ?\DateTime $dateOfBirth = null;
 
     #[ORM\Column]
+    #[Groups(['user:item:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     public function __construct()
