@@ -3,40 +3,60 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\ContentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(
+            normalizationContext: ['groups' => ['content:item:read']]
+        ),
+        new GetCollection(
+            normalizationContext: ['groups' => ['content:collection:read']]
+        ),
+    ],
+    normalizationContext: ['groups' => ['content:item:read']]
+)]
 #[ORM\Entity(repositoryClass: ContentRepository::class)]
 class Content
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['content:item:read', 'content:collection:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(['content:item:read', 'content:collection:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 500, nullable: true)]
+    #[Groups(['content:item:read'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['content:item:read', 'content:collection:read'])]
     private ?\DateTime $releaseDate = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['content:item:read'])]
     private ?int $entrances = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['content:item:read', 'content:collection:read'])]
     private ?string $poster = null;
 
     #[ORM\Column]
+    #[Groups(['content:item:read', 'content:collection:read'])]
     private ?int $minimalAge = null;
 
     #[ORM\Column(length: 30, nullable: true)]
+    #[Groups(['content:item:read', 'content:collection:read'])]
     private ?string $type = null;
 
     /**
