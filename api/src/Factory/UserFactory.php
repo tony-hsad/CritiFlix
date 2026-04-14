@@ -50,7 +50,6 @@ final class UserFactory extends PersistentObjectFactory
         $domainName = self::faker()->domainName();
 
         return [
-            'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             'dateOfBirth' => self::faker()->dateTime(),
             'email' => "{$this->normalizeName($firstname)}.{$this->normalizeName($lastname)}@$domainName",
             'firstname' => $firstname,
