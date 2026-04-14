@@ -3,37 +3,57 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\InteractionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(
+            normalizationContext: ['groups' => ['interaction:item:read']]
+        ),
+        new GetCollection(
+            normalizationContext: ['groups' => ['interaction:collection:read']]
+        ),
+    ],
+    normalizationContext: ['groups' => ['interaction:read']]
+)]
 #[ORM\Entity(repositoryClass: InteractionRepository::class)]
 class Interaction
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['interaction:read', 'interaction:item:read', 'interaction:collection:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['interaction:read', 'interaction:item:read', 'interaction:collection:read'])]
     private ?bool $isLiked = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['interaction:read', 'interaction:item:read', 'interaction:collection:read'])]
     private ?float $rate = null;
 
     #[ORM\Column(length: 1000, nullable: true)]
+    #[Groups(['interaction:item:read'])]
     private ?string $comment = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['interaction:read', 'interaction:item:read', 'interaction:collection:read'])]
     private ?\DateTime $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'interactions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['interaction:item:read', 'interaction:collection:read'])]
     private ?User $associatedUser = null;
 
     #[ORM\ManyToOne(inversedBy: 'interactions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['interaction:item:read', 'interaction:collection:read'])]
     private ?Content $associatedContent = null;
 
     public function getId(): ?int
