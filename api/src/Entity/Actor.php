@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: ['groups' => ['actor:collection:read']]
         ),
     ],
-    normalizationContext: ['groups' => ['actor:item:read']]
+    normalizationContext: ['groups' => ['actor:read']]
 )]
 #[ORM\Entity(repositoryClass: ActorRepository::class)]
 class Actor
@@ -28,15 +28,15 @@ class Actor
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['actor:item:read', 'actor:collection:read'])]
+    #[Groups(['actor:read', 'actor:item:read', 'actor:collection:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['actor:item:read', 'actor:collection:read'])]
+    #[Groups(['actor:read', 'actor:item:read', 'actor:collection:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['actor:item:read', 'actor:collection:read'])]
+    #[Groups(['actor:read', 'actor:item:read', 'actor:collection:read'])]
     private ?string $lastname = null;
 
     /**

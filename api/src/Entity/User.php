@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: ['groups' => ['user:collection:read']]
         ),
     ],
-    normalizationContext: ['groups' => ['user:item:read']]
+    normalizationContext: ['groups' => ['user:read']]
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -33,7 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:item:read', 'user:collection:read'])]
+    #[Groups(['user:read', 'user:item:read', 'user:collection:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
@@ -70,11 +70,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $users;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:item:read', 'user:collection:read'])]
+    #[Groups(['user:read', 'user:item:read', 'user:collection:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:item:read', 'user:collection:read'])]
+    #[Groups(['user:read', 'user:item:read', 'user:collection:read'])]
     private ?string $lastname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]

@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: ['groups' => ['content:collection:read']]
         ),
     ],
-    normalizationContext: ['groups' => ['content:item:read']]
+    normalizationContext: ['groups' => ['content:read']]
 )]
 #[ORM\Entity(repositoryClass: ContentRepository::class)]
 class Content
@@ -29,11 +29,11 @@ class Content
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['content:item:read', 'content:collection:read'])]
+    #[Groups(['content:read', 'content:item:read', 'content:collection:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['content:item:read', 'content:collection:read'])]
+    #[Groups(['content:read', 'content:item:read', 'content:collection:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 500, nullable: true)]
@@ -41,7 +41,7 @@ class Content
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['content:item:read', 'content:collection:read'])]
+    #[Groups(['content:read', 'content:item:read', 'content:collection:read'])]
     private ?\DateTime $releaseDate = null;
 
     #[ORM\Column(nullable: true)]
@@ -57,7 +57,7 @@ class Content
     private ?int $minimalAge = null;
 
     #[ORM\Column(length: 30, nullable: true)]
-    #[Groups(['content:item:read', 'content:collection:read'])]
+    #[Groups(['content:read', 'content:item:read', 'content:collection:read'])]
     private ?string $type = null;
 
     /**

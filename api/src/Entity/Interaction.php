@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: ['groups' => ['interaction:collection:read']]
         ),
     ],
-    normalizationContext: ['groups' => ['interaction:item:read']]
+    normalizationContext: ['groups' => ['interaction:read']]
 )]
 #[ORM\Entity(repositoryClass: InteractionRepository::class)]
 class Interaction
@@ -27,15 +27,15 @@ class Interaction
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['interaction:item:read', 'interaction:collection:read'])]
+    #[Groups(['interaction:read', 'interaction:item:read', 'interaction:collection:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['interaction:item:read', 'interaction:collection:read'])]
+    #[Groups(['interaction:read', 'interaction:item:read', 'interaction:collection:read'])]
     private ?bool $isLiked = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['interaction:item:read', 'interaction:collection:read'])]
+    #[Groups(['interaction:read', 'interaction:item:read', 'interaction:collection:read'])]
     private ?float $rate = null;
 
     #[ORM\Column(length: 1000, nullable: true)]
@@ -43,7 +43,7 @@ class Interaction
     private ?string $comment = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['interaction:item:read', 'interaction:collection:read'])]
+    #[Groups(['interaction:read', 'interaction:item:read', 'interaction:collection:read'])]
     private ?\DateTime $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'interactions')]
