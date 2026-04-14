@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\User;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**
@@ -17,8 +18,9 @@ final class UserFactory extends PersistentObjectFactory
      *
      * @todo inject services if required
      */
-    public function __construct()
+    public function __construct(private ?UserPasswordHasherInterface $passwordHasher = null)
     {
+        parent::__construct();
         $this->transliterator = \Transliterator::create('Any-Lower; Latin-ASCII');
     }
 
@@ -43,14 +45,18 @@ final class UserFactory extends PersistentObjectFactory
     #[\Override]
     protected function defaults(): array|callable 
     {
+        $firstname = self::faker()->firstName();
+        $lastname = self::faker()->lastName();
+        $domainName = self::faker()->domainName();
+
         return [
             'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             'dateOfBirth' => self::faker()->dateTime(),
-            'email' => self::faker()->text(180),
-            'firstname' => self::faker()->text(50),
-            'lastname' => self::faker()->text(50),
-            'password' => self::faker()->text(),
-            'roles' => [],
+            'email' => "{$this->normalizeName($firstname)}.{$this->normalizeName($lastname)}@$domainName",
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'password' => 'test',
+            'roles' => ['ROLE_USER'],
         ];
     }
 
@@ -61,7 +67,11 @@ final class UserFactory extends PersistentObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(User $user): void {})
+            ->afterInstantiate(function (User $user) {
+                if (null !== $this->passwordHasher) {
+                    $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPassword()));
+                }
+            })
         ;
     }
 }
