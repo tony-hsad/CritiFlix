@@ -5,7 +5,9 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use App\Repository\UserRepository;
+use App\State\UserPasswordProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -22,6 +24,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new GetCollection(
             normalizationContext: ['groups' => ['user:collection:read']]
         ),
+        new Patch(
+            normalizationContext: ['groups' => ['user:read']],
+            denormalizationContext: ['groups' => ['user:write']],
+            security: "is_granted('ROLE_USER') and object == user",
+            processor: UserPasswordProcessor::class
+        )
     ],
     normalizationContext: ['groups' => ['user:read']]
 )]
@@ -50,6 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Groups(['user:write'])]
     private ?string $password = null;
 
     /**
@@ -66,15 +75,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $friends;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:read', 'user:item:read', 'user:collection:read'])]
+    #[Groups(['user:read', 'user:item:read', 'user:collection:read', 'user:write'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:read', 'user:item:read', 'user:collection:read'])]
+    #[Groups(['user:read', 'user:item:read', 'user:collection:read', 'user:write'])]
     private ?string $lastname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['user:item:read'])]
+    #[Groups(['user:item:read', 'user:write'])]
     private ?\DateTime $dateOfBirth = null;
 
     #[ORM\Column]
