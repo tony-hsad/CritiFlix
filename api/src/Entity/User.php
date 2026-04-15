@@ -26,6 +26,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['user:read']]
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -60,14 +61,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, self>
      */
-    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: self::class)]
+    #[ORM\JoinTable(name: 'user_friends')]
     private Collection $friends;
-
-    /**
-     * @var Collection<int, self>
-     */
-    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'friends')]
-    private Collection $users;
 
     #[ORM\Column(length: 50)]
     #[Groups(['user:read', 'user:item:read', 'user:collection:read'])]
@@ -89,7 +85,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->interactions = new ArrayCollection();
         $this->friends = new ArrayCollection();
-        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -213,8 +208,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function addFriend(self $friend): static
     {
+        if ($friend === $this) {
+            return $this;
+        }
+
         if (!$this->friends->contains($friend)) {
             $this->friends->add($friend);
+        }
+
+        if (!$friend->getFriends()->contains($this)) {
+            $friend->getFriends()->add($this);
         }
 
         return $this;
@@ -222,33 +225,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeFriend(self $friend): static
     {
-        $this->friends->removeElement($friend);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, self>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(self $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->addFriend($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(self $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            $user->removeFriend($this);
+        if ($this->friends->removeElement($friend)) {
+            if ($friend->getFriends()->contains($this)) {
+                $friend->getFriends()->removeElement($this);
+            }
         }
 
         return $this;
@@ -293,6 +273,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        if ($this->createdAt === null) {
+            $this->createdAt = new \DateTimeImmutable();
+        }
     }
 
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
