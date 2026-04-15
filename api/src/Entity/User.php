@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new Get(
-            normalizationContext: ['groups' => ['user:item:read']]
+            normalizationContext: ['groups' => ['user:read', 'user:item:read']]
         ),
         new Get(
             uriTemplate: '/me',
@@ -29,17 +29,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
                 summary: 'Retrieves the connected user',
                 description: 'Retrieves the connected user',
             ),
-            normalizationContext: ['groups' => ['user:read', 'user:me']],
+            normalizationContext: ['groups' => ['user:read', 'user:me', 'user:friend:read']],
             security: "is_granted('ROLE_USER')",
             provider: MeProvider::class,
         ),
         new GetCollection(
-            normalizationContext: ['groups' => ['user:collection:read']]
+            normalizationContext: ['groups' => ['user:read', 'user:collection:read']]
         ),
         new Patch(
             normalizationContext: ['groups' => ['user:read']],
             denormalizationContext: ['groups' => ['user:write']],
-            security: "is_granted('ROLE_USER') and object == user",
+            // security: "is_granted('ROLE_USER') and object == user",
             processor: UserPasswordProcessor::class
         )
     ],
@@ -54,11 +54,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read', 'user:me', 'user:item:read', 'user:collection:read'])]
+    #[Groups(['user:read', 'user:item:read', 'user:collection:read', 'user:me', 'user:friend:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    #[Groups(['user:me'])]
+    #[Groups(['user:read', 'user:item:read', 'user:collection:read', 'user:me'])]
     private ?string $email = null;
 
     /**
@@ -89,19 +89,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $friends;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:read', 'user:me', 'user:item:read', 'user:collection:read', 'user:write'])]
+    #[Groups(['user:read', 'user:item:read', 'user:collection:read', 'user:me', 'user:write', 'user:friend:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:read', 'user:me', 'user:item:read', 'user:collection:read', 'user:write'])]
+    #[Groups(['user:read', 'user:item:read', 'user:collection:read', 'user:me', 'user:write', 'user:friend:read'])]
     private ?string $lastname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['user:item:read', 'user:me', 'user:write'])]
+    #[Groups(['user:item:read', 'user:collection:read', 'user:me', 'user:write'])]
     private ?\DateTime $dateOfBirth = null;
 
     #[ORM\Column]
-    #[Groups(['user:item:read', 'user:me'])]
+    #[Groups(['user:item:read', 'user:collection:read', 'user:me'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     public function __construct()
