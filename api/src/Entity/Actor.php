@@ -14,10 +14,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new Get(
-            normalizationContext: ['groups' => ['actor:item:read']]
+            normalizationContext: ['groups' => ['actor:read', 'actor:item:read']]
         ),
         new GetCollection(
-            normalizationContext: ['groups' => ['actor:collection:read']]
+            normalizationContext: ['groups' => ['actor:read', 'actor:collection:read']]
         ),
     ],
     normalizationContext: ['groups' => ['actor:read']]
@@ -28,21 +28,22 @@ class Actor
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['actor:read', 'actor:item:read', 'actor:collection:read'])]
+    #[Groups(['actor:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['actor:read', 'actor:item:read', 'actor:collection:read'])]
+    #[Groups(['actor:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['actor:read', 'actor:item:read', 'actor:collection:read'])]
+    #[Groups(['actor:read'])]
     private ?string $lastname = null;
 
     /**
      * @var Collection<int, Content>
      */
     #[ORM\ManyToMany(targetEntity: Content::class, inversedBy: 'actors')]
+    #[Groups(['actor:item:read'])]
     private Collection $contents;
 
     public function __construct()

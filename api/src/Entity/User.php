@@ -29,7 +29,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
                 summary: 'Retrieves the connected user',
                 description: 'Retrieves the connected user',
             ),
-            normalizationContext: ['groups' => ['user:read', 'user:me', 'user:friend:read']],
+            normalizationContext: ['groups' => ['user:read', 'user:item:read', 'user:me']],
             security: "is_granted('ROLE_USER')",
             provider: MeProvider::class,
         ),
@@ -37,9 +37,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: ['groups' => ['user:read', 'user:collection:read']]
         ),
         new Patch(
-            normalizationContext: ['groups' => ['user:read']],
+            normalizationContext: ['groups' => ['user:patch:read']],
             denormalizationContext: ['groups' => ['user:write']],
-            // security: "is_granted('ROLE_USER') and object == user",
+            security: "is_granted('ROLE_USER') and object == user",
             processor: UserPasswordProcessor::class
         )
     ],
@@ -54,11 +54,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read', 'user:item:read', 'user:collection:read', 'user:me', 'user:friend:read'])]
+    #[Groups(['user:read', 'user:patch:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    #[Groups(['user:read', 'user:item:read', 'user:collection:read', 'user:me'])]
+    #[Groups(['user:read', 'user:patch:read'])]
     private ?string $email = null;
 
     /**
@@ -78,6 +78,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Interaction>
      */
     #[ORM\OneToMany(targetEntity: Interaction::class, mappedBy: 'associatedUser')]
+    #[Groups(['user:item:read', 'user:me'])]
     private Collection $interactions;
 
     /**
@@ -89,19 +90,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $friends;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:read', 'user:item:read', 'user:collection:read', 'user:me', 'user:write', 'user:friend:read'])]
+    #[Groups(['user:read', 'user:patch:read', 'user:write'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:read', 'user:item:read', 'user:collection:read', 'user:me', 'user:write', 'user:friend:read'])]
+    #[Groups(['user:read', 'user:patch:read', 'user:write'])]
     private ?string $lastname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['user:item:read', 'user:collection:read', 'user:me', 'user:write'])]
+    #[Groups(['user:read', 'user:patch:read', 'user:write'])]
     private ?\DateTime $dateOfBirth = null;
 
     #[ORM\Column]
-    #[Groups(['user:item:read', 'user:collection:read', 'user:me'])]
+    #[Groups(['user:read', 'user:item:read', 'user:me'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     public function __construct()
