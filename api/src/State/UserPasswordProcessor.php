@@ -25,9 +25,15 @@ class UserPasswordProcessor implements ProcessorInterface
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
-        if ($data instanceof User && $data->getPassword()) {
-            $hashedPassword = $this->passwordHasher->hashPassword($data, $data->getPassword());
-            $data->setPassword($hashedPassword);
+        $password = $data->getPassword();
+
+        if ($data instanceof User && $password) {
+            $isPasswordHashed = password_get_info($password)['algo'];
+
+            if (!$isPasswordHashed) {
+                $hashedPassword = $this->passwordHasher->hashPassword($data, $password);
+                $data->setPassword($hashedPassword);
+            }
         }
 
         return $this->processor->process($data, $operation, $uriVariables, $context);
