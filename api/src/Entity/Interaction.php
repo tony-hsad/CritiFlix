@@ -13,10 +13,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new Get(
-            normalizationContext: ['groups' => ['interaction:item:read']]
+            normalizationContext: ['groups' => ['interaction:read', 'interaction:item:read']]
         ),
         new GetCollection(
-            normalizationContext: ['groups' => ['interaction:collection:read']]
+            normalizationContext: ['groups' => ['interaction:read', 'interaction:collection:read']]
         ),
     ],
     normalizationContext: ['groups' => ['interaction:read']]
@@ -27,15 +27,15 @@ class Interaction
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['interaction:read', 'interaction:item:read', 'interaction:collection:read'])]
+    #[Groups(['interaction:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['interaction:read', 'interaction:item:read', 'interaction:collection:read'])]
+    #[Groups(['interaction:read'])]
     private ?bool $isLiked = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['interaction:read', 'interaction:item:read', 'interaction:collection:read'])]
+    #[Groups(['interaction:read'])]
     private ?float $rate = null;
 
     #[ORM\Column(length: 1000, nullable: true)]
@@ -43,17 +43,17 @@ class Interaction
     private ?string $comment = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['interaction:read', 'interaction:item:read', 'interaction:collection:read'])]
+    #[Groups(['interaction:read'])]
     private ?\DateTime $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'interactions')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['interaction:item:read', 'interaction:collection:read'])]
+    #[Groups(['interaction:read'])]
     private ?User $associatedUser = null;
 
     #[ORM\ManyToOne(inversedBy: 'interactions')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['interaction:item:read', 'interaction:collection:read'])]
+    #[Groups(['interaction:read'])]
     private ?Content $associatedContent = null;
 
     public function getId(): ?int
