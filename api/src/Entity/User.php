@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -17,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
@@ -39,6 +41,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Patch(
             normalizationContext: ['groups' => ['user:patch:read']],
             denormalizationContext: ['groups' => ['user:write']],
+            validationContext: ['groups' => ['user:write']],
             security: "is_granted('ROLE_USER') and object == user",
             processor: UserPasswordProcessor::class
         )
@@ -58,6 +61,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank(groups: ['user:write'])]
+    #[Assert\Email(groups: ['user:write'])]
+    #[Assert\Length(max: 180, groups: ['user:write'])]
     #[Groups(['user:read', 'user:patch:read'])]
     private ?string $email = null;
 
@@ -71,6 +77,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank(groups: ['user:write'])]
+    #[Assert\Length(
+        min: 8,
+        max: 20,
+        minMessage: 'Your password must contain at least {{ limit }} characters',
+        maxMessage: 'Your password must not exceed {{ limit }} characters'
+    )]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+        message: 'Your password must contain at least one uppercase letter, one digit and one symbol',
+        groups: ['user:write']
+    )]
+    #[ApiProperty(
+        description: 'Password property.',
+        openapiContext: [
+            'type' => 'string',
+            'example' => 'Password1234!',
+        ],
+    )]
     #[Groups(['user:write'])]
     private ?string $password = null;
 
