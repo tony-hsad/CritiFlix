@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: ['groups' => ['user:read', 'user:item:read']]
         ),
         new Get(
-            uriTemplate: '/me',
+            uriTemplate: '/api/me',
             openapi: new Operation(
                 summary: 'Retrieves the connected user',
                 description: 'Retrieves the connected user',
