@@ -17,7 +17,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -104,6 +105,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Interaction::class, mappedBy: 'associatedUser')]
     #[Groups(['user:item:read', 'user:me'])]
+    #[MaxDepth(1)]
     private Collection $interactions;
 
     /**
@@ -112,6 +114,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: self::class)]
     #[ORM\JoinTable(name: 'user_friends')]
     #[Groups(['user:me'])]
+    #[MaxDepth(1)]
     private Collection $friends;
 
     #[ORM\Column(length: 50)]
