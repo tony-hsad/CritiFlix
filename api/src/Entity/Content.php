@@ -15,10 +15,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new Get(
-            normalizationContext: ['groups' => ['content:item:read']]
+            normalizationContext: ['groups' => ['content:read', 'content:item:read']]
         ),
         new GetCollection(
-            normalizationContext: ['groups' => ['content:collection:read']]
+            normalizationContext: ['groups' => ['content:read', 'content:collection:read']]
         ),
     ],
     normalizationContext: ['groups' => ['content:read']]
@@ -29,11 +29,11 @@ class Content
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['content:read', 'content:item:read', 'content:collection:read'])]
+    #[Groups(['content:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['content:read', 'content:item:read', 'content:collection:read'])]
+    #[Groups(['content:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 500, nullable: true)]
@@ -41,7 +41,7 @@ class Content
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['content:read', 'content:item:read', 'content:collection:read'])]
+    #[Groups(['content:read'])]
     private ?\DateTime $releaseDate = null;
 
     #[ORM\Column(nullable: true)]
@@ -49,27 +49,28 @@ class Content
     private ?int $entrances = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['content:item:read', 'content:collection:read'])]
     private ?string $poster = null;
 
     #[ORM\Column]
-    #[Groups(['content:item:read', 'content:collection:read'])]
+    #[Groups(['content:read'])]
     private ?int $minimalAge = null;
 
     #[ORM\Column(length: 30, nullable: true)]
-    #[Groups(['content:read', 'content:item:read', 'content:collection:read'])]
+    #[Groups(['content:read'])]
     private ?string $type = null;
 
     /**
      * @var Collection<int, Interaction>
      */
     #[ORM\OneToMany(targetEntity: Interaction::class, mappedBy: 'associatedContent')]
+    #[Groups(['content:item:read'])]
     private Collection $interactions;
 
     /**
      * @var Collection<int, Actor>
      */
     #[ORM\ManyToMany(targetEntity: Actor::class, mappedBy: 'contents')]
+    #[Groups(['content:item:read'])]
     private Collection $actors;
 
     public function __construct()

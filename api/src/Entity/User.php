@@ -2,10 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\OpenApi\Model\Operation;
 use App\Repository\UserRepository;
+use App\State\MeProvider;
+use App\State\UserPasswordProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -13,15 +18,34 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
         new Get(
-            normalizationContext: ['groups' => ['user:item:read']]
+            normalizationContext: ['groups' => ['user:read', 'user:item:read']]
+        ),
+        new Get(
+            uriTemplate: '/api/me',
+            openapi: new Operation(
+                summary: 'Retrieves the connected user',
+                description: 'Retrieves the connected user',
+            ),
+            normalizationContext: ['groups' => ['user:read', 'user:item:read', 'user:me']],
+            security: "is_granted('ROLE_USER')",
+            provider: MeProvider::class,
         ),
         new GetCollection(
-            normalizationContext: ['groups' => ['user:collection:read']]
+            normalizationContext: ['groups' => ['user:read', 'user:collection:read']]
         ),
+        new Patch(
+            normalizationContext: ['groups' => ['user:patch:read']],
+            denormalizationContext: ['groups' => ['user:write']],
+            validationContext: ['groups' => ['user:write']],
+            security: "is_granted('ROLE_USER') and object == user",
+            processor: UserPasswordProcessor::class
+        )
     ],
     normalizationContext: ['groups' => ['user:read']]
 )]
@@ -34,10 +58,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read', 'user:item:read', 'user:collection:read'])]
+    #[Groups(['user:read', 'user:patch:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank(groups: ['user:write'])]
+    #[Assert\Email(groups: ['user:write'])]
+    #[Assert\Length(max: 180, groups: ['user:write'])]
+    #[Groups(['user:read', 'user:patch:read'])]
     private ?string $email = null;
 
     /**
@@ -50,12 +78,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank(groups: ['user:write'])]
+    #[Assert\Length(
+        min: 8,
+        max: 20,
+        minMessage: 'Your password must contain at least {{ limit }} characters',
+        maxMessage: 'Your password must not exceed {{ limit }} characters'
+    )]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+        message: 'Your password must contain at least one uppercase letter, one digit and one symbol',
+        groups: ['user:write']
+    )]
+    #[ApiProperty(
+        description: 'Password property.',
+        openapiContext: [
+            'type' => 'string',
+            'example' => 'Password1234!',
+        ],
+    )]
+    #[Groups(['user:write'])]
     private ?string $password = null;
 
     /**
      * @var Collection<int, Interaction>
      */
     #[ORM\OneToMany(targetEntity: Interaction::class, mappedBy: 'associatedUser')]
+    // #[Groups(['user:item:read', 'user:me'])]
     private Collection $interactions;
 
     /**
@@ -63,22 +112,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\ManyToMany(targetEntity: self::class)]
     #[ORM\JoinTable(name: 'user_friends')]
+    #[Groups(['user:me'])]
+    #[MaxDepth(1)]
     private Collection $friends;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:read', 'user:item:read', 'user:collection:read'])]
+    #[Groups(['user:read', 'user:patch:read', 'user:write'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:read', 'user:item:read', 'user:collection:read'])]
+    #[Groups(['user:read', 'user:patch:read', 'user:write'])]
     private ?string $lastname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['user:item:read'])]
+    #[Groups(['user:read', 'user:patch:read', 'user:write'])]
     private ?\DateTime $dateOfBirth = null;
 
     #[ORM\Column]
-    #[Groups(['user:item:read'])]
+    #[Groups(['user:read', 'user:item:read', 'user:me'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     public function __construct()
