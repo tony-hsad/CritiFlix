@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Div from "../atoms/Div";
 import MovieCard from "../molecules/MovieCard";
-import { getMovies } from "../../services/api/contentsApi";
+import { getContents } from "../../services/api/contentsApi";
 
 function MovieList() {
   const [movies, setMovies] = useState([]);
@@ -9,7 +9,7 @@ function MovieList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    getMovies()
+    getContents()
       .then((items) => {
         setMovies(items);
         setLoading(false);
