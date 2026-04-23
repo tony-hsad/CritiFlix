@@ -1,49 +1,33 @@
+import type { Content } from "@/types/molecules";
 import Div from "../atoms/Div";
 import Image from "../atoms/Image";
 
-type MovieProps = {
-  "@id": string;
-  "@type": string;
-  id: number;
-  title: string;
-  description?: string | null;
-  releaseDate?: string | null;
-  entrances?: number | null;
-  poster?: string | null;
-  minimalAge?: number | null;
-  type?: string | null;
-};
-
-type Movie = {
-  movie: MovieProps;
-};
-
-function MovieCard({ movie }: Movie) {
-  const moviePoster = movie.poster || "https://t3.ftcdn.net/jpg/06/64/80/00/360_F_664800080_DB9Ed3O11GxDt0gPXtsqajrNDV52V84M.jpg";
-  const formattedDate = movie.releaseDate ? new Date(movie.releaseDate).toLocaleDateString("fr-FR") : null;
+function MovieCard({ content }: Content) {
+  const moviePoster = content.poster || "https://t3.ftcdn.net/jpg/06/64/80/00/360_F_664800080_DB9Ed3O11GxDt0gPXtsqajrNDV52V84M.jpg";
+  const formattedDate = content.releaseDate ? new Date(content.releaseDate).toLocaleDateString("fr-FR") : null;
 
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-lg bg-gray-900 shadow-lg transition-transform hover:scale-105 hover:shadow-2xl">
-      <a href={`/contents/${movie.id}`}>
+      <a href={`/contents/${content.id}`}>
         <Div classname="relative aspect-[2/3] w-full overflow-hidden bg-gray-800">
 
           <Image
             src={moviePoster}
-            alt={movie.title}
+            alt={content.title}
             classname="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
             loading="lazy"
           />
 
           <Div classname="absolute left-2 right-2 top-2 flex items-start justify-between gap-2">
-            {movie.type && (
+            {content.type && (
               <span className="rounded-full px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-white shadow-md">
-                {movie.type}
+                {content.type}
               </span>
             )}
 
-            {movie.minimalAge != null && (
+            {content.minimalAge != null && (
               <span className="rounded border border-red-500 bg-black/70 px-1.5 py-0.5 text-xs font-bold text-red-400 backdrop-blur-sm">
-                {movie.minimalAge}+
+                {content.minimalAge}+
               </span>
             )}
           </Div>
@@ -53,11 +37,11 @@ function MovieCard({ movie }: Movie) {
 
       <Div classname="flex flex-1 flex-col p-3">
         <h3 className="mb-1 line-clamp-1 text-sm font-bold text-white">
-          {movie.title}
+          {content.title}
         </h3>
 
         <Div classname="mb-2 flex items-center gap-2 text-xs text-gray-400">
-          {movie.releaseDate && <span>{movie.releaseDate}</span>}
+          {content.releaseDate && <span>{content.releaseDate}</span>}
         </Div>
 
         {formattedDate && (

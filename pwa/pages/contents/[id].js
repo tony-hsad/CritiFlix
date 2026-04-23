@@ -8,7 +8,7 @@ export default function MoviePage() {
   const router = useRouter();
   const { id } = router.query;
 
-  const [movie, setMovie] = useState(null);
+  const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function MoviePage() {
           return;
         }
 
-        setMovie(data);
+        setContent(data);
       } catch (error) {
         router.push("/home");
       } finally {
@@ -44,7 +44,7 @@ export default function MoviePage() {
 
   return (
     <HomeTemplate>
-      {movie && <MovieDetail movie={movie} />}
+      {content && <MovieDetail content={content} />}
     </HomeTemplate>
   );
 }
