@@ -2,6 +2,7 @@ import React from "react";
 
 export type ButtonProps = {
   children: React.ReactNode;
+  classname?: string;
   type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary";
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
