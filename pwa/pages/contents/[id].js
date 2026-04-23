@@ -7,31 +7,26 @@ import { getContentById } from "../../services/api/contentsApi";
 export default function MoviePage() {
   const router = useRouter();
   const { id } = router.query;
-
-  const [movie, setMovie] = useState(null);
+  const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id) return;
 
-    async function fetchMovie() {
-      try {
-        const data = await getContentById(id);
-
-        if (!data || !data.id) {
+    getContentById(id)
+      .then((data) => {
+        if (!data?.id) {
           router.push("/home");
           return;
         }
-
-        setMovie(data);
-      } catch (error) {
+        setContent(data);
+      })
+      .catch(() => {
         router.push("/home");
-      } finally {
+      })
+      .finally(() => {
         setLoading(false);
-      }
-    }
-
-    fetchMovie();
+      });
   }, [id]);
 
   if (loading) {
@@ -44,7 +39,7 @@ export default function MoviePage() {
 
   return (
     <HomeTemplate>
-      {movie && <MovieDetail movie={movie} />}
+      {content && <MovieDetail content={content} />}
     </HomeTemplate>
   );
 }

@@ -4,18 +4,19 @@ import MovieCard from "../molecules/MovieCard";
 import { getContents } from "../../services/api/contentsApi";
 
 function MovieList() {
-  const [movies, setMovies] = useState([]);
+  const [contents, setContents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     getContents()
       .then((items) => {
-        setMovies(items);
-        setLoading(false);
+        setContents(items);
       })
       .catch((err) => {
         setError(err.message);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
@@ -26,13 +27,13 @@ function MovieList() {
 
   if (error) {
     return (
-      <Div className="text-center py-12">
+      <Div classname="text-center py-12">
         <p className="text-red-500">Erreur : {error}</p>
       </Div>
     );
   }
 
-  if (movies.length === 0) {
+  if (!contents.length) {
     return <p className="text-center text-gray-400 py-12">Aucun contenu disponible.</p>;
   }
 
@@ -41,8 +42,8 @@ function MovieList() {
       <h2 className="mb-6 text-2xl font-bold text-white">Tous les contenus</h2>
 
       <Div classname="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
+        {contents.map((content) => (
+          <MovieCard key={content.id} content={content} />
         ))}
       </Div>
     </section>
