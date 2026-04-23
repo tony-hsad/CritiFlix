@@ -1,11 +1,4 @@
-import React from "react";
-
-type ButtonProps = {
-  children: React.ReactNode;
-  type?: "button" | "submit" | "reset";
-  variant?: "primary" | "secondary";
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-};
+import type { ButtonProps } from "@/types/atoms";
 
 function Button({ children, variant = "primary", onClick, type = "button" }: ButtonProps) {
   const base = "text-white px-4 py-2 rounded-md text-sm transition-colors";

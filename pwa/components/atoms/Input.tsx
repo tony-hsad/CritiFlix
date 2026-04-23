@@ -1,10 +1,4 @@
-type InputProps = {
-  value?: string,
-  onChange?: any,
-  placeholder?: string,
-  type?: string,
-  classname?: string,
-}
+import type { InputProps } from "@/types/atoms";
 
 function Input({ value = '', onChange, placeholder = '', type = "text", classname = '' }: InputProps) {
   if (!onChange) {

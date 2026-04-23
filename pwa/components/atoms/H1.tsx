@@ -1,7 +1,4 @@
-type H1Props = {
-  content: string,
-  classname?: string,
-}
+import type { H1Props } from "@/types/atoms";
 
 function H1({ content, classname = '' }: H1Props) {
   return <h1 className={classname}>{content}</h1>;
