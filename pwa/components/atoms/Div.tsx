@@ -1,9 +1,4 @@
-import React from "react";
-
-type DivProps = {
-  children: React.ReactNode,
-  classname?: string,
-}
+import type { DivProps } from "@/types/atoms";
 
 function Div({ children, classname = '' }: DivProps) {
   return (
