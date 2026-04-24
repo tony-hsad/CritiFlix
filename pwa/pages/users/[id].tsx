@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import Icon from "../../components/atoms/Icon";
 import HomeTemplate from "../../components/templates/HomeTemplate";
-import MovieDetail from "../../components/organisms/MovieDetail";
-import { getContentById } from "../../services/api/contentsApi";
+import UserDetail from "../../components/organisms/UserDetail";
+import { getUserById } from "../../services/api/usersApi";
+import { useRouter } from "next/router";
 import { ROUTES } from "../../routes/routes";
 
-export default function MoviePage() {
+export default function UserPage() {
   const router = useRouter();
   const { id } = router.query;
-  const [content, setContent] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id) return;
 
-    getContentById(id)
+    getUserById(id)
       .then((data) => {
         if (!data?.id) {
-          router.push(ROUTES.HOME);
+          router.push(ROUTES.USERS);
           return;
         }
-        setContent(data);
+        setUser(data);
       })
       .catch(() => {
-        router.push(ROUTES.HOME);
+        router.push(ROUTES.USERS);
       })
       .finally(() => {
         setLoading(false);
@@ -44,7 +44,7 @@ export default function MoviePage() {
 
   return (
     <HomeTemplate>
-      {content && <MovieDetail content={content} />}
+      {user && <UserDetail user={user} />}
     </HomeTemplate>
   );
 }

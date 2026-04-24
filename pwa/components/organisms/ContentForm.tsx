@@ -1,21 +1,22 @@
-import { useState } from "react";
+import {FormEvent, useState} from "react";
 import { useRouter } from "next/router";
 import { ROUTES } from "../../routes/routes";
-import { Plus, LoaderCircle } from "lucide-react";
 import Button from "../atoms/Button";
 import H1 from "../atoms/H1";
+import Icon from "../atoms/Icon";
 import InputField from "../molecules/InputField";
 import { createContent } from "../../services/api/contentsApi";
+import {Content} from "@/types/molecules";
 
 function ContentForm() {
   const router = useRouter();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (e?: FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
     const form = document.querySelector("form");
-    const formData = new FormData(form);
+    const formData = new FormData(form ?? undefined);
     setError(null);
     setLoading(true);
 
@@ -29,7 +30,7 @@ function ContentForm() {
       poster: formData.get("poster"),
     };
 
-    createContent(contentData)
+    createContent({content: contentData as Content['content']})
       .then(() => {
         router.push(ROUTES.HOME);
       })
@@ -40,7 +41,6 @@ function ContentForm() {
         setLoading(false);
       });
   };
-
 
   return (
     <form
@@ -109,7 +109,7 @@ function ContentForm() {
       <Button
         type="submit"
         variant="green"
-        icon={loading ? <LoaderCircle size={16} className="animate-spin" /> : <Plus size={16} />}
+        Icon={loading ? <Icon name="loading" className="animate-spin" /> : <Icon name="plus" />}
         disabled={loading}
       >
         {loading ? "Chargement..." : "Proposer votre contenu aux utilisateurs"}

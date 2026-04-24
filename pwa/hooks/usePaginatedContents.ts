@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import paginationFromCollectionView from "../services/transformers/paginationFromCollectionView";
 import type { ContentsCollection } from "@/types/molecules";
+import type {APIPlatformListResponse} from "../services/api/client";
 
-function usePaginatedContents(promise: Promise<ContentsCollection>) {
+function usePaginatedContents(promise: Promise<APIPlatformListResponse<ContentsCollection>>) {
   const [currentPromise, setCurrentPromise] = useState(promise);
   const [contentsData, setContentsData] = useState([]);
   const [pagination, setPagination] = useState(null);
@@ -24,7 +25,7 @@ function usePaginatedContents(promise: Promise<ContentsCollection>) {
     });
   }, [currentPromise]);
 
-  function changePromise(newPromise: Promise<ContentsCollection>) {
+  function changePromise(newPromise: Promise<APIPlatformListResponse<ContentsCollection>>) {
     setCurrentPromise(newPromise);
   }
 
