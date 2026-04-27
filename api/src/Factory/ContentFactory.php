@@ -8,7 +8,7 @@ use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 /**
  * @extends PersistentObjectFactory<Content>
  */
-final class ContentFactory extends PersistentObjectFactory 
+final class ContentFactory extends PersistentObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -42,6 +42,7 @@ final class ContentFactory extends PersistentObjectFactory
             'entrances' => self::faker()->numberBetween(20000, 50000),
             'description' => self::faker()->text(500),
             'type' => self::faker()->randomElement($types),
+            'poster' => 'https://t3.ftcdn.net/jpg/06/64/80/00/360_F_664800080_DB9Ed3O11GxDt0gPXtsqajrNDV52V84M.jpg',
         ];
     }
 
