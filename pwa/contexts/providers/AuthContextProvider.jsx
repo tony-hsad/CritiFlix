@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { login, getMe, logout } from "../../services/api/authApi";
+import { login, getMe, logout, register } from "../../services/api/authApi";
 
 const AuthContext = createContext();
 
@@ -62,10 +62,20 @@ function AuthContextProvider({ children }) {
     setIsAuthenticated(false);
   };
 
+  const registerUser = (userData) => {
+    return register(userData)
+      .then(() => {
+        return loginUser(userData.email, userData.password);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
   return (
-    <AuthContext.Provider value={{ user, resolved, isAuthenticated, loginUser, logoutUser, loading }}>
-      {children}
-    </AuthContext.Provider>
+  <AuthContext.Provider value={{ user, resolved, isAuthenticated, loginUser, logoutUser, registerUser, loading }}>
+    {children}
+  </AuthContext.Provider>
   );
 }
 
