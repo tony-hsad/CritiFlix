@@ -1,7 +1,9 @@
+import { ROUTES } from "../../routes/routes";
+
 export const API_BASE_URL = "https://localhost";
 
 export function login(email, password) {
-  return fetch(`${API_BASE_URL}/api/login`, {
+  return fetch(`${API_BASE_URL}/api${ROUTES.LOGIN}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -35,7 +37,7 @@ export function getMe() {
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
-  return fetch(`${API_BASE_URL}/api/me`, {
+  return fetch(`${API_BASE_URL}/api${ROUTES.ME}`, {
     method: "GET",
     headers,
   })

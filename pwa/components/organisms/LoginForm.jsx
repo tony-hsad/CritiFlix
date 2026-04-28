@@ -5,6 +5,7 @@ import H1 from "../atoms/H1";
 import Button from "../atoms/Button";
 import InputField from "../molecules/InputField";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
+import { ROUTES } from "../../routes/routes";
 
 function LoginForm() {
   const router = useRouter();
@@ -20,7 +21,7 @@ function LoginForm() {
 
     loginUser(formData.email, formData.password)
       .then(() => {
-        router.push("/home");
+        router.push(ROUTES.HOME);
       })
       .catch(() => {
         setError("Email ou mot de passe incorrect");
