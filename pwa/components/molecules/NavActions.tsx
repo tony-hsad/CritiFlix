@@ -2,13 +2,14 @@ import { useRouter } from "next/router";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
 import Div from "../atoms/Div";
 import Button from "../atoms/Button";
+import { ROUTES } from "../../routes/routes";
 
 function NavActions() {
   const { user, isAuthenticated, logoutUser, loading } = useAuth();
   const router = useRouter();
   const handleLogout = () => {
     logoutUser();
-    router.push("/home");
+    router.push(ROUTES.HOME);
   };
 
   if (loading) {
@@ -34,7 +35,7 @@ function NavActions() {
 
   return (
     <Div classname="flex items-center gap-2">
-      <Button variant="primary" onClick={() => router.push("/login")}>
+      <Button variant="primary" onClick={() => router.push(ROUTES.LOGIN)}>
         Se connecter
       </Button>
     </Div>
