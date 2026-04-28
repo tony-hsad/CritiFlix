@@ -10,8 +10,7 @@ export function login(email, password) {
   })
     .then((response) => {
       if (!response.ok) {
-        // throw response.status;
-        throw new Error("Email ou mot de passe incorrect");
+        throw response.status;
       }
       return response.json();
     })
@@ -54,6 +53,27 @@ export function getMe() {
     })
     .then((data) => {
       return data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+
+export function register(userData) {
+  const headers = {
+    "Content-Type": "application/ld+json",
+  };
+
+  return fetch(`${API_BASE_URL}/api${ROUTES.REGISTER}`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(userData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw response.status;
+      }
+      return response.json();
     })
     .catch((error) => {
       throw error;
