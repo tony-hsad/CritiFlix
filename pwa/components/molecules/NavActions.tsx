@@ -38,6 +38,9 @@ function NavActions() {
       <Button variant="primary" onClick={() => router.push(ROUTES.LOGIN)}>
         Se connecter
       </Button>
+      <Button variant="primary" onClick={() => router.push(ROUTES.REGISTER)}>
+        S'inscrire
+      </Button>
     </Div>
   );
 }
