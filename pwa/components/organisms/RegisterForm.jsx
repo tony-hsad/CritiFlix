@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
 import { ROUTES } from "../../routes/routes";
+import { LogIn } from "lucide-react";
 import Button from "../atoms/Button";
 import InputField from "../molecules/InputField";
 
@@ -113,7 +114,7 @@ function RegisterForm() {
       />
 
 
-      <Button type="submit" disabled={loading}>
+      <Button type="submit" icon={<LogIn size={16} />} disabled={loading}>
         {loading ? "Chargement..." : "S'inscrire"}
       </Button>
     </form>
