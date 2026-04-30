@@ -6,7 +6,7 @@ import Button from "../atoms/Button";
 import { ROUTES } from "../../routes/routes";
 
 function NavActions() {
-  const { user, isAuthenticated, logoutUser, loading } = useAuth();
+  const { user, logoutUser, loading } = useAuth();
   const router = useRouter();
   const handleLogout = () => {
     logoutUser();
@@ -21,11 +21,11 @@ function NavActions() {
     );
   }
 
-  if (isAuthenticated) {
+  if (user) {
     return (
       <Div classname="flex items-center gap-2">
         <span className="text-sm text-white pr-2">
-          {user?.firstname} {user?.lastname}
+          {user.firstname} {user.lastname}
         </span>
         <Button variant="secondary" onClick={handleLogout} icon={<LogOut size={16} />}>
           Se déconnecter
