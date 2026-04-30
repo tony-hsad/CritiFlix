@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
 import { ROUTES } from "../../routes/routes";
-import { LogIn } from "lucide-react";
+import { LogIn, LoaderCircle } from "lucide-react";
 import Button from "../atoms/Button";
 import Div from "../atoms/Div";
 import H1 from "../atoms/H1";
@@ -16,6 +16,7 @@ function RegisterForm() {
     lastname: "",
     email: "",
     password: "",
+    confirmPassword: "",
     dateOfBirth: "",
   });
   const [error, setError] = useState(null);
@@ -24,6 +25,11 @@ function RegisterForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError(null);
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Votre mot de passe et celui de confirmation ne correspondent pas");
+      return;
+    }
     setLoading(true);
 
     registerUser(formData)
@@ -38,12 +44,19 @@ function RegisterForm() {
       });
   };
 
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
       className="mx-auto flex w-full max-w-1/2 flex-col gap-4 rounded-lg bg-gray-900 p-6 shadow-lg"
     >
-      {error && <div className="error-message">{error}</div>}
+      {error && <p className="text-red-500">{error}</p>}
       <H1 classname="mb-2 text-2xl font-bold text-white" content="Inscription" />
       <Div classname="flex gap-4">
         <Div classname="w-1/2">
@@ -52,12 +65,7 @@ function RegisterForm() {
             label="Prénom"
             value={formData.firstname}
             placeholder="John"
-            onChange={(e) => {
-              setFormData({
-                ...formData,
-                [e.target.name]: e.target.value,
-              });
-            }}
+            onChange={handleChange}
             required
           />
         </Div>
@@ -68,12 +76,7 @@ function RegisterForm() {
             label="Nom"
             value={formData.lastname}
             placeholder="Doe"
-            onChange={(e) => {
-              setFormData({
-                ...formData,
-                [e.target.name]: e.target.value,
-              });
-            }}
+            onChange={handleChange}
             required
           />
         </Div>
@@ -85,12 +88,7 @@ function RegisterForm() {
         type="email"
         value={formData.email}
         placeholder="john.doe@example.com"
-        onChange={(e) => {
-          setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-          });
-        }}
+        onChange={handleChange}
         required
       />
       <InputField
@@ -99,12 +97,17 @@ function RegisterForm() {
         type="password"
         value={formData.password}
         placeholder="Votre mot de passe"
-        onChange={(e) => {
-          setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-          });
-        }}
+        onChange={handleChange}
+        required
+      />
+
+      <InputField
+        name="confirmPassword"
+        label="Confirmer le mot de passe"
+        type="password"
+        value={formData.confirmPassword}
+        placeholder="Retapez votre mot de passe"
+        onChange={handleChange}
         required
       />
 
@@ -114,17 +117,16 @@ function RegisterForm() {
         type="date"
         value={formData.dateOfBirth}
         placeholder="Votre date de naissance"
-        onChange={(e) => {
-          setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-          });
-        }}
+        onChange={handleChange}
         required
       />
 
 
-      <Button type="submit" icon={<LogIn size={16} />} disabled={loading}>
+      <Button
+        type="submit"
+        icon={loading ? <LoaderCircle size={16} className="animate-spin" /> : <LogIn size={16} />}
+        disabled={loading}
+      >
         {loading ? "Chargement..." : "S'inscrire"}
       </Button>
     </form>

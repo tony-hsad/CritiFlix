@@ -12,7 +12,6 @@ const AuthContext = createContext();
 function AuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [resolved, setResolved] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,7 +26,6 @@ function AuthContextProvider({ children }) {
     getMe()
       .then((data) => {
         setUser(data);
-        setIsAuthenticated(true);
       })
       .catch(() => {
         localStorage.removeItem("jwt_token");
@@ -45,7 +43,6 @@ function AuthContextProvider({ children }) {
       .then(() => getMe())
       .then((currentUser) => {
         setUser(currentUser);
-        setIsAuthenticated(true);
         return currentUser;
       })
       .catch((error) => {
@@ -59,7 +56,6 @@ function AuthContextProvider({ children }) {
   const logoutUser = () => {
     logout();
     setUser(null);
-    setIsAuthenticated(false);
   };
 
   const registerUser = (userData) => {
@@ -73,7 +69,7 @@ function AuthContextProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, resolved, isAuthenticated, loginUser, logoutUser, registerUser, loading }}>
+    <AuthContext.Provider value={{ user, resolved, loginUser, logoutUser, registerUser, loading }}>
       {children}
     </AuthContext.Provider>
   );
