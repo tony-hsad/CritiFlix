@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { ROUTES } from "../../routes/routes";
 import HomeTemplate from "../../components/templates/HomeTemplate";
 import MovieDetail from "../../components/organisms/MovieDetail";
 import { getContentById } from "../../services/api/contentsApi";
@@ -16,13 +17,13 @@ export default function MoviePage() {
     getContentById(id)
       .then((data) => {
         if (!data?.id) {
-          router.push("/home");
+          router.push(ROUTES.HOME);
           return;
         }
         setContent(data);
       })
       .catch(() => {
-        router.push("/home");
+        router.push(ROUTES.HOME);
       })
       .finally(() => {
         setLoading(false);

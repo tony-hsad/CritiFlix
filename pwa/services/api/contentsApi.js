@@ -1,5 +1,14 @@
 export const API_BASE_URL = "https://localhost";
 
+/**
+ * @typedef {import("@types/molecules").Content} Content
+ */
+
+/**
+ * Get all contents
+ *
+ * @returns { Promise<Content> } A Content promise to get a list of Content objects
+ */
 export function getContents() {
   return fetch(`${API_BASE_URL}/contents`)
     .then((response) => {
@@ -16,6 +25,12 @@ export function getContents() {
     });
 }
 
+/**
+ * Get a specific Content by its ID
+ *
+ * @param {number} id The Content ID
+ * @returns { Promise<Content> } A Content promise to get a Content object
+ */
 export function getContentById(id) {
   return fetch(`${API_BASE_URL}/contents/${id}`)
     .then((response) => {

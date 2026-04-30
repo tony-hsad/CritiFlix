@@ -1,15 +1,22 @@
+import React from "react";
 import Div from "../atoms/Div";
 import Logo from "../atoms/Logo";
 import Link from "../atoms/Link";
 import NavActions from "../molecules/NavActions";
 import SearchBar from "../molecules/SearchBar";
+import { ROUTES } from "../../routes/routes";
 
+/**
+ * A Navbar component that can contain buttons, a search bar, links and more
+ *
+ * @returns {React.ReactNode} The header and the nav tags
+ */
 function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-black/95 backdrop-blur border-b border-gray-800">
       <nav className="relative flex items-center gap-6 px-10 py-4">
         <Div classname="flex-shrink-0">
-          <Link classname="text-2xl font-bold text-red-600 tracking-tight" content="CritiFlix" to="https://localhost/home" target="_self">
+          <Link classname="text-2xl font-bold text-red-600 tracking-tight" content="CritiFlix" to={`https://localhost${ROUTES.HOME}`} target="_self">
             <Logo content="" />
           </Link>
         </Div>
