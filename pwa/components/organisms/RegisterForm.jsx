@@ -4,6 +4,8 @@ import { useAuth } from "../../contexts/providers/AuthContextProvider";
 import { ROUTES } from "../../routes/routes";
 import { LogIn } from "lucide-react";
 import Button from "../atoms/Button";
+import Div from "../atoms/Div";
+import H1 from "../atoms/H1";
 import InputField from "../molecules/InputField";
 
 function RegisterForm() {
@@ -37,36 +39,45 @@ function RegisterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      className="mx-auto flex w-full max-w-1/2 flex-col gap-4 rounded-lg bg-gray-900 p-6 shadow-lg"
+    >
       {error && <div className="error-message">{error}</div>}
+      <H1 classname="mb-2 text-2xl font-bold text-white" content="Inscription" />
+      <Div classname="flex gap-4">
+        <Div classname="w-1/2">
+          <InputField
+            name="firstname"
+            label="Prénom"
+            value={formData.firstname}
+            placeholder="John"
+            onChange={(e) => {
+              setFormData({
+                ...formData,
+                [e.target.name]: e.target.value,
+              });
+            }}
+            required
+          />
+        </Div>
 
-      <InputField
-        name="firstname"
-        label="Prénom"
-        value={formData.firstname}
-        placeholder="John"
-        onChange={(e) => {
-          setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-          });
-        }}
-        required
-      />
-
-      <InputField
-        name="lastname"
-        label="Nom"
-        value={formData.lastname}
-        placeholder="Doe"
-        onChange={(e) => {
-          setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-          });
-        }}
-        required
-      />
+        <Div classname="w-1/2">
+          <InputField
+            name="lastname"
+            label="Nom"
+            value={formData.lastname}
+            placeholder="Doe"
+            onChange={(e) => {
+              setFormData({
+                ...formData,
+                [e.target.name]: e.target.value,
+              });
+            }}
+            required
+          />
+        </Div>
+      </Div>
 
       <InputField
         name="email"
@@ -82,7 +93,6 @@ function RegisterForm() {
         }}
         required
       />
-
       <InputField
         name="password"
         label="Mot de passe"
