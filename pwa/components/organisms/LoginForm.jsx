@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { LogIn, LoaderCircle } from "lucide-react";
@@ -7,6 +8,11 @@ import InputField from "../molecules/InputField";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
 import { ROUTES } from "../../routes/routes";
 
+/**
+ * The LoginForm component to log in and access more features
+ *
+ * @returns {React.ReactNode} A form to login
+ */
 function LoginForm() {
   const router = useRouter();
   const { loginUser, loading } = useAuth();

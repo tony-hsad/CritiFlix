@@ -1,13 +1,20 @@
+import React from "react";
+import Div from "../atoms/Div";
 import Input from "../atoms/Input";
 
+/**
+ * A search bar component to search for various contents
+ *
+ * @returns {React.ReactNode} Search bar in the navbar
+ */
 function SearchBar() {
   return (
-    <div className="w-full max-w-xl">
+    <Div classname="w-full max-w-xl">
       <Input
         classname="w-full px-4 py-2 rounded-md bg-gray-800 text-gray-100 placeholder-gray-400 border border-gray-700 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600"
         placeholder="Rechercher un film, une série, un documentaire..."
       />
-    </div>
+    </Div>
   );
 }
 

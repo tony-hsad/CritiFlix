@@ -1,9 +1,15 @@
+import React from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
 import { LogIn, LogOut } from "lucide-react";
 import Button from "../atoms/Button";
 import { ROUTES } from "../../routes/routes";
 
+/**
+ * A component that checks for the user's status before returning the corresponding button
+ *
+ * @returns {React.ReactNode} Register, login or logout buttons depending on the authentication
+ */
 function NavActions() {
   const { user, logoutUser, loading } = useAuth();
   const router = useRouter();
