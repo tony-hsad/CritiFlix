@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Div from "../atoms/Div";
 import MovieCard from "../molecules/MovieCard";
 import { getContents } from "../../services/api/contentsApi";
+import { LoaderCircle } from "lucide-react";
 
 /**
  * A Content list component that displays all contents
@@ -27,7 +28,12 @@ function MovieList() {
   }, []);
 
   if (loading) {
-    return <p className="text-center text-gray-400 py-12">Chargement...</p>;
+    return (
+      <p className="flex items-center justify-center gap-2 text-gray-400 py-12">
+        <LoaderCircle size={16} className="animate-spin" />
+        Chargement...
+      </p>
+    );
   }
 
   if (error) {
