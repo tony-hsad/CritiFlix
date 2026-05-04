@@ -20,7 +20,7 @@ function MovieDetail({ content }) {
     <Div classname="flex flex-col md:flex-row gap-8">
       <Div classname="w-full md:w-1/3">
         <Image
-          classname="w-full rounded-lg"
+          classname="rounded-lg"
           src={moviePoster}
           alt={content.title}
         />
