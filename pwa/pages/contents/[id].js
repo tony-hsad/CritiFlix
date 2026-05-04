@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ROUTES } from "../../routes/routes";
+import { LoaderCircle } from "lucide-react";
 import HomeTemplate from "../../components/templates/HomeTemplate";
 import MovieDetail from "../../components/organisms/MovieDetail";
 import { getContentById } from "../../services/api/contentsApi";
@@ -33,7 +34,10 @@ export default function MoviePage() {
   if (loading) {
     return (
       <HomeTemplate>
-        <p className="text-center text-gray-400 py-12">Chargement...</p>
+        <p className="flex items-center justify-center gap-2 text-gray-400 py-12">
+          <LoaderCircle size={16} className="animate-spin" />
+          Chargement...
+        </p>
       </HomeTemplate>
     );
   }
