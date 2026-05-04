@@ -1,4 +1,5 @@
 import React from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 /**
  * An Image component
@@ -7,11 +8,18 @@ import React from "react";
  * @param {string} [props.src] The image source link
  * @param {string} [props.alt] The alternate text for the image
  * @param {string} [props.classname] The classname to give for the style
- * @param {string} [props.loading] The value to give when loading (ex: lazy)
  * @returns {React.ReactNode} An HTML Img tag
  */
-function Image({ src, alt, classname = '', loading = '' }) {
-  return <img className={classname} src={src} alt={alt} loading={loading} />;
+function Image({ src, alt, classname = ''}) {
+    return (
+      <LazyLoadImage
+        className={`w-full h-full object-cover ${classname}`}
+        src={src}
+        width={600}
+        height={400}
+        alt={alt}
+      />
+    );
 }
 
 
