@@ -1,15 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { login, getMe, logout, register } from "../../services/api/authApi";
 
+type AuthContextProviderProps = {
+  children: React.ReactNode;
+}
+
 const AuthContext = createContext();
 
-/**
- * Provider that manages the user authentication context
- * @param {object} props component's properties
- * @param {React.ReactNode} [props.children] Children of the AuthContext
- * @returns {React.ReactNode} AuthContextProvider
- */
-function AuthContextProvider({ children }) {
+function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState(null);
   const [resolved, setResolved] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -37,13 +35,12 @@ function AuthContextProvider({ children }) {
       });
   }, []);
 
-  const loginUser = (email, password) => {
+  const loginUser = (email: string, password: string) => {
     setLoading(true);
     return login(email, password)
       .then(() => getMe())
       .then((currentUser) => {
         setUser(currentUser);
-        return currentUser;
       })
       .catch((error) => {
         throw error;
@@ -60,9 +57,7 @@ function AuthContextProvider({ children }) {
 
   const registerUser = (userData) => {
     return register(userData)
-      .then(() => {
-        return loginUser(userData.email, userData.password);
-      })
+      .then(() => loginUser(userData.email, userData.password))
       .catch((error) => {
         throw error;
       });

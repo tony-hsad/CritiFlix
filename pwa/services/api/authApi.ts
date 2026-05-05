@@ -1,19 +1,9 @@
 import { ROUTES_API } from "../../routes/routes";
+import type { User } from "@/types/usersApi";
 
 export const API_BASE_URL = "https://localhost";
 
-/**
- * @typedef {import("@types/UsersApi").User} User
- */
-
-/**
- * Authenticates a user with their email and password
- *
- * @param {string} email The user's email identifer
- * @param {string} password The user's password
- * @returns { Promise<string> } A promise that resolves with the JWT token string
- */
-export function login(email, password) {
+export function login(email: string, password: string): Promise<string> {
   return fetch(`${API_BASE_URL}/api${ROUTES_API.LOGIN}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -34,23 +24,13 @@ export function login(email, password) {
     });
 }
 
-/**
- * Logs out the current user by removing its JWT token from the local storage.
- *
- * @returns {void}
- */
 export function logout() {
   localStorage.removeItem("jwt_token");
 }
 
-/**
- * Retrieves the currently authenticated user by taking his personnal token.
- *
- * @returns { Promise<User> } A promise that resolves to the user data object.
- */
-export function getMe() {
+export function getMe(): Promise<User> {
   const token = localStorage.getItem("jwt_token");
-  const headers = {
+  const headers: HeadersInit = {
     "Content-Type": "application/json",
   };
 
@@ -80,13 +60,7 @@ export function getMe() {
     });
 }
 
-/**
- * Registers a new user by sending a POST request to the registration endpoint.
- *
- * @param {User} userData The user data javascript object.
- * @returns { Promise<User> } A promise resolving to the created user or API response.
- */
-export function register(userData) {
+export function register(userData: User): Promise<User> {
   const headers = {
     "Content-Type": "application/ld+json",
   };

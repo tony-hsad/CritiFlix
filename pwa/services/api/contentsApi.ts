@@ -1,15 +1,8 @@
+import type { Content } from "@/types/molecules";
+
 export const API_BASE_URL = "https://localhost";
 
-/**
- * @typedef {import("@types/molecules").Content} Content
- */
-
-/**
- * Get all contents
- *
- * @returns { Promise<Content> } A Content promise to get a list of Content objects
- */
-export function getContents() {
+export function getContents(): Promise<Content> {
   return fetch(`${API_BASE_URL}/contents`)
     .then((response) => {
       if (!response.ok) {
@@ -25,13 +18,7 @@ export function getContents() {
     });
 }
 
-/**
- * Get a specific Content by its ID
- *
- * @param {number} id The Content ID
- * @returns { Promise<Content> } A Content promise to get a Content object
- */
-export function getContentById(id) {
+export function getContentById(id: number): Promise<Content> {
   return fetch(`${API_BASE_URL}/contents/${id}`)
     .then((response) => {
       if (!response.ok || response.status === 404) {
