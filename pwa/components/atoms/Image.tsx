@@ -1,5 +1,3 @@
-import { LazyLoadImage } from "react-lazy-load-image-component";
-
 type ImageProps = {
   src: string;
   alt: string;
@@ -8,12 +6,13 @@ type ImageProps = {
 
 function Image({ src, alt, classname = ''}: ImageProps) {
   return (
-    <LazyLoadImage
-      className={`w-full h-full object-cover ${classname}`}
+    <img
       src={src}
+      alt={alt}
+      className={`w-full h-full object-cover ${classname}`}
       width={600}
       height={400}
-      alt={alt}
+      loading="lazy"
     />
   );
 }
