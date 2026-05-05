@@ -8,6 +8,7 @@ import { ROUTES } from "../../routes/routes";
 function NavActions() {
   const { user, logoutUser, loading } = useAuth();
   const router = useRouter();
+
   const handleLogout = () => {
     logoutUser();
     router.push(ROUTES.HOME);

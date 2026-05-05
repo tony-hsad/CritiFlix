@@ -3,11 +3,7 @@ import H1 from "../atoms/H1";
 import Image from "../atoms/Image";
 import type { Content } from "@types/molecules";
 
-type MovieDetailProps = {
-  content: Content;
-}
-
-function MovieDetail({ content }: MovieDetailProps) {
+function MovieDetail({ content }: Content) {
   const moviePoster = content.poster || "https://t3.ftcdn.net/jpg/06/64/80/00/360_F_664800080_DB9Ed3O11GxDt0gPXtsqajrNDV52V84M.jpg";
   const formattedDate = content.releaseDate ? new Date(content.releaseDate).toLocaleDateString("fr-FR") : null;
   const entrances = content.entrances !== null ? `${content.entrances} entrées` : 'Entrées : aucune donnée.';

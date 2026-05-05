@@ -2,11 +2,7 @@ import Div from "../atoms/Div";
 import Image from "../atoms/Image";
 import type { Content } from "@types/molecules";
 
-type MovieCardProps = {
-  content: Content;
-}
-
-function MovieCard({ content }: MovieCardProps) {
+function MovieCard({ content }: Content) {
   const moviePoster = content.poster || "https://t3.ftcdn.net/jpg/06/64/80/00/360_F_664800080_DB9Ed3O11GxDt0gPXtsqajrNDV52V84M.jpg";
   const formattedDate = content.releaseDate ? new Date(content.releaseDate).toLocaleDateString("fr-FR") : null;
 
