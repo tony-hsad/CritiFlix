@@ -1,14 +1,27 @@
-import type { ButtonProps } from "@/types/atoms";
+import React from "react";
 
-function Button({ children, variant = "primary", onClick, type = "button" }: ButtonProps) {
-  const base = "text-white px-4 py-2 rounded-md text-sm transition-colors";
+type ButtonProps = {
+  children: React.ReactNode;
+  onClick?: () => void;
+  icon: React.ReactNode;
+  classname?: string;
+  type?: "button" | "submit" | "reset";
+  variant: string;
+}
+
+function Button({ children, onClick, icon, classname = "text-white px-4 py-2 rounded-md text-sm transition-colors cursor-pointer", type = "button", variant = "primary" }: ButtonProps) {
   const variants = {
     primary: "bg-blue-600 hover:bg-blue-700",
     secondary: "bg-red-500 hover:bg-red-800",
   };
 
   return (
-    <button type={type} onClick={onClick} className={`${base} ${variants[variant]}`}>
+    <button
+      type={type}
+      className={`${classname} ${variants[variant]} flex items-center`}
+      onClick={onClick}
+    >
+      {icon && <span className="w-4 h-4 pr-5">{icon}</span>}
       {children}
     </button>
   );

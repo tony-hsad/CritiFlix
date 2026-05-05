@@ -1,6 +1,6 @@
-export type ContentProps = {
-  "@id": string;
-  "@type": string;
+import type { ApiResourceBase } from "@/types/Api";
+
+type ContentProps = ApiResourceBase & {
   id: number;
   title: string;
   description?: string | null;

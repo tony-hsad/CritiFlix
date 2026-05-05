@@ -1,6 +1,8 @@
+import type { Content } from "@/types/molecules";
+
 export const API_BASE_URL = "https://localhost";
 
-export function getContents() {
+export function getContents(): Promise<Content> {
   return fetch(`${API_BASE_URL}/contents`)
     .then((response) => {
       if (!response.ok) {
@@ -16,7 +18,7 @@ export function getContents() {
     });
 }
 
-export function getContentById(id) {
+export function getContentById(id: number): Promise<Content> {
   return fetch(`${API_BASE_URL}/contents/${id}`)
     .then((response) => {
       if (!response.ok || response.status === 404) {

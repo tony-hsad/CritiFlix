@@ -1,24 +1,23 @@
-import type { InputProps } from "@/types/atoms";
+import React from "react";
 
-function Input({ value = '', onChange, placeholder = '', type = "text", classname = '' }: InputProps) {
-  if (!onChange) {
-    return (
-      <input
-        type={type}
-        placeholder={placeholder}
-        defaultValue={value}
-        className={classname}
-      />
-    );
-  }
+type InputProps = {
+  onChange?: () => void;
+  type?: string;
+  classname?: string;
+  value: string;
+  placeholder?: string;
+  name?: string;
+  required: boolean;
+}
 
+function Input({ onChange, type = "text", classname = "", value, ...rest }: InputProps) {
   return (
     <input
       type={type}
-      placeholder={placeholder}
       value={value}
-      onChange={onChange}
       className={classname}
+      onChange={onChange}
+      {...rest}
     />
   );
 }

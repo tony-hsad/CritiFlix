@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model\Operation;
 use App\Repository\UserRepository;
 use App\State\MeProvider;
@@ -42,10 +43,17 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Patch(
             normalizationContext: ['groups' => ['user:patch:read']],
             denormalizationContext: ['groups' => ['user:write']],
-            validationContext: ['groups' => ['user:write']],
             security: "is_granted('ROLE_USER') and object == user",
+            validationContext: ['groups' => ['user:write']],
             processor: UserPasswordProcessor::class
-        )
+        ),
+        new Post(
+            uriTemplate: '/api/register',
+            normalizationContext: ['groups' => ['user:read']],
+            denormalizationContext: ['groups' => ['user:write']],
+            validationContext: ['groups' => ['user:write']],
+            processor: UserPasswordProcessor::class,
+        ),
     ],
     normalizationContext: ['groups' => ['user:read']]
 )]
@@ -65,7 +73,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(groups: ['user:write'])]
     #[Assert\Email(groups: ['user:write'])]
     #[Assert\Length(max: 180, groups: ['user:write'])]
-    #[Groups(['user:read', 'user:patch:read'])]
+    #[Groups(['user:read', 'user:patch:read', 'user:write'])]
     private ?string $email = null;
 
     /**

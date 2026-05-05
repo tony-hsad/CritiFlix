@@ -1,4 +1,7 @@
-import type { LogoProps } from "@/types/atoms";
+type LogoProps = {
+  content: string;
+  classname?: string;
+}
 
 function Logo({ content, classname = '' }: LogoProps) {
   return (
