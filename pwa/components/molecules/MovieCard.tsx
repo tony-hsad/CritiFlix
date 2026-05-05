@@ -1,4 +1,3 @@
-import Div from "../atoms/Div";
 import Image from "../atoms/Image";
 import type { Content } from "@types/molecules";
 
@@ -9,7 +8,7 @@ function MovieCard({ content }: Content) {
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-lg bg-gray-900 shadow-lg transition-transform hover:scale-105 hover:shadow-2xl">
       <a href={`/contents/${content.id}`}>
-        <Div classname="relative aspect-[2/3] w-full overflow-hidden bg-gray-800">
+        <div className="relative aspect-[2/3] w-full overflow-hidden bg-gray-800">
 
           <Image
             src={moviePoster}
@@ -17,7 +16,7 @@ function MovieCard({ content }: Content) {
             classname="transition-transform duration-300 group-hover:scale-110"
           />
 
-          <Div classname="absolute left-2 right-2 top-2 flex items-start justify-between gap-2">
+          <div className="absolute left-2 right-2 top-2 flex items-start justify-between gap-2">
             {content.type && (
               <span className="rounded-full px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-white shadow-md">
                 {content.type}
@@ -29,26 +28,26 @@ function MovieCard({ content }: Content) {
                 {content.minimalAge}+
               </span>
             )}
-          </Div>
+          </div>
 
-        </Div>
+        </div>
       </a>
 
-      <Div classname="flex flex-1 flex-col p-3">
+      <div className="flex flex-1 flex-col p-3">
         <h3 className="mb-1 line-clamp-1 text-sm font-bold text-white">
           {content.title}
         </h3>
 
-        <Div classname="mb-2 flex items-center gap-2 text-xs text-gray-400">
+        <div className="mb-2 flex items-center gap-2 text-xs text-gray-400">
           {content.releaseDate && <span>{content.releaseDate}</span>}
-        </Div>
+        </div>
 
         {formattedDate && (
           <p className="mt-auto text-[11px] text-gray-500">
             Publié : <span className="text-gray-300">{formattedDate}</span>
           </p>
         )}
-      </Div>
+      </div>
     </article>
   );
 }

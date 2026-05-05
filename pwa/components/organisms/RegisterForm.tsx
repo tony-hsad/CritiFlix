@@ -4,7 +4,6 @@ import { useAuth } from "../../contexts/providers/AuthContextProvider";
 import { ROUTES } from "../../routes/routes";
 import { LogIn, LoaderCircle } from "lucide-react";
 import Button from "../atoms/Button";
-import Div from "../atoms/Div";
 import H1 from "../atoms/H1";
 import InputField from "../molecules/InputField";
 
@@ -58,8 +57,8 @@ function RegisterForm() {
     >
       {error && <p className="text-red-500">{error}</p>}
       <H1 classname="mb-2 text-2xl font-bold text-white" content="Inscription" />
-      <Div classname="flex gap-4">
-        <Div classname="w-1/2">
+      <div className="flex gap-4">
+        <div className="w-1/2">
           <InputField
             name="firstname"
             label="Prénom"
@@ -68,9 +67,9 @@ function RegisterForm() {
             onChange={handleChange}
             required
           />
-        </Div>
+        </div>
 
-        <Div classname="w-1/2">
+        <div className="w-1/2">
           <InputField
             name="lastname"
             label="Nom"
@@ -79,8 +78,8 @@ function RegisterForm() {
             onChange={handleChange}
             required
           />
-        </Div>
-      </Div>
+        </div>
+      </div>
 
       <InputField
         name="email"
