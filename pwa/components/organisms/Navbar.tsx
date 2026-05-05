@@ -1,4 +1,3 @@
-import React from "react";
 import Div from "../atoms/Div";
 import Logo from "../atoms/Logo";
 import Link from "../atoms/Link";
@@ -6,11 +5,6 @@ import NavActions from "../molecules/NavActions";
 import SearchBar from "../molecules/SearchBar";
 import { ROUTES } from "../../routes/routes";
 
-/**
- * A Navbar component that can contain buttons, a search bar, links and more
- *
- * @returns {React.ReactNode} The header and the nav tags
- */
 function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-black/95 backdrop-blur border-b border-gray-800">

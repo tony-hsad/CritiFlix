@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Div from "../atoms/Div";
 import MovieCard from "../molecules/MovieCard";
 import { getContents } from "../../services/api/contentsApi";
 import { LoaderCircle } from "lucide-react";
 
-/**
- * A Content list component that displays all contents
- *
- * @returns {React.ReactNode} The list of Contents
- */
 function MovieList() {
   const [contents, setContents] = useState([]);
   const [loading, setLoading] = useState(true);

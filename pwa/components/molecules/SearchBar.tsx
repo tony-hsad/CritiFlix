@@ -1,12 +1,6 @@
-import React from "react";
 import Div from "../atoms/Div";
 import Input from "../atoms/Input";
 
-/**
- * A search bar component to search for various contents
- *
- * @returns {React.ReactNode} Search bar in the navbar
- */
 function SearchBar() {
   return (
     <Div classname="w-full max-w-xl">

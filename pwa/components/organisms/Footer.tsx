@@ -1,11 +1,5 @@
-import React from "react";
 import Div from "../atoms/Div";
 
-/**
- * The footer component to display quick and final information
- *
- * @returns {React.ReactNode} Footer component
- */
 function Footer() {
   return (
     <footer className="border-t border-gray-800 bg-black py-6">

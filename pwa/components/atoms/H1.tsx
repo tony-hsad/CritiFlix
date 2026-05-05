@@ -1,5 +1,3 @@
-import React from "react";
-
 /**
  * An H1-level title component
  *

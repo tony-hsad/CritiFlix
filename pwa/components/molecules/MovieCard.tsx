@@ -1,16 +1,12 @@
-import React from "react";
 import Div from "../atoms/Div";
 import Image from "../atoms/Image";
+import type { Content } from "@types/molecules";
 
-/**
- * A Content card component that displays a piece of content's data
- *
- * @typedef {import("@types/molecules").Content} Content
- * @param {object} props component's customisable properties
- * @param {Content} [props.content] Infomation about the Content
- * @returns {React.ReactNode} Content card
- */
-function MovieCard({ content }) {
+type MovieCardProps = {
+  content: Content;
+}
+
+function MovieCard({ content }: MovieCardProps) {
   const moviePoster = content.poster || "https://t3.ftcdn.net/jpg/06/64/80/00/360_F_664800080_DB9Ed3O11GxDt0gPXtsqajrNDV52V84M.jpg";
   const formattedDate = content.releaseDate ? new Date(content.releaseDate).toLocaleDateString("fr-FR") : null;
 
