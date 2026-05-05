@@ -1,4 +1,4 @@
-import { ROUTES } from "../../routes/routes";
+import { ROUTES_API } from "../../routes/routes";
 
 export const API_BASE_URL = "https://localhost";
 
@@ -14,7 +14,7 @@ export const API_BASE_URL = "https://localhost";
  * @returns { Promise<string> } A promise that resolves with the JWT token string
  */
 export function login(email, password) {
-  return fetch(`${API_BASE_URL}/api${ROUTES.LOGIN}`, {
+  return fetch(`${API_BASE_URL}/api${ROUTES_API.LOGIN}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -57,7 +57,7 @@ export function getMe() {
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
-  return fetch(`${API_BASE_URL}/api${ROUTES.ME}`, {
+  return fetch(`${API_BASE_URL}/api${ROUTES_API.ME}`, {
     method: "GET",
     headers,
   })
@@ -91,7 +91,7 @@ export function register(userData) {
     "Content-Type": "application/ld+json",
   };
 
-  return fetch(`${API_BASE_URL}/api${ROUTES.REGISTER}`, {
+  return fetch(`${API_BASE_URL}/api${ROUTES_API.REGISTER}`, {
     method: "POST",
     headers,
     body: JSON.stringify(userData),
