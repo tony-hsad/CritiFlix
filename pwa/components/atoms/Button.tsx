@@ -13,6 +13,7 @@ function Button({ children, onClick, icon, classname = "text-white px-4 py-2 rou
   const variants = {
     primary: "bg-blue-600 hover:bg-blue-700",
     secondary: "bg-red-500 hover:bg-red-800",
+    green: "bg-green-600 hover:bg-green-800",
   };
 
   return (
