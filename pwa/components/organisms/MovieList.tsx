@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Div from "../atoms/Div";
 import MovieCard from "../molecules/MovieCard";
 import { getContents } from "../../services/api/contentsApi";
 import { LoaderCircle } from "lucide-react";
 import { useSearch } from "../../contexts/providers/SearchContextProvider";
 
-/**
- * A Content list component that displays all contents
- *
- * @returns {React.ReactNode} The list of Contents
- */
 function MovieList() {
-  const { search } = useSearch("");
+  const { search } = useSearch();
   const [contents, setContents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -43,9 +37,9 @@ function MovieList() {
 
   if (error) {
     return (
-      <Div classname="text-center py-12">
+      <div className="text-center py-12">
         <p className="text-red-500">Erreur : {error}</p>
-      </Div>
+      </div>
     );
   }
 
@@ -57,11 +51,11 @@ function MovieList() {
     <section>
       <h2 className="mb-6 text-2xl font-bold text-white">Tous les contenus</h2>
 
-      <Div classname="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         {filteredContents.map((content) => (
           <MovieCard key={content.id} content={content} />
         ))}
-      </Div>
+      </div>
     </section>
   );
 }

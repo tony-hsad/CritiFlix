@@ -14,4 +14,4 @@ function MyApp({ Component, pageProps }: AppProps<{dehydratedState: DehydratedSt
   );
 }
 
-export default MyApp
+export default MyApp;
