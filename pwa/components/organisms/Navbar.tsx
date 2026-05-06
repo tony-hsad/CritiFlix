@@ -18,6 +18,14 @@ function Navbar() {
           <SearchBar />
         </div>
 
+        <div className="flex-shrink-0">
+          <ul>
+            <li>
+              <span><Link classname="text-white" to={`https://localhost${ROUTES.CREATE}`} content="Proposer un film" /></span>
+            </li>
+          </ul>
+        </div>
+
         <div className="ml-auto flex-shrink-0">
           <NavActions />
         </div>
