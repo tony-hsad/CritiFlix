@@ -1,6 +1,6 @@
-import React from "react";
+import React, {ButtonHTMLAttributes} from "react";
 
-type ButtonProps = {
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
   onClick?: () => void;
   icon?: React.ReactNode;
