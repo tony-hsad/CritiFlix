@@ -1,5 +1,5 @@
 import { ROUTES_API } from "../../routes/routes";
-import type { User } from "@/types/usersApi";
+import type { User } from "@/types/UsersApi";
 
 export const API_BASE_URL = "https://localhost";
 
