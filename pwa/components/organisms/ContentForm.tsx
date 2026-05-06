@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { ROUTES } from "../../routes/routes";
-import { Clapperboard, LoaderCircle } from "lucide-react";
+import { Plus, LoaderCircle } from "lucide-react";
 import Button from "../atoms/Button";
 import H1 from "../atoms/H1";
 import InputField from "../molecules/InputField";
@@ -13,8 +13,8 @@ function ContentForm() {
     title: "",
     description: "",
     type: "",
-    minimalAge: "",
-    entrances: "",
+    minimalAge: 0,
+    entrances: 0,
     releaseDate: "",
     poster: "",
   });
@@ -41,7 +41,7 @@ function ContentForm() {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.type === "number" ? Number(e.target.value) : e.target.value,
     });
   };
 
@@ -126,7 +126,7 @@ function ContentForm() {
       <Button
         type="submit"
         variant="green"
-        icon={loading ? <LoaderCircle size={16} className="animate-spin" /> : <Clapperboard size={16} />}
+        icon={loading ? <LoaderCircle size={16} className="animate-spin" /> : <Plus size={16} />}
         disabled={loading}
       >
         {loading ? "Chargement..." : "Proposer votre contenu aux utilisateurs"}
