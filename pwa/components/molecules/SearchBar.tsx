@@ -3,11 +3,6 @@ import { useSearch } from "../../contexts/providers/SearchContextProvider";
 import Input from "../atoms/Input";
 import { Search } from "lucide-react";
 
-/**
- * A search bar component to search for various contents
- *
- * @returns {React.ReactNode} Search bar in the navbar
- */
 function SearchBar() {
   const { search, setSearch } = useSearch();
   const handleChange = (e) => {

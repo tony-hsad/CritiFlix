@@ -6,11 +6,6 @@ import usePaginatedContents from "../../hooks/usePaginatedContents";
 import { LoaderCircle } from "lucide-react";
 import { useSearch } from "../../contexts/providers/SearchContextProvider";
 
-/**
- * A Content list component that displays all contents
- *
- * @returns {React.ReactNode} The list of Contents
- */
 function MovieList() {
   const { search } = useSearch();
   const [currentPage, setCurrentPage] = useState(1);
