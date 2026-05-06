@@ -14,8 +14,8 @@ function ContentForm() {
     title: "",
     description: "",
     type: "",
-    minimalAge: "",
-    entrances: "",
+    minimalAge: 0,
+    entrances: 0,
     releaseDate: "",
     poster: "",
   });
