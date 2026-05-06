@@ -26,7 +26,7 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
         setUser(data);
       })
       .catch(() => {
-        localStorage.removeItem("jwt_token");
+        logout();
         setUser(null);
       })
       .finally(() => {

@@ -44,7 +44,7 @@ export function getMe(): Promise<User> {
     .then((response) => {
       const isUserUnauthorized = response.status === 401;
       if (isUserUnauthorized) {
-        localStorage.removeItem("jwt_token");
+        logout();
       }
 
       if (!response.ok) {

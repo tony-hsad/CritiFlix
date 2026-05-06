@@ -5,6 +5,7 @@ export const ROUTES = {
 }
 
 export const ROUTES_API = {
+  "CREATE": "/contents/create",
   "LOGIN": "/login",
   "ME": "/me",
   "REGISTER": "/register",
