@@ -22,7 +22,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: ['groups' => ['content:read', 'content:collection:read']]
         ),
         new Post(
-            uriTemplate: '/api/contents',
             normalizationContext: ['groups' => ['content:read']],
             denormalizationContext: ['groups' => ['content:write']],
             security: "is_granted('ROLE_USER')",
@@ -45,7 +44,7 @@ class Content
     private ?string $title = null;
 
     #[ORM\Column(length: 500, nullable: true)]
-    #[Groups(['content:read', 'content:item:read', 'content:write'])]
+    #[Groups(['content:read', 'content:write'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -57,7 +56,7 @@ class Content
     private ?int $entrances = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['content:read', 'content:item:read', 'content:write'])]
+    #[Groups(['content:read', 'content:write'])]
     private ?string $poster = null;
 
     #[ORM\Column]
