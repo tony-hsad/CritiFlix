@@ -40,7 +40,11 @@ function MovieCard({ content }: Content) {
         </h3>
 
         <div className="mb-2 flex items-center gap-2 text-xs text-gray-400">
+<<<<<<< HEAD
           {content.description && <span className="line-clamp-1">{content.description}...</span>}
+=======
+          {content.description && <span>{content.description.slice(0, 30)}...</span>}
+>>>>>>> 679bbf3 (edit: added shortened description and modified the style of MovieCard)
         </div>
 
         {formattedDate && (
