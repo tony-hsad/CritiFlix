@@ -1,52 +1,44 @@
 import Button from "../atoms/Button";
 import { ArrowLeftToLine, ArrowRightFromLine } from "lucide-react";
-import type { PaginationProps, PaginationType} from "@/types/Pagination";
+import type { PaginationProps } from "@/types/Pagination";
 
 function Pagination({ pagination, onChangePage }: PaginationProps) {
-  function getMorePaginationButtons(pagination: PaginationType) {
-    const additionalPagesAmount = 2;
-    const leftCurrent = pagination.current - additionalPagesAmount;
-    const rightCurrent = pagination.current + additionalPagesAmount;
-
-    const pages = [];
-    for (let p = leftCurrent; p <= rightCurrent; p++) {
-      const isPageBetweenBoundaries = p > pagination.first && p < pagination.last;
-      if (isPageBetweenBoundaries) {
-        pages.push(p);
-      }
-    }
-
-    return pages;
-  }
-
-  const pages = getMorePaginationButtons(pagination);
   return (
     <div className="mt-8 flex items-center justify-center gap-2">
       <Button
         onClick={() => onChangePage(pagination.first)}
+        icon={ <ArrowLeftToLine /> }
         variant="secondary"
       >
-        <ArrowLeftToLine size={16} />
-        <span className="pl-2">{pagination.first}</span>
+        {pagination.first}
       </Button>
 
-      {pages.map((pCurrent) => (
+      {pagination.previous && (
         <Button
-          key={pCurrent}
-          onClick={() => onChangePage(pCurrent)}
-          variant={pCurrent === pagination.current ? "green" : "primary"}
+          onClick={() => onChangePage(pagination.previous)}
+          variant="secondary"
         >
-          {pCurrent}
+          {pagination.previous}
         </Button>
-      ))}
+      )}
 
+      <span>{pagination.current}</span>
+
+      {pagination.next && (
+        <Button
+          onClick={() => onChangePage(pagination.next)}
+          variant="secondary"
+        >
+          {pagination.next}
+        </Button>
+      )}
 
       <Button
         onClick={() => onChangePage(pagination.last)}
+        icon={ <ArrowRightFromLine /> }
         variant="secondary"
       >
-        <ArrowRightFromLine size={16} />
-        <span className="pl-2">{pagination.last}</span>
+        {pagination.last}
       </Button>
     </div>
   );
