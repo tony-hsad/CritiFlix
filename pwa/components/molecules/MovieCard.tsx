@@ -18,7 +18,7 @@ function MovieCard({ content }: Content) {
 
           <div className="absolute left-2 right-2 top-2 flex items-start justify-between gap-2">
             {content.type && (
-              <span className="rounded-full px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-white shadow-md">
+              <span className="rounded-full bg-black px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-orange-400 shadow-md">
                 {content.type}
               </span>
             )}
@@ -39,7 +39,7 @@ function MovieCard({ content }: Content) {
         </h3>
 
         <div className="mb-2 flex items-center gap-2 text-xs text-gray-400">
-          {content.releaseDate && <span>{content.releaseDate}</span>}
+          {content.description && <span>{content.description.slice(0, 30)}...</span>}
         </div>
 
         {formattedDate && (
