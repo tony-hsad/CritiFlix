@@ -57,7 +57,7 @@ class Content
     private ?int $entrances = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['content:item:read', 'content:write'])]
+    #[Groups(['content:read', 'content:item:read', 'content:write'])]
     private ?string $poster = null;
 
     #[ORM\Column]
