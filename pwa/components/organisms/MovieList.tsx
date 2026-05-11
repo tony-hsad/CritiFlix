@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MovieCard from "../molecules/MovieCard";
 import Pagination from "../molecules/Pagination";
 import { getContents } from "../../services/api/contentsApi";
@@ -7,7 +7,6 @@ import { LoaderCircle } from "lucide-react";
 import { useSearch } from "../../contexts/providers/SearchContextProvider";
 
 function MovieList() {
-  const itemsPerPage = 15;
   const { search } = useSearch();
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading, error, contentsData, pagination, changePromise } =
@@ -27,7 +26,7 @@ function MovieList() {
 
   if (error) {
     return (
-      <div classname="text-center py-12">
+      <div className="text-center py-12">
         <p className="text-red-500">Erreur : {error}</p>
       </div>
     );
@@ -37,7 +36,7 @@ function MovieList() {
     return <p className="text-center text-gray-400 py-12">Aucun contenu disponible.</p>;
   }
 
-  const updatePageNumber = (pageNumber: number) => {
+  function updatePageNumber(pageNumber: number) {
     setCurrentPage(pageNumber);
     changePromise(getContents(new URLSearchParams(`page=${pageNumber}`)));
   }
