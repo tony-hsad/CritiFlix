@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import MovieCard from "../molecules/MovieCard";
+import Pagination from "../molecules/Pagination";
 import { getContents } from "../../services/api/contentsApi";
 import { LoaderCircle } from "lucide-react";
 import { useSearch } from "../../contexts/providers/SearchContextProvider";
+import type { PaginationType } from "@/types/Pagination";
 
 function MovieList() {
+  const itemsPerPage = 15;
   const { search } = useSearch();
   const [contents, setContents] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const filteredContents = contents.filter((content) =>
@@ -14,9 +19,10 @@ function MovieList() {
   );
 
   useEffect(() => {
-    getContents()
+    getContents(new URLSearchParams(`page=${currentPage}&limit=${itemsPerPage}`))
       .then((items) => {
-        setContents(items);
+        setContents(items["member"]);
+        setTotalPages(Math.ceil(items.totalItems / itemsPerPage));
       })
       .catch((err) => {
         setError(err.message);
@@ -24,7 +30,7 @@ function MovieList() {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [currentPage]);
 
   if (loading) {
     return (
@@ -47,6 +53,13 @@ function MovieList() {
     return <p className="text-center text-gray-400 py-12">Aucun contenu disponible.</p>;
   }
 
+  const pagination: PaginationType = {
+    first: 1,
+    previous: currentPage > 1 ? currentPage - 1 : undefined,
+    current: currentPage,
+    next: currentPage < totalPages ? currentPage + 1 : undefined,
+    last: totalPages,
+  };
   return (
     <section>
       <h2 className="mb-6 text-2xl font-bold text-white">Tous les contenus</h2>
@@ -56,6 +69,8 @@ function MovieList() {
           <MovieCard key={content.id} content={content} />
         ))}
       </div>
+
+      <Pagination pagination={pagination} onChangePage={setCurrentPage} />
     </section>
   );
 }
