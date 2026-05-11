@@ -7,6 +7,7 @@ import { LoaderCircle } from "lucide-react";
 import { useSearch } from "../../contexts/providers/SearchContextProvider";
 
 function MovieList() {
+  const itemsPerPage = 15;
   const { search } = useSearch();
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading, error, contentsData, pagination, changePromise } =
