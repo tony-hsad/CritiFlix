@@ -1,9 +1,9 @@
-type PaginationType = {
+export type PaginationType = {
   current: number;
   first: number;
   last: number;
-  previous?: number;
-  next?: number;
+  previous?: number | undefined;
+  next?: number | undefined;
 }
 
 export type PaginationProps = {

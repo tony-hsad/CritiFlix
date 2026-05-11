@@ -1,11 +1,11 @@
-import type { Content } from "@/types/molecules";
+import type { Content, ContentsCollection } from "@/types/molecules";
 import { ROUTES_API } from "../../routes/routes";
 import { logout } from "./authApi";
 
 export const API_BASE_URL = "https://localhost";
 
-export function getContents(): Promise<Content> {
-  return fetch(`${API_BASE_URL}/contents`)
+export function getContents(urlParameters: URLSearchParams): Promise<ContentsCollection> {
+  return fetch(`${API_BASE_URL}/contents?` + urlParameters.toString())
     .then((response) => {
       if (!response.ok) {
         throw new Error(`An error occured while fetching contents: HTTP ${response.status}`);
@@ -13,7 +13,7 @@ export function getContents(): Promise<Content> {
       return response.json();
     })
     .then((data) => {
-      return data["member"];
+      return data;
     })
     .catch((error) => {
       throw error;
