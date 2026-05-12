@@ -43,11 +43,12 @@ final class UserFactory extends PersistentObjectFactory
      * @todo add your default values here
      */
     #[\Override]
-    protected function defaults(): array|callable 
+    protected function defaults(): array|callable
     {
         $firstname = self::faker()->firstName();
         $lastname = self::faker()->lastName();
         $domainName = self::faker()->domainName();
+        $avatar = 'https://as1.ftcdn.net/v2/jpg/18/47/00/20/1000_F_1847002065_grf2PCvm8NeJBmvwZoMNZBVLDbDHU5Qe.webp';
 
         return [
             'dateOfBirth' => self::faker()->dateTime(),
@@ -55,6 +56,7 @@ final class UserFactory extends PersistentObjectFactory
             'firstname' => $firstname,
             'lastname' => $lastname,
             'password' => 'test',
+            'avatar' => $avatar,
             'roles' => ['ROLE_USER'],
         ];
     }
