@@ -3,42 +3,40 @@ import { ArrowLeftToLine, ArrowRightFromLine } from "lucide-react";
 import type { PaginationProps } from "@/types/Pagination";
 
 function Pagination({ pagination, onChangePage }: PaginationProps) {
+  const pages = [];
+  for (let p = pagination.current - 2; p <= pagination.current + 2; p++) {
+    if (p > pagination.first && p < pagination.last) {
+      pages.push(p);
+    }
+  }
+
   return (
     <div className="mt-8 flex items-center justify-center gap-2">
       <Button
         onClick={() => onChangePage(pagination.first)}
-        icon={ <ArrowLeftToLine /> }
         variant="secondary"
       >
-        {pagination.first}
+        <ArrowLeftToLine size={16} />
+        <span className="pl-2">{pagination.first}</span>
       </Button>
 
-      {pagination.previous && (
+      {pages.map((pCurrent) => (
         <Button
-          onClick={() => onChangePage(pagination.previous)}
-          variant="secondary"
+          key={pCurrent}
+          onClick={() => onChangePage(pCurrent)}
+          variant={pCurrent === pagination.current ? "green" : "primary"}
         >
-          {pagination.previous}
+          {pCurrent}
         </Button>
-      )}
+      ))}
 
-      <span>{pagination.current}</span>
-
-      {pagination.next && (
-        <Button
-          onClick={() => onChangePage(pagination.next)}
-          variant="secondary"
-        >
-          {pagination.next}
-        </Button>
-      )}
 
       <Button
         onClick={() => onChangePage(pagination.last)}
-        icon={ <ArrowRightFromLine /> }
         variant="secondary"
       >
-        {pagination.last}
+        <ArrowRightFromLine size={16} />
+        <span className="pl-2">{pagination.last}</span>
       </Button>
     </div>
   );
