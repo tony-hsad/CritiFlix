@@ -15,7 +15,6 @@ function usePaginatedContents(promise: Promise<ContentsCollection>) {
     currentPromise.then((data: ContentsCollection) => {
       setContentsData(data["member"]);
       setPagination(paginationFromCollectionView(data.view));
-      setIsLoading(false);
     })
     .catch((err) => {
       setError(err.message);
