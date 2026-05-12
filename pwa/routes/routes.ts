@@ -10,4 +10,5 @@ export const ROUTES_API = {
   "LOGIN": "/login",
   "ME": "/me",
   "REGISTER": "/register",
+  "USERS": "/users",
 }
