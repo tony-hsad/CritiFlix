@@ -3,6 +3,7 @@ export const ROUTES = {
   "LOGIN": "/login",
   "REGISTER": "/register",
   "CREATE": "/contents/create",
+  "USERS": "/users",
 }
 
 export const ROUTES_API = {

@@ -19,9 +19,13 @@ function Navbar() {
         </div>
 
         <div className="flex-shrink-0">
-          <ul>
+          <ul className="flex space-x-1">
             <li>
-              <span><Link classname="text-white" to={`https://localhost${ROUTES.CREATE}`} content="Proposer un film" /></span>
+              <span><Link classname="text-white" to={`https://localhost${ROUTES.CREATE}`} content="Proposer un film" target="_self" /></span>
+            </li>
+
+            <li>
+              <span><Link classname="text-white" to={`https://localhost${ROUTES.USERS}`} content="Voir les utilisateurs" target="_self" /></span>
             </li>
           </ul>
         </div>
