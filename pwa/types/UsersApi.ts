@@ -7,6 +7,7 @@ type UserBase = ApiResourceBase & {
   lastname: string;
   dateOfBirth: string;
   createdAt: string;
+  avatar?: string | null;
 };
 
 type UserProps = UserBase & {
