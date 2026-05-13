@@ -10,15 +10,6 @@ import {Content} from "@/types/molecules";
 
 function ContentForm() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    type: "",
-    minimalAge: 0,
-    entrances: 0,
-    releaseDate: "",
-    poster: "",
-  });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
