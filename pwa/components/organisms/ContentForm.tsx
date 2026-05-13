@@ -9,24 +9,27 @@ import { createContent } from "../../services/api/contentsApi";
 
 function ContentForm() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    type: "",
-    minimalAge: 0,
-    entrances: 0,
-    releaseDate: "",
-    poster: "",
-  });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const form = document.querySelector("form");
+    const formData = new FormData(form);
     setError(null);
     setLoading(true);
 
-    createContent(formData)
+    const contentData = {
+      title: formData.get("title"),
+      description: formData.get("description"),
+      type: formData.get("type"),
+      minimalAge: Number(formData.get("minimalAge")),
+      entrances: Number(formData.get("entrances")),
+      releaseDate: formData.get("releaseDate"),
+      poster: formData.get("poster"),
+    };
+
+    createContent(contentData)
       .then(() => {
         router.push(ROUTES.HOME);
       })
@@ -38,12 +41,6 @@ function ContentForm() {
       });
   };
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.type === "number" ? Number(e.target.value) : e.target.value,
-    });
-  };
 
   return (
     <form
@@ -57,9 +54,7 @@ function ContentForm() {
           <InputField
             name="title"
             label="Titre"
-            value={formData.title}
             placeholder="Inséparables"
-            onChange={handleChange}
             required
           />
         </div>
@@ -68,9 +63,7 @@ function ContentForm() {
           <InputField
             name="description"
             label="Description"
-            value={formData.description}
             placeholder="Mika refait sa vie lorsque..."
-            onChange={handleChange}
             required
           />
         </div>
@@ -79,18 +72,14 @@ function ContentForm() {
       <InputField
         name="type"
         label="Catégorie"
-        value={formData.type}
         placeholder="Film, Série, Documentaire..."
-        onChange={handleChange}
         required
       />
       <InputField
         name="minimalAge"
         label="Âge requis"
         type="number"
-        value={formData.minimalAge}
         placeholder="13+"
-        onChange={handleChange}
         required
       />
 
@@ -98,9 +87,7 @@ function ContentForm() {
         name="entrances"
         label="Nombre d'entrés"
         type="number"
-        value={formData.entrances}
         placeholder="1 030 000 entrées"
-        onChange={handleChange}
         required
       />
 
@@ -108,18 +95,14 @@ function ContentForm() {
         name="releaseDate"
         label="Date de publication"
         type="date"
-        value={formData.releaseDate}
         placeholder="4 septembre 2019"
-        onChange={handleChange}
         required
       />
 
       <InputField
         name="poster"
         label="Poster du contenu"
-        value={formData.poster}
         placeholder="Lien de votre image"
-        onChange={handleChange}
         required
       />
 

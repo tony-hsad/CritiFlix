@@ -4,17 +4,17 @@ type InputProps = {
   onChange?: () => void;
   type?: string;
   classname?: string;
-  value: string;
+  defaultValue?: string;
   placeholder?: string;
   name?: string;
   required: boolean;
 }
 
-function Input({ onChange, type = "text", classname = "", value, ...rest }: InputProps) {
+function Input({ onChange, type = "text", classname = "", defaultValue, ...rest }: InputProps) {
   return (
     <input
       type={type}
-      value={value}
+      defaultValue={defaultValue}
       className={classname}
       onChange={onChange}
       {...rest}

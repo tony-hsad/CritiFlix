@@ -4,14 +4,15 @@ import Label from "../atoms/Label";
 type InputFieldProps = {
   label: string;
   onChange?: () => void;
-  required: boolean;
   type?: string;
+  required: boolean;
+  defaultValue?: string;
   value?: string;
   placeholder?: string;
   name?: string;
 }
 
-function InputField({ label, onChange, required, type = "text", value = "", placeholder = "", name = "" }: InputFieldProps) {
+function InputField({ label, onChange, required, type = "text", defaultValue = "", placeholder = "", name = "" }: InputFieldProps) {
   return (
     <Label classname="flex flex-col gap-1">
       <span className="text-sm font-medium text-gray-300">{label}</span>
@@ -19,7 +20,7 @@ function InputField({ label, onChange, required, type = "text", value = "", plac
       <Input
         name={name}
         type={type}
-        value={value}
+        defaultValue={defaultValue}
         placeholder={placeholder}
         onChange={onChange}
         required={required}

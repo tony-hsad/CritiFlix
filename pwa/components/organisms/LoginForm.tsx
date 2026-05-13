@@ -10,29 +10,26 @@ import { ROUTES } from "../../routes/routes";
 function LoginForm() {
   const router = useRouter();
   const { loginUser, loading } = useAuth();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
   const [error, setError] = useState(null);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setError(null);
 
-    loginUser(formData.email, formData.password)
+    const form = document.querySelector("form");
+    const formData = new FormData(form);
+    const userData = {
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+
+    loginUser(userData.email, userData.password)
       .then(() => {
         router.push(ROUTES.HOME);
       })
       .catch(() => {
         setError("Email ou mot de passe incorrect");
       });
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
   };
 
   return (
@@ -46,9 +43,7 @@ function LoginForm() {
         name="email"
         label="Email"
         type="email"
-        value={formData.email}
         placeholder="example@email.com"
-        onChange={handleChange}
         required
       />
 
@@ -56,9 +51,7 @@ function LoginForm() {
         name="password"
         label="Mot de passe"
         type="password"
-        value={formData.password}
         placeholder="Saisissez votre mot de passe"
-        onChange={handleChange}
         required
       />
 
