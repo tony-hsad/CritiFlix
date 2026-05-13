@@ -6,7 +6,7 @@ export const ROUTES = {
 }
 
 export const ROUTES_API = {
-  "CREATE": "/contents/create",
+  "CREATE": "/contents",
   "LOGIN": "/login",
   "ME": "/me",
   "REGISTER": "/register",
