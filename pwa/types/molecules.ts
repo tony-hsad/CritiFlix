@@ -1,4 +1,4 @@
-import type { ApiResourceBase } from "@/types/Api";
+import type { ApiResourceBase, Collection } from "@/types/Api";
 
 type ContentProps = ApiResourceBase & {
   id: number;
@@ -14,3 +14,5 @@ type ContentProps = ApiResourceBase & {
 export type Content = {
   content: ContentProps;
 };
+
+export type ContentsCollection = Collection<Content>;

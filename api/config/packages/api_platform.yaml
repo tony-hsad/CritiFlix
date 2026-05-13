@@ -7,5 +7,6 @@ api_platform:
     # Good defaults for REST APIs
     defaults:
         stateless: true
+        pagination_items_per_page: 20
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']

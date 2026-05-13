@@ -10,14 +10,6 @@ import InputField from "../molecules/InputField";
 function RegisterForm() {
   const { registerUser } = useAuth();
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    dateOfBirth: "",
-  });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -25,13 +17,24 @@ function RegisterForm() {
     e.preventDefault();
     setError(null);
 
-    if (formData.password !== formData.confirmPassword) {
+    const form = document.querySelector("form");
+    const formData = new FormData(form);
+    const userData = {
+      firstname: formData.get("firstname"),
+      lastname: formData.get("lastname"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+      confirmPassword: formData.get("confirmPassword"),
+      dateOfBirth: formData.get("dateOfBirth"),
+    };
+
+    if (userData.password !== userData.confirmPassword) {
       setError("Votre mot de passe et celui de confirmation ne correspondent pas");
       return;
     }
     setLoading(true);
 
-    registerUser(formData)
+    registerUser(userData)
       .then(() => {
         router.push(ROUTES.HOME);
       })
@@ -41,13 +44,6 @@ function RegisterForm() {
       .finally(() => {
         setLoading(false);
       });
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
   };
 
   return (
@@ -62,9 +58,7 @@ function RegisterForm() {
           <InputField
             name="firstname"
             label="Prénom"
-            value={formData.firstname}
             placeholder="John"
-            onChange={handleChange}
             required
           />
         </div>
@@ -73,9 +67,7 @@ function RegisterForm() {
           <InputField
             name="lastname"
             label="Nom"
-            value={formData.lastname}
             placeholder="Doe"
-            onChange={handleChange}
             required
           />
         </div>
@@ -85,18 +77,14 @@ function RegisterForm() {
         name="email"
         label="Email"
         type="email"
-        value={formData.email}
         placeholder="john.doe@example.com"
-        onChange={handleChange}
         required
       />
       <InputField
         name="password"
         label="Mot de passe"
         type="password"
-        value={formData.password}
         placeholder="Votre mot de passe"
-        onChange={handleChange}
         required
       />
 
@@ -104,9 +92,7 @@ function RegisterForm() {
         name="confirmPassword"
         label="Confirmer le mot de passe"
         type="password"
-        value={formData.confirmPassword}
         placeholder="Retapez votre mot de passe"
-        onChange={handleChange}
         required
       />
 
@@ -114,9 +100,7 @@ function RegisterForm() {
         name="dateOfBirth"
         label="Date de naissance"
         type="date"
-        value={formData.dateOfBirth}
         placeholder="Votre date de naissance"
-        onChange={handleChange}
         required
       />
 

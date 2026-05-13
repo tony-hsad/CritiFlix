@@ -1,3 +1,4 @@
+import Chip from "../atoms/Chip";
 import Image from "../atoms/Image";
 import type { Content } from "@types/molecules";
 
@@ -18,15 +19,15 @@ function MovieCard({ content }: Content) {
 
           <div className="absolute left-2 right-2 top-2 flex items-start justify-between gap-2">
             {content.type && (
-              <span className="rounded-full px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-white shadow-md">
+              <Chip classname="bg-black uppercase tracking-wide text-orange-400 shadow-md">
                 {content.type}
-              </span>
+              </Chip>
             )}
 
             {content.minimalAge && (
-              <span className="rounded border border-red-500 bg-black/70 px-1.5 py-0.5 text-xs font-bold text-red-400 backdrop-blur-sm">
+              <Chip classname="border-red-500 bg-black/70 text-red-400 backdrop-blur-sm">
                 {content.minimalAge}+
-              </span>
+              </Chip>
             )}
           </div>
 
@@ -39,7 +40,7 @@ function MovieCard({ content }: Content) {
         </h3>
 
         <div className="mb-2 flex items-center gap-2 text-xs text-gray-400">
-          {content.releaseDate && <span>{content.releaseDate}</span>}
+          {content.description && <span className="line-clamp-1">{content.description}...</span>}
         </div>
 
         {formattedDate && (

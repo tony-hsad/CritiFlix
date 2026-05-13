@@ -1,5 +1,5 @@
 import { ROUTES_API } from "../../routes/routes";
-import type { User } from "@/types/usersApi";
+import type { User } from "@/types/UsersApi";
 
 export const API_BASE_URL = "https://localhost";
 
@@ -44,7 +44,7 @@ export function getMe(): Promise<User> {
     .then((response) => {
       const isUserUnauthorized = response.status === 401;
       if (isUserUnauthorized) {
-        localStorage.removeItem("jwt_token");
+        logout();
       }
 
       if (!response.ok) {
