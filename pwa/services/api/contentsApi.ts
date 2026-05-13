@@ -5,7 +5,7 @@ import { logout } from "./authApi";
 export const API_BASE_URL = "https://localhost";
 
 export function getContents(urlParameters: URLSearchParams): Promise<ContentsCollection> {
-  return fetch(`${API_BASE_URL}/contents?` + urlParameters.toString())
+  return fetch(`${API_BASE_URL}/contents?${urlParameters.toString()}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error(`An error occured while fetching contents: HTTP ${response.status}`);
