@@ -1,3 +1,4 @@
+import Chip from "../atoms/Chip";
 import H1 from "../atoms/H1";
 import Image from "../atoms/Image";
 import Link from "../atoms/Link";
@@ -18,18 +19,32 @@ function MovieDetail({ user }: User) {
         />
       </div>
 
-      <div className="flex-1">
+      <div className="flex flex-col gap-3">
         <H1 classname="text-3xl font-bold mb-4" content={`Informations de ${user.firstname} ${user.lastname}`} />
-        <p>Prénom : {user.firstname}</p>
-        <p>Nom : {user.lastname}</p>
-        <span><Link to={`mailto:${user.email}`} target="_self" content={`Email: ${user.email}`} /></span>
 
-        <p className="text-sm text-gray-400 mb-4">
-          Né le : {formattedBirthDate}
+        <p>
+          Prénom :
+          <span className="font-bold"> {user.lastname}</span>
         </p>
 
-        <p className="mt-4 text-gray-400">
-          Existe depuis le: {formattedCreatedDate}
+        <p>
+          Nom :
+          <span className="font-bold uppercase"> {user.lastname}</span>
+        </p>
+
+        <span>
+          Email :
+          <Link to={`mailto:${user.email}`} classname="font-bold italic" target="_self" content={` ${user.email}`} />
+        </span>
+
+        <p>
+          Né le
+          <span className="font-bold"> {formattedBirthDate}</span>
+        </p>
+
+        <p>
+          Existe depuis le
+          <span className="font-bold"> {formattedCreatedDate}</span>
         </p>
       </div>
     </div>
