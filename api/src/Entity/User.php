@@ -145,10 +145,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read', 'user:item:read', 'user:me'])]
     private ?string $avatar = null;
 
+    /**
+     * @var Collection<int, Friendship>
+     */
+    #[ORM\OneToMany(targetEntity: Friendship::class, mappedBy: 'sender', orphanRemoval: true)]
+    private Collection $sentFriendRequests;
+
+    /**
+     * @var Collection<int, Friendship>
+     */
+    #[ORM\OneToMany(targetEntity: Friendship::class, mappedBy: 'receiver', orphanRemoval: true)]
+    private Collection $receivedFriendRequests;
+
     public function __construct()
     {
         $this->interactions = new ArrayCollection();
-        $this->friends = new ArrayCollection();
+        $this->sentFriendRequests = new ArrayCollection();
+        $this->receivedFriendRequests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -262,42 +275,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, self>
-     */
-    public function getFriends(): Collection
-    {
-        return $this->friends;
-    }
-
-    public function addFriend(self $friend): static
-    {
-        if ($friend === $this) {
-            return $this;
-        }
-
-        if (!$this->friends->contains($friend)) {
-            $this->friends->add($friend);
-        }
-
-        if (!$friend->getFriends()->contains($this)) {
-            $friend->getFriends()->add($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFriend(self $friend): static
-    {
-        if ($this->friends->removeElement($friend)) {
-            if ($friend->getFriends()->contains($this)) {
-                $friend->getFriends()->removeElement($this);
-            }
-        }
-
-        return $this;
-    }
-
     public function getFirstname(): ?string
     {
         return $this->firstname;
@@ -362,6 +339,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAvatar(?string $avatar): static
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Friendship>
+     */
+    public function getSentFriendRequests(): Collection
+    {
+        return $this->sentFriendRequests;
+    }
+
+    public function addSentFriendRequest(Friendship $sentFriendRequest): static
+    {
+        if (!$this->sentFriendRequests->contains($sentFriendRequest)) {
+            $this->sentFriendRequests->add($sentFriendRequest);
+            $sentFriendRequest->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSentFriendRequest(Friendship $sentFriendRequest): static
+    {
+        if ($this->sentFriendRequests->removeElement($sentFriendRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($sentFriendRequest->getSender() === $this) {
+                $sentFriendRequest->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Friendship>
+     */
+    public function getReceivedFriendRequests(): Collection
+    {
+        return $this->receivedFriendRequests;
+    }
+
+    public function addReceivedFriendRequest(Friendship $receivedFriendRequest): static
+    {
+        if (!$this->receivedFriendRequests->contains($receivedFriendRequest)) {
+            $this->receivedFriendRequests->add($receivedFriendRequest);
+            $receivedFriendRequest->setReceiver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedFriendRequest(Friendship $receivedFriendRequest): static
+    {
+        if ($this->receivedFriendRequests->removeElement($receivedFriendRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($receivedFriendRequest->getReceiver() === $this) {
+                $receivedFriendRequest->setReceiver(null);
+            }
+        }
 
         return $this;
     }
