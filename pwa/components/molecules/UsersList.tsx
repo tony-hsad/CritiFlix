@@ -47,7 +47,7 @@ function UsersList() {
     <section>
       <h2 className="mb-6 text-2xl font-bold text-white">Tous les utilisateurs</h2>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {users.map((user) => (
           <UserCard key={user.id} user={user} />
         ))}

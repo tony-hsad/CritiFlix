@@ -3,35 +3,30 @@ import type { User } from "@/types/UsersApi";
 
 function UserCard({ user }: User) {
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-lg bg-gray-900 shadow-lg transition-transform hover:scale-105 hover:shadow-2xl">
-      <a href={`/users/${user.id}`}>
-        <div className="relative aspect-[2/3] w-full overflow-hidden bg-gray-800">
+    <article className="group overflow-hidden rounded-lg bg-orange-100 shadow-lg transition-transform hover:scale-103 hover:shadow-2xl">
+      <a href={`/users/${user.id}`} className="flex grow-3 items-center gap-4 p-4">
+        <div className="w-24 h-24 shrink-0 overflow-hidden rounded-lg">
           <Image
             src={user.avatar}
             alt={`Avatar de ${user.firstname} ${user.lastname}`}
-            classname="transition-transform duration-300 group-hover:scale-110"
           />
-          <div className="absolute left-2 right-2 top-2 flex items-start justify-between gap-2">
-            {user.firstname && (
-              <span className="rounded-full bg-black px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-orange-400 shadow-md">
-                {user.firstname}
-              </span>
-            )}
+        </div>
 
-            {user.lastname && (
-              <span className="rounded border border-red-500 bg-black/70 px-1.5 py-0.5 text-xs font-bold text-red-400 backdrop-blur-sm">
-                {user.lastname}
-              </span>
-            )}
+        <div className="flex flex-col grow gap-8 justify-between">
+          <div className="flex justify-between items-center gap-2">
+            <span className="uppercase border-red-500 text-violet-500 font-bold">
+              {user.lastname}
+            </span>
+            <span className="text-violet-500 font-bold">
+              {user.firstname}
+            </span>
           </div>
+
+          <span className="text-emerald-400 font-bold">
+            {user.email}
+          </span>
         </div>
       </a>
-
-      <div className="flex flex-1 flex-col p-3">
-        <p className="mb-1 line-clamp-1 text-sm font-bold text-white">
-          {user.email}
-        </p>
-      </div>
     </article>
   );
 }
