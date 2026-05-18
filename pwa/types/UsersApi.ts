@@ -1,4 +1,4 @@
-import type { ApiResourceBase } from "@/types/Api";
+import type { ApiResourceBase, Collection } from "@/types/Api";
 
 type UserBase = ApiResourceBase & {
   id: number;
@@ -18,3 +18,5 @@ type UserProps = UserBase & {
 export type User = UserProps & {
   user: UserProps;
 };
+
+export type UsersCollection = Collection<User>;
