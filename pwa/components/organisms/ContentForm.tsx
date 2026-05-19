@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { ROUTES } from "../../routes/routes";
-import { Plus, LoaderCircle } from "lucide-react";
 import Button from "../atoms/Button";
 import H1 from "../atoms/H1";
+import Icon from "../atoms/Icon";
 import InputField from "../molecules/InputField";
 import { createContent } from "../../services/api/contentsApi";
 
@@ -109,7 +109,7 @@ function ContentForm() {
       <Button
         type="submit"
         variant="green"
-        icon={loading ? <LoaderCircle size={16} className="animate-spin" /> : <Plus size={16} />}
+        Icon={loading ? <Icon name="loading" className="animate-spin" /> : <Icon name="plus" />}
         disabled={loading}
       >
         {loading ? "Chargement..." : "Proposer votre contenu aux utilisateurs"}

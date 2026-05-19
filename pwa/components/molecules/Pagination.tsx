@@ -1,5 +1,5 @@
 import Button from "../atoms/Button";
-import { ArrowLeftToLine, ArrowRightFromLine } from "lucide-react";
+import Icon from "../atoms/Icon";
 import type { PaginationProps, PaginationType} from "@/types/Pagination";
 
 function Pagination({ pagination, onChangePage }: PaginationProps) {
@@ -26,7 +26,7 @@ function Pagination({ pagination, onChangePage }: PaginationProps) {
         onClick={() => onChangePage(pagination.first)}
         variant="secondary"
       >
-        <ArrowLeftToLine size={16} />
+        <Icon name="arrowLeft" />
         <span className="pl-2">{pagination.first}</span>
       </Button>
 
@@ -45,7 +45,7 @@ function Pagination({ pagination, onChangePage }: PaginationProps) {
         onClick={() => onChangePage(pagination.last)}
         variant="secondary"
       >
-        <ArrowRightFromLine size={16} />
+        <Icon name="arrowRight" />
         <span className="pl-2">{pagination.last}</span>
       </Button>
     </div>
