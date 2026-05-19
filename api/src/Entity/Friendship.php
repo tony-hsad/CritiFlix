@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Config\FriendshipStatus;
 use App\Repository\FriendshipRepository;
+use App\State\FriendshipPostProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
@@ -28,6 +29,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
         new Post(
             denormalizationContext: ['groups' => ['friendship:write']],
             security: "is_granted('ROLE_USER')",
+            processor: FriendshipPostProcessor::class
         ),
         new Patch(
             denormalizationContext: ['groups' => ['friendship:write']],
