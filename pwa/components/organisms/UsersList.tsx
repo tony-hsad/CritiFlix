@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LoaderCircle } from "lucide-react";
+import Icon from "../atoms/Icon";
 import UserCard from "../molecules/UserCard";
 import Pagination from "../molecules/Pagination";
 import usePaginatedUsers from "../../hooks/usePaginatedUsers";
@@ -19,7 +19,7 @@ function UsersList() {
   if (isLoading) {
     return (
       <p className="flex items-center justify-center gap-2 text-gray-400 py-12">
-        <LoaderCircle size={16} className="animate-spin" />
+        <Icon name="loading" className="animate-spin" />
         Chargement...
       </p>
     );

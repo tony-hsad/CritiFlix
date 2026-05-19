@@ -1,7 +1,7 @@
 import React from "react";
 import { useSearch } from "../../contexts/providers/SearchContextProvider";
+import Icon from "../atoms/Icon";
 import Input from "../atoms/Input";
-import { Search } from "lucide-react";
 
 function SearchBar() {
   const { search, setSearch } = useSearch();
@@ -11,7 +11,7 @@ function SearchBar() {
 
   return (
     <div className="w-full max-w-xl relative">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+      <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
 
       <Input
         value={search}
