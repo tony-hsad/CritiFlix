@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Config\FriendshipStatus;
 use App\Repository\FriendshipRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -23,7 +24,7 @@ class Friendship
     #[ORM\JoinColumn(nullable: false)]
     private ?User $receiver = null;
 
-    #[ORM\Column(length: 15)]
+    #[ORM\Column(length: 15, enumType: FriendshipStatus::class)]
     private ?string $status = null;
 
     #[ORM\Column]
