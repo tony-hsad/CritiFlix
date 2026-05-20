@@ -1,7 +1,7 @@
 import React, { RefAttributes, ForwardRefExoticComponent } from "react";
-import { House, LogIn, LogOut, LoaderCircle, Search, Plus, ArrowLeftToLine, ArrowRightFromLine, LucideProps } from "lucide-react";
+import { House, LogIn, LogOut, LoaderCircle, Search, Plus, ArrowLeftToLine, ArrowRightFromLine, MailPlus, LucideProps } from "lucide-react";
 
-type AllowedIcons = 'login' | 'logout' | 'loading' | 'search' | 'plus' | 'arrowLeft' | 'arrowRight';
+type AllowedIcons = 'login' | 'logout' | 'loading' | 'search' | 'plus' | 'arrowLeft' | 'arrowRight' | 'contact';
 
 type RenderableIcon = ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
 
@@ -21,6 +21,8 @@ function mapNameToIcon(name: AllowedIcons): RenderableIcon {
       return ArrowLeftToLine;
     case 'arrowRight':
       return ArrowRightFromLine;
+    case 'contact':
+      return MailPlus;
 
     default:
       return House;

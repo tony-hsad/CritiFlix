@@ -1,5 +1,7 @@
-import Chip from "../atoms/Chip";
+import { useRouter } from "next/router";
+import Button from "../atoms/Button";
 import H1 from "../atoms/H1";
+import Icon from "../atoms/Icon";
 import Image from "../atoms/Image";
 import Link from "../atoms/Link";
 import type { User } from "@/types/UsersApi";
@@ -8,6 +10,7 @@ function MovieDetail({ user }: User) {
   const userAvatar = user.avatar || "https://t3.ftcdn.net/jpg/06/64/80/00/360_F_664800080_DB9Ed3O11GxDt0gPXtsqajrNDV52V84M.jpg";
   const formattedBirthDate = new Date(user.dateOfBirth).toLocaleDateString("fr-FR");
   const formattedCreatedDate = new Date(user.createdAt).toLocaleDateString("fr-FR");
+  const router = useRouter();
 
   return (
     <div className="flex flex-col md:flex-row gap-8">
@@ -46,6 +49,17 @@ function MovieDetail({ user }: User) {
           Existe depuis le
           <span className="font-bold"> {formattedCreatedDate}</span>
         </p>
+
+        <div className="flex space-x-2">
+          <Button Icon={<Icon name="plus" />}>
+            Demander en ami
+          </Button>
+
+          <Button variant="green" onClick={() => router.push(`mailto:${user.email}`)} Icon={<Icon name="contact" />}>
+            Contacter
+          </Button>
+        </div>
+
       </div>
     </div>
   );
