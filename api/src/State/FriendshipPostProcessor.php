@@ -7,6 +7,7 @@ use ApiPlatform\State\ProcessorInterface;
 use App\Config\FriendshipStatus;
 use App\Repository\FriendshipRepository;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class FriendshipPostProcessor implements ProcessorInterface
 {
@@ -14,7 +15,12 @@ class FriendshipPostProcessor implements ProcessorInterface
     private Security $security;
     private FriendshipRepository $friendshipRepo;
 
-    public function __construct(ProcessorInterface $processor, Security $security, FriendshipRepository $repository)
+    public function __construct(
+        #[Autowire(service: 'api_platform.doctrine.orm.state.persist_processor')]
+        ProcessorInterface $processor,
+        Security $security,
+        FriendshipRepository $repository
+        )
     {
         $this->processor = $processor;
         $this->security = $security;
