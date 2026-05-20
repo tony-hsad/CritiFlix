@@ -116,15 +116,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[MaxDepth(1)]
     private Collection $interactions;
 
-    /**
-     * @var Collection<int, self>
-     */
-    #[ORM\ManyToMany(targetEntity: self::class)]
-    #[ORM\JoinTable(name: 'user_friends')]
-    #[Groups(['user:me'])]
-    #[MaxDepth(1)]
-    private Collection $friends;
-
     #[ORM\Column(length: 50)]
     #[Groups(['user:read', 'user:patch:read', 'user:write'])]
     private ?string $firstname = null;
