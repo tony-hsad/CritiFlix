@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Config\FriendshipStatus;
 use App\Repository\FriendshipRepository;
+use App\State\FriendshipPatchProcessor;
 use App\State\FriendshipPostProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -33,7 +34,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
         ),
         new Patch(
             denormalizationContext: ['groups' => ['friendship:write']],
-            security: "is_granted('ROLE_USER') and object.getReceiver() == user"
+            security: "is_granted('ROLE_USER') and object.getReceiver() == user",
+            processor: FriendshipPatchProcessor::class,
         ),
         new Delete(
             security: "is_granted('ROLE_USER') and (object.getSender() == user or object.getReceiver() == user)"
