@@ -8,6 +8,7 @@ export const ROUTES = {
 
 export const ROUTES_API = {
   "CREATE": "/contents",
+  "FRIENDSHIPS": "/friendships",
   "LOGIN": "/login",
   "ME": "/me",
   "REGISTER": "/register",
