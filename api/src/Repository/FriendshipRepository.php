@@ -20,8 +20,7 @@ class FriendshipRepository extends ServiceEntityRepository
     public function findAlreadyExistingFriendship(User $user1, User $user2): ?Friendship
     {
         return $this->createQueryBuilder('f')
-            ->where('f.sender = :user1 AND f.receiver = :user2')
-            ->orWhere('f.sender = :user2 AND f.receiver = :user1')
+            ->where('(f.sender = :user1 AND f.receiver = :user2) OR (f.sender = :user2 AND f.receiver = :user1)')
             ->setParameter('user1', $user1)
             ->setParameter('user2', $user2)
             ->getQuery()

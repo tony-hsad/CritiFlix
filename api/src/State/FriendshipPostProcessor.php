@@ -34,8 +34,8 @@ class FriendshipPostProcessor implements ProcessorInterface
 
         $user = $this->security->getUser();
         $isUserSender = $user === $userSender;
-        $isFriendshipExist = $isUserSender ? $this->friendshipRepo->findAlreadyExistingFriendship($userSender, $userReceiver) : null;
-        if ($isUserSender && $isFriendshipExist) {
+        $isFriendshipExist = $this->friendshipRepo->findAlreadyExistingFriendship($userSender, $userReceiver);
+        if ($isUserSender && !$isFriendshipExist) {
             $data->setStatus(FriendshipStatus::Pending);
             $data->setSender($user);
             $data->setRequestDate(new \DateTimeImmutable());
