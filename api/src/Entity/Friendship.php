@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
@@ -20,11 +19,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ApiResource(
     operations: [
         new Get(
-            normalizationContext: ['groups' => ['friendship:read']],
             security: "is_granted('ROLE_USER') and (object.getSender() == user or object.getReceiver() == user)"
         ),
         new GetCollection(
-            normalizationContext: ['groups' => ['friendship:read']],
             security: "is_granted('ROLE_USER')"
         ),
         new Post(
@@ -33,15 +30,12 @@ use Symfony\Component\Serializer\Attribute\Groups;
             processor: FriendshipPostProcessor::class
         ),
         new Patch(
-            denormalizationContext: ['groups' => ['friendship:write']],
+            denormalizationContext: ['groups' => ['friendship:update']],
             security: "is_granted('ROLE_USER') and object.getReceiver() == user",
             processor: FriendshipPatchProcessor::class,
         ),
-        new Delete(
-            security: "is_granted('ROLE_USER') and (object.getSender() == user or object.getReceiver() == user)"
-        ),
     ],
-    normalizationContext: ['groups' => ['friendship:read']]
+    normalizationContext: ['groups' => ['friendship:read']],
 )]
 #[ORM\HasLifecycleCallbacks]
 class Friendship
@@ -63,7 +57,7 @@ class Friendship
     private ?User $receiver = null;
 
     #[ORM\Column(length: 15, enumType: FriendshipStatus::class)]
-    #[Groups(['friendship:read', 'friendship:write'])]
+    #[Groups(['friendship:read', 'friendship:update'])]
     private ?FriendshipStatus $status = null;
 
     #[ORM\Column]
