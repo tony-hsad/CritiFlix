@@ -5,6 +5,7 @@ namespace App\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Config\FriendshipStatus;
+use App\Entity\User;
 use App\Repository\FriendshipRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -29,12 +30,12 @@ class FriendshipPostProcessor implements ProcessorInterface
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
-        $userSender = $data->getSender();
+        /** @var User $user */
+        $user = $this->security->getUser();
         $userReceiver = $data->getReceiver();
 
-        $user = $this->security->getUser();
-        $isUserSender = $user === $userSender;
-        $isFriendshipExist = $this->friendshipRepo->findAlreadyExistingFriendship($userSender, $userReceiver);
+        $isUserSender = $user !== $userReceiver;
+        $isFriendshipExist = $this->friendshipRepo->findAlreadyExistingFriendship($user, $userReceiver);
         if ($isUserSender && !$isFriendshipExist) {
             $data->setStatus(FriendshipStatus::Pending);
             $data->setSender($user);
