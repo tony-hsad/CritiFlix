@@ -12,7 +12,8 @@ type UserBase = ApiResourceBase & {
 
 type UserProps = UserBase & {
   interactions?: ReadonlyArray<string> | null;
-  friends?: ReadonlyArray<UserBase> | null;
+  sentFriendRequests?: ReadonlyArray<UserBase> | null;
+  receivedFriendRequests?: ReadonlyArray<UserBase> | null;
 };
 
 export type User = UserProps & {
