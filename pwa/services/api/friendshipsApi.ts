@@ -16,7 +16,7 @@ export function sendFriendRequest(userReceiverId: number): Promise<Friendship> {
   return fetch(`${API_BASE_URL}${ROUTES_API.FRIENDSHIPS}`, {
     method: "POST",
     headers,
-    body: JSON.stringify({receiver: `/api/users/${userReceiverId}`})
+    body: JSON.stringify({receiver: `/users/${userReceiverId}`})
   })
     .then((response) => {
       const isUserUnauthorized = response.status === 401;
