@@ -7,6 +7,7 @@ import Link from "../atoms/Link";
 import type { User } from "@/types/UsersApi";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
 import { sendFriendRequest } from "../../services/api/friendshipsApi";
+import { ROUTES } from "../../routes/routes";
 
 function UserDetail({ user }: User) {
   const userAvatar = user.avatar || "https://t3.ftcdn.net/jpg/06/64/80/00/360_F_664800080_DB9Ed3O11GxDt0gPXtsqajrNDV52V84M.jpg";
@@ -61,6 +62,14 @@ function UserDetail({ user }: User) {
 
             <Button variant="green" onClick={() => router.push(`mailto:${user.email}`)} Icon={<Icon name="contact" />}>
               Contacter
+            </Button>
+          </div>
+        )}
+
+        {authenticatedUser && authenticatedUser.id === user.id && (
+          <div className="flex space-x-2">
+            <Button variant="green" Icon={<Icon name="friends" />} onClick={() => router.push(ROUTES.FRIENDS)}>
+              Voir mes amis
             </Button>
           </div>
         )}
