@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\QueryParameter;
 use App\Config\FriendshipStatus;
 use App\Repository\FriendshipRepository;
 use App\State\FriendshipPatchProcessor;
@@ -22,7 +24,21 @@ use Symfony\Component\Serializer\Attribute\Groups;
             security: "is_granted('ROLE_USER') and (object.getSender() == user or object.getReceiver() == user)"
         ),
         new GetCollection(
-            security: "is_granted('ROLE_USER')"
+            security: "is_granted('ROLE_USER')",
+            parameters: [
+                'status' => new QueryParameter(
+                    filter: ExactFilter::class,
+                    property: 'status',
+                ),
+                'sender_id' => new QueryParameter(
+                    filter: ExactFilter::class,
+                    property: 'sender',
+                ),
+                'receiver_id' => new QueryParameter(
+                    filter: ExactFilter::class,
+                    property: 'receiver',
+                ),
+            ],
         ),
         new Post(
             denormalizationContext: ['groups' => ['friendship:write']],
