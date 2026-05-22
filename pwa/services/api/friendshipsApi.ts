@@ -111,3 +111,30 @@ export function getReceivedFriendRequests(userId: number, urlParameters: URLSear
       throw error;
     });
 }
+
+export function getFriends(urlParameters: URLSearchParams){
+  const token = localStorage.getItem("jwt_token");
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+  };
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+  return fetch(`${API_BASE_URL}${ROUTES_API.FRIENDSHIPS}?status=accepted&${urlParameters.toString()}`, {
+    headers,
+  })
+    .then((response)=> {
+      if (!response.ok) {
+        throw response.status;
+      }
+
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
