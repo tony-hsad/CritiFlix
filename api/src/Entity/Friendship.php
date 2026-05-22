@@ -51,7 +51,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
             processor: FriendshipPatchProcessor::class,
         ),
     ],
-    normalizationContext: ['groups' => ['friendship:read']],
+    normalizationContext: ['groups' => ['friendship:read', 'user:read']],
 )]
 #[ORM\HasLifecycleCallbacks]
 class Friendship
@@ -64,12 +64,12 @@ class Friendship
 
     #[ORM\ManyToOne(inversedBy: 'sentFriendRequests')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['friendship:read'])]
+    #[Groups(['friendship:read', 'user:read'])]
     private ?User $sender = null;
 
     #[ORM\ManyToOne(inversedBy: 'receivedFriendRequests')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['friendship:read', 'friendship:write'])]
+    #[Groups(['friendship:read', 'friendship:write', 'user:read'])]
     private ?User $receiver = null;
 
     #[ORM\Column(length: 15, enumType: FriendshipStatus::class)]
