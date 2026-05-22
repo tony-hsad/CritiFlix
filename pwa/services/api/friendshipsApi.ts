@@ -1,6 +1,7 @@
 import { ROUTES_API } from "../../routes/routes";
-import { logout } from "./authApi";
-import type { Friendship } from "@/types/FriendshipsApi";
+import { getMe, logout } from "./authApi";
+import type {Friendship, FriendshipsCollection } from "@/types/FriendshipsApi";
+import { getUsersFromFriendship } from "../transformers/usersFromFriendship";
 
 export const API_BASE_URL = "https://localhost";
 
@@ -112,7 +113,7 @@ export function getReceivedFriendRequests(userId: number, urlParameters: URLSear
     });
 }
 
-export function getFriends(urlParameters: URLSearchParams){
+export function getFriends(urlParameters: URLSearchParams): Promise<FriendshipsCollection> {
   const token = localStorage.getItem("jwt_token");
   const headers: HeadersInit = {
     "Content-Type": "application/json",
@@ -121,20 +122,25 @@ export function getFriends(urlParameters: URLSearchParams){
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
-  return fetch(`${API_BASE_URL}${ROUTES_API.FRIENDSHIPS}?status=accepted&${urlParameters.toString()}`, {
-    headers,
-  })
-    .then((response)=> {
-      if (!response.ok) {
-        throw response.status;
-      }
 
-      return response.json();
-    })
-    .then((data) => {
-      return data;
-    })
-    .catch((error) => {
-      throw error;
+  return getMe()
+    .then((me) => {
+      return fetch(`${API_BASE_URL}${ROUTES_API.FRIENDSHIPS}?status=accepted&${urlParameters.toString()}`, {
+        headers
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw response.status;
+          }
+
+          return response.json();
+        })
+        .then((data) => {
+          const friends = getUsersFromFriendship(data, me);
+          return { ...data, member: friends };
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
 }
