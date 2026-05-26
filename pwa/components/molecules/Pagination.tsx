@@ -2,14 +2,35 @@ import Button from "../atoms/Button";
 import Icon from "../atoms/Icon";
 import type { PaginationProps, PaginationType} from "@/types/Pagination";
 
+function test({ pagination, onChangePage }: PaginationProps): ReadonlyArray<{label: string, value: string}> {
+  if (!pagination) {
+    return [];
+  }
+
+  const myArr = [
+    { label: 'first', value: pagination.first && `/films/${pagination.first}` },
+    { label: pagination.previous, value: pagination.previous && `/films/${pagination.previous}` },
+    { label: pagination.current, value: pagination.current && `#` },
+    { label: pagination.next, value: pagination.next && `/films/${pagination.next}` },
+    { label: 'last', value: pagination.last && `/films/${pagination.last}` },
+  ]
+
+  console.log('pagination', pagination)
+
+  return []
+}
+
 function Pagination({ pagination, onChangePage }: PaginationProps) {
-  if (!pagination) return null;
+  if (!pagination) {
+    return null;
+  }
 
   function getMorePaginationButtons(pagination: PaginationType) {
     const additionalPagesAmount = 2;
     const leftCurrent = pagination.current - additionalPagesAmount;
     const rightCurrent = pagination.current + additionalPagesAmount;
 
+    // first, 2 (current), 3, 4, ..., last
     const pages = [];
     for (let p = leftCurrent; p <= rightCurrent; p++) {
       const isPageBetweenBoundaries = p > pagination.first && p < pagination.last;
