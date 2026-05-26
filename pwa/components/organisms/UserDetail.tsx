@@ -71,6 +71,10 @@ function UserDetail({ user }: User) {
             <Button variant="green" Icon={<Icon name="friends" />} onClick={() => router.push(ROUTES.FRIENDS)}>
               Voir mes amis
             </Button>
+
+            <Button variant="green" Icon={<Icon name="friends" />} onClick={() => router.push(ROUTES.FRIENDS_REQUESTS)}>
+              Voir mes demandes d'amis
+            </Button>
           </div>
         )}
 
