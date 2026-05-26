@@ -60,7 +60,7 @@ export function setFriendRequest(friendshipId:number, isAccept: boolean): Promis
   });
 }
 
-export function getSentFriendRequests(userId: number, urlParameters: URLSearchParams): Promise<Friendship> {
+export function getSentFriendRequests(userId: number): Promise<Friendship> {
   const token = localStorage.getItem("jwt_token");
   const headers: HeadersInit = {
     "Content-Type": "application/json",
@@ -69,7 +69,7 @@ export function getSentFriendRequests(userId: number, urlParameters: URLSearchPa
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
-  return fetch(`${API_BASE_URL}${ROUTES_API.FRIENDSHIPS}?sender_id=${userId}&status=pending&${urlParameters.toString()}`,  {
+  return fetch(`${API_BASE_URL}${ROUTES_API.FRIENDSHIPS}?sender_id=${userId}&status=pending`,  {
     headers
   })
     .then((response) => {
@@ -79,14 +79,17 @@ export function getSentFriendRequests(userId: number, urlParameters: URLSearchPa
       return response.json();
     })
     .then((data) => {
-      return data;
+      const usersReceived = data.member.map((friendship: Friendship) => {
+        return friendship.receiver;
+      });
+      return { ...data, member: usersReceived };
     })
     .catch((error) => {
       throw error;
     });
 }
 
-export function getReceivedFriendRequests(userId: number, urlParameters: URLSearchParams){
+export function getReceivedFriendRequests(userId: number){
   const token = localStorage.getItem("jwt_token");
   const headers: HeadersInit = {
     "Content-Type": "application/json",
@@ -95,7 +98,7 @@ export function getReceivedFriendRequests(userId: number, urlParameters: URLSear
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
-  return fetch(`${API_BASE_URL}${ROUTES_API.FRIENDSHIPS}?receiver_id=${userId}&status=pending&${urlParameters.toString()}`, {
+  return fetch(`${API_BASE_URL}${ROUTES_API.FRIENDSHIPS}?receiver_id=${userId}&status=pending`, {
     headers,
   })
     .then((response)=> {
@@ -106,7 +109,11 @@ export function getReceivedFriendRequests(userId: number, urlParameters: URLSear
       return response.json();
     })
     .then((data) => {
-      return data;
+      const users = data.member.map((friendship: Friendship) => {
+        return friendship.sender;
+      });
+
+      return { ...data, member: users };
     })
     .catch((error) => {
       throw error;
