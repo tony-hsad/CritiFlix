@@ -27,15 +27,15 @@ use Symfony\Component\Serializer\Attribute\Groups;
             security: "is_granted('ROLE_USER')",
             parameters: [
                 'status' => new QueryParameter(
-                    filter: ExactFilter::class,
+                    filter: new ExactFilter(),
                     property: 'status',
                 ),
                 'sender_id' => new QueryParameter(
-                    filter: ExactFilter::class,
+                    filter: new ExactFilter(),
                     property: 'sender.id',
                 ),
                 'receiver_id' => new QueryParameter(
-                    filter: ExactFilter::class,
+                    filter: new ExactFilter(),
                     property: 'receiver.id',
                 ),
             ],
