@@ -5,12 +5,14 @@ import Pagination from "../molecules/Pagination";
 import usePaginatedUsers from "../../hooks/usePaginatedUsers";
 import { getFriends } from "../../services/api/friendshipsApi";
 import { useSearch } from "../../contexts/providers/SearchContextProvider";
+import { useAuth } from "../../contexts/providers/AuthContextProvider";
 
 function FriendsList() {
+  const { user: authenticatedUser } = useAuth();
   const { search } = useSearch();
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading, error, usersData, pagination, changePromise } =
-    usePaginatedUsers(getFriends(new URLSearchParams(`page=${currentPage}`)));
+    usePaginatedUsers(getFriends(authenticatedUser.id, new URLSearchParams(`page=${currentPage}`)));
   const filteredUsers = usersData.filter((user) =>
     user.lastname.toLowerCase().includes(search.toLowerCase()) ||
     user.firstname.toLowerCase().includes(search.toLowerCase())
@@ -39,13 +41,13 @@ function FriendsList() {
 
   function updatePageNumber(pageNumber: number) {
     setCurrentPage(pageNumber);
-    changePromise(getFriends(new URLSearchParams(`page=${pageNumber}`)));
+    changePromise(getFriends(authenticatedUser.id, new URLSearchParams(`page=${pageNumber}`)));
   }
 
 
   return (
     <section>
-      <h2 className="mb-6 text-2xl font-bold text-white">Tous les utilisateurs</h2>
+      <h2 className="mb-6 text-2xl font-bold text-white">Vos amis</h2>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {filteredUsers.map((user) => (
