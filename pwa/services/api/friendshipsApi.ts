@@ -1,6 +1,7 @@
 import { ROUTES_API } from "../../routes/routes";
 import { getMe, logout } from "./authApi";
 import type {Friendship, FriendshipsCollection } from "@/types/FriendshipsApi";
+import type { UsersCollection } from "@/types/UsersApi";
 import { getUsersFromFriendship } from "../transformers/usersFromFriendship";
 
 export const API_BASE_URL = "https://localhost";
@@ -54,7 +55,7 @@ export function setFriendRequest(friendshipId:number, isAccept: boolean): Promis
   });
 }
 
-export function getSentFriendRequests(userId: number): Promise<Friendship> {
+export function getSentFriendRequests(userId: number): Promise<UsersCollection> {
   const token = localStorage.getItem("jwt_token");
   const headers: HeadersInit = {
     "Content-Type": "application/json",
@@ -76,11 +77,11 @@ export function getSentFriendRequests(userId: number): Promise<Friendship> {
       const usersReceived = data.member.map((friendship: Friendship) => {
         return friendship.receiver;
       });
-      return { ...data, member: usersReceived };
+      return usersReceived;
     });
 }
 
-export function getReceivedFriendRequests(userId: number){
+export function getReceivedFriendRequests(userId: number): Promise<UsersCollection> {
   const token = localStorage.getItem("jwt_token");
   const headers: HeadersInit = {
     "Content-Type": "application/json",
@@ -100,11 +101,10 @@ export function getReceivedFriendRequests(userId: number){
       return response.json();
     })
     .then((data) => {
-      const users = data.member.map((friendship: Friendship) => {
+      const usersSent = data.member.map((friendship: Friendship) => {
         return friendship.sender;
       });
-
-      return { ...data, member: users };
+      return usersSent;
     });
 }
 
