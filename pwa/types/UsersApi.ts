@@ -1,6 +1,6 @@
 import type { ApiResourceBase, Collection } from "@/types/Api";
 
-type UserBase = ApiResourceBase & {
+export type User = ApiResourceBase & {
   id: number;
   email: string;
   firstname: string;
@@ -8,16 +8,9 @@ type UserBase = ApiResourceBase & {
   dateOfBirth: string;
   createdAt: string;
   avatar?: string | null;
-};
-
-type UserProps = UserBase & {
   interactions?: ReadonlyArray<string> | null;
-  sentFriendRequests?: ReadonlyArray<UserBase> | null;
-  receivedFriendRequests?: ReadonlyArray<UserBase> | null;
-};
-
-export type User = UserProps & {
-  user: UserProps;
+  sentFriendRequests?: ReadonlyArray<User> | null;
+  receivedFriendRequests?: ReadonlyArray<User> | null;
 };
 
 export type UsersCollection = Collection<User>;
