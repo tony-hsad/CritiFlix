@@ -5,22 +5,18 @@ import { useAuth } from "../../contexts/providers/AuthContextProvider";
 import UserCard from "../molecules/UserCard";
 import { getSentFriendRequests, getReceivedFriendRequests } from "../../services/api/friendshipsApi";
 
-
 function FriendRequests() {
   const [usersRequested, setUsersRequested] = useState([]);
   const [usersReceived, setUsersReceived] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { userAuthenticated } = useAuth();
+  const { user: authenticatedUser } = useAuth();
 
   useEffect(() => {
-    if (!userAuthenticated) {
-      return;
-    }
-
-    getSentFriendRequests(userAuthenticated.id).then((data) => {
-      setIsLoading(true);
-      setUsersRequested(data);
+    getSentFriendRequests(authenticatedUser.id)
+      .then((data) => {
+        setIsLoading(true);
+        setUsersRequested(data);
     })
       .catch((err) => {
         setError(err.message);
@@ -29,20 +25,28 @@ function FriendRequests() {
         setIsLoading(false);
       });
 
-    getReceivedFriendRequests(userAuthenticated.id).then((data) => {
-      setIsLoading(true);
-      setUsersReceived(data);
-    })
+    getReceivedFriendRequests(authenticatedUser.id)
+      .then((data) => {
+        setIsLoading(true);
+        setUsersReceived(data);
+      })
       .catch((err) => {
-      setError(err.message);
-    })
+        setError(err.message);
+      })
       .finally(() => {
         setIsLoading(false);
       });
+  }, [authenticatedUser]);
 
-  }, [userAuthenticated]);
 
-
+  if (isLoading) {
+    return (
+      <p className="flex items-center justify-center gap-2 text-gray-400 py-12">
+        <Icon name="loading" className="animate-spin" />
+        Chargement...
+      </p>
+    );
+  }
 
   if (error) {
     return (
@@ -54,21 +58,29 @@ function FriendRequests() {
 
 
   return (
-    <div className="flex flex-row md:flex-row gap-8">
-      <div className="flex flex-col">
+    <div className="flex flex-row md:flex-row gap-8 justify-around">
+      <div className="flex flex-col gap-4">
         <H1 classname="text-3xl font-bold mb-4" content={`Demandes envoyées`} />
 
-        {usersRequested.map((user) => (
-          <UserCard key={user.id} user={user} />
-        ))}
+        {!usersRequested.length ? (
+          <p className="text-center text-gray-400 py-12">Vous n'avez envoyé aucune demande d'amis</p>
+        ) : (
+          usersRequested.map((user) => (
+            <UserCard key={user.id} user={user} />
+          ))
+        )}
       </div>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-4">
         <H1 classname="text-3xl font-bold mb-4" content={`Demandes reçues`} />
 
-        {usersReceived.map((user) => (
-          <UserCard key={user.id} user={user} />
-        ))}
+        {!usersReceived.length ? (
+          <p className="text-center text-gray-400 py-12">Vous n'avez reçue aucune demande d'amis</p>
+        ) : (
+          usersReceived.map((user) => (
+            <UserCard key={user.id} user={user} />
+          ))
+        )}
       </div>
     </div>
   );

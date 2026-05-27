@@ -30,8 +30,8 @@ class FriendshipExtension implements QueryCollectionExtensionInterface
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $queryBuilder->andWhere(sprintf('%s.receiver = :current_user OR %s.sender = :current_user', $rootAlias, $rootAlias));
-        $queryBuilder->andWhere(sprintf('%s.status = :status', $rootAlias, $rootAlias));
+        //$queryBuilder->andWhere(sprintf('%s.status = :status', $rootAlias, $rootAlias));
         $queryBuilder->setParameter('current_user', $user);
-        $queryBuilder->setParameter('status', FriendshipStatus::Accepted);
+        //$queryBuilder->setParameter('status', FriendshipStatus::Accepted);
     }
 }
