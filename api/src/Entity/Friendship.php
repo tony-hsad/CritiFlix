@@ -32,11 +32,11 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 ),
                 'sender_id' => new QueryParameter(
                     filter: ExactFilter::class,
-                    property: 'sender',
+                    property: 'sender.id',
                 ),
                 'receiver_id' => new QueryParameter(
                     filter: ExactFilter::class,
-                    property: 'receiver',
+                    property: 'receiver.id',
                 ),
             ],
         ),
