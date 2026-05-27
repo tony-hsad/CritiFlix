@@ -5,12 +5,24 @@ import HomeTemplate from "../../components/templates/HomeTemplate";
 import MovieDetail from "../../components/organisms/MovieDetail";
 import { getContentById } from "../../services/api/contentsApi";
 import { ROUTES } from "../../routes/routes";
+import {Mercure} from "../../services/realtime/mercure";
 
 export default function MoviePage() {
   const router = useRouter();
   const { id } = router.query;
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!id) {
+      return
+    }
+
+    const es = Mercure.subscribe('home', `/contents/${id}`, (message) => setContent(message.data))
+
+    console.log(es)
+    return () => es.close()
+  }, [id]);
 
   useEffect(() => {
     if (!id) return;
