@@ -29,9 +29,6 @@ export function sendFriendRequest(userReceiverId: number): Promise<Friendship> {
         throw response.status;
       }
       return response.json();
-    })
-    .catch((error) => {
-      throw error;
     });
 }
 
@@ -54,9 +51,6 @@ export function setFriendRequest(friendshipId:number, isAccept: boolean): Promis
       throw response.status;
     }
     return response.json();
-  })
-  .catch((error) => {
-    throw error;
   });
 }
 
@@ -83,9 +77,6 @@ export function getSentFriendRequests(userId: number): Promise<Friendship> {
         return friendship.receiver;
       });
       return { ...data, member: usersReceived };
-    })
-    .catch((error) => {
-      throw error;
     });
 }
 
@@ -114,9 +105,6 @@ export function getReceivedFriendRequests(userId: number){
       });
 
       return { ...data, member: users };
-    })
-    .catch((error) => {
-      throw error;
     });
 }
 
@@ -145,9 +133,6 @@ export function getFriends(urlParameters: URLSearchParams): Promise<FriendshipsC
         .then((data) => {
           const friends = getUsersFromFriendship(data, me);
           return { ...data, member: friends };
-        })
-        .catch((error) => {
-          throw error;
         });
     });
 }
