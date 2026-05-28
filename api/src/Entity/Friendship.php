@@ -13,6 +13,7 @@ use App\Config\FriendshipStatus;
 use App\Repository\FriendshipRepository;
 use App\State\FriendshipPatchProcessor;
 use App\State\FriendshipPostProcessor;
+use App\State\FriendshipProvider;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
@@ -22,6 +23,11 @@ use Symfony\Component\Serializer\Attribute\Groups;
     operations: [
         new Get(
             security: "is_granted('ROLE_USER') and (object.getSender() == user or object.getReceiver() == user)"
+        ),
+        new Get(
+            uriTemplate: '/friendships/{sender_id}/{receiver_id}',
+            security: "is_granted('ROLE_USER') and (object.getSender() == user or object.getReceiver() == user)",
+            provider: FriendshipProvider::class
         ),
         new GetCollection(
             security: "is_granted('ROLE_USER')",
