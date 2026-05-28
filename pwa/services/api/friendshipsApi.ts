@@ -108,6 +108,36 @@ export function getReceivedFriendRequests(userId: number): Promise<UsersCollecti
     });
 }
 
+export function getFriendshipByUsers(authenticatedUserId: number, userDetailId: number): Promise<Friendship> {
+  const token = localStorage.getItem("jwt_token");
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+  };
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  return fetch(`${API_BASE_URL}${ROUTES_API.FRIENDSHIPS}/${authenticatedUserId}/${userDetailId}`, {
+    headers
+  }).then((response) => {
+    const isAuthenticatedSender = response.ok;
+    if (!isAuthenticatedSender || response.status === 404) {
+      return fetch(`${API_BASE_URL}${ROUTES_API.FRIENDSHIPS}/${userDetailId}/${authenticatedUserId}`, {
+        headers
+      }).then((response) => {
+        if (!response.ok){
+          throw response.status;
+        }
+
+        return response.json();
+      })
+    }
+
+    return response.json();
+  });
+}
+
 export function getFriends(authenticatedUserId: number, urlParameters: URLSearchParams): Promise<UsersCollection> {
   const token = localStorage.getItem("jwt_token");
   const headers: HeadersInit = {
