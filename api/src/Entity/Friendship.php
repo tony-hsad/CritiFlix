@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
@@ -55,6 +56,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
             denormalizationContext: ['groups' => ['friendship:update']],
             security: "is_granted('ROLE_USER') and object.getReceiver() == user",
             processor: FriendshipPatchProcessor::class,
+        ),
+        new Delete(
+            security: "is_granted('ROLE_USER') and (object.getSender() == user or object.getReceiver() == user)",
         ),
     ],
     normalizationContext: ['groups' => ['friendship:read', 'user:read']],

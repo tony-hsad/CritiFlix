@@ -138,6 +138,24 @@ export function getFriendshipByUsers(authenticatedUserId: number, userDetailId: 
   });
 }
 
+export function deleteFriendship(friendshipId: number): Promise<void> {
+  const token = localStorage.getItem("jwt_token");
+  const headers: HeadersInit = {};
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+  return fetch(`${API_BASE_URL}${ROUTES_API.FRIENDSHIPS}/${friendshipId}`, {
+    method: "DELETE",
+    headers
+  })
+    .then((response)=> {
+      if (!response.ok) {
+        throw response.status;
+      }
+    });
+}
+
 export function getFriends(authenticatedUserId: number, urlParameters: URLSearchParams): Promise<UsersCollection> {
   const token = localStorage.getItem("jwt_token");
   const headers: HeadersInit = {
