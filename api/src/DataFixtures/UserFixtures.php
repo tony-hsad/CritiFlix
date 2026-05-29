@@ -18,20 +18,7 @@ class UserFixtures extends Fixture
             'roles' => ['ROLE_ADMIN'],
         ]);
 
-        $users = UserFactory::createMany(150);
-        foreach ($users as $user) {
-            $friendsCount = rand(1, min(5, count($users) - 1));
-            $randomFriends = (array)array_rand($users, $friendsCount);
-
-            foreach ($randomFriends as $index) {
-                $friend = $users[$index];
-
-                if ($user === $friend) {
-                    continue;
-                }
-                $user->addFriend($friend);
-            }
-        }
+        UserFactory::createMany(75);
 
         $manager->flush();
     }
