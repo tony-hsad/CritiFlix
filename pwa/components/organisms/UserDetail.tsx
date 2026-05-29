@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Chip from "../atoms/Chip";
 import Button from "../atoms/Button";
 import H1 from "../atoms/H1";
 import Icon from "../atoms/Icon";
@@ -22,10 +23,9 @@ function UserDetail({ user }: User) {
   useEffect(() => {
     setIsLoading(true);
 
-    getFriendshipByUsers(authenticatedUser.id, user.id)
+    getFriendshipByUsers(authenticatedUser?.id, user?.id)
       .then((data) => {
         setFriendship(data)
-        console.log(friendship);
       })
       .catch((err) => {
         console.error(err);
@@ -34,7 +34,20 @@ function UserDetail({ user }: User) {
         setIsLoading(false);
       });
 
-  }, [authenticatedUser, user]);
+  }, [authenticatedUser?.id, user?.id]);
+
+  const sendRequest = (receiverId: number) => {
+    sendFriendRequest(receiverId).then((updatedFriendship) => {
+      setFriendship(updatedFriendship);
+    });
+  };
+
+  const updateStatus = (friendshipId: number, status: boolean) => {
+    setFriendRequest(friendshipId, status)
+      .then((updatedFriendship) => {
+        setFriendship(updatedFriendship);
+    });
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-8">
@@ -75,48 +88,47 @@ function UserDetail({ user }: User) {
         </p>
 
 
-        {authenticatedUser && authenticatedUser.id !== user.id && !isLoading && (
-          <div className="flex flex-wrap gap-2">
+        {authenticatedUser && authenticatedUser?.id !== user?.id && !isLoading && (
+          <div className="flex flex-row gap-2">
             <Button variant="green" onClick={() => router.push(`mailto:${user.email}`)} Icon={<Icon name="contact" />}>
               Contacter
             </Button>
-            {!friendship || friendship.status === 'rejected' && (
-              <Button Icon={<Icon name="plus" />} onClick={() => sendFriendRequest(user.id)}>
+
+            {!friendship && (
+              <Button Icon={<Icon name="plus" />} onClick={() => sendRequest(user.id)}>
                 Demander en ami
               </Button>
             )}
 
             {friendship && friendship.status === 'pending' && (
-              <>
-                {friendship.sender.id === authenticatedUser.id ? (
-                  <span>
-                    Demande envoyée
-                  </span>
+              <div className="flex flex-row">
+                {friendship?.sender?.id === authenticatedUser?.id ? (
+                  <Chip classname="bg-black inline-flex items-center tracking-wide text-orange-400 shadow-md">
+                    Demande en attente
+                  </Chip>
                 ) : (
-                  <>
-                    <Button variant="green" Icon={<Icon name="friends" />} onClick={() => setFriendRequest(friendship, true)}>
+                  <div className="flex flex-row gap-2">
+                    <Button variant="green" Icon={<Icon name="friends" />} onClick={() => updateStatus(friendship.id, true)}>
                       Accepter la demande
                     </Button>
 
-                    <Button variant="red" Icon={<Icon name="friends" />} onClick={() => setFriendRequest(friendship, false)}>
-                      Refuser la demandde
+                    <Button variant="secondary" Icon={<Icon name="friends" />} onClick={() => updateStatus(friendship.id, false)}>
+                      Refuser la demande
                     </Button>
-                  </>
+                  </div>
                 )}
-              </>
+              </div>
             )}
 
             {friendship && friendship.status === 'accepted' && (
-              <span>
+              <Chip classname="bg-black inline-flex items-center tracking-wide text-orange-400 shadow-md">
                 Vous êtes amis
-              </span>
+              </Chip>
             )}
-
-
           </div>
         )}
 
-        {authenticatedUser && authenticatedUser.id === user.id && (
+        {authenticatedUser && authenticatedUser?.id === user?.id && (
           <div className="flex space-x-2">
             <Button variant="green" Icon={<Icon name="friends" />} onClick={() => router.push(ROUTES.FRIENDS)}>
               Voir mes amis
