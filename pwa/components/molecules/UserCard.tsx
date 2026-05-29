@@ -2,6 +2,8 @@ import Image from "../atoms/Image";
 import type { User } from "@/types/UsersApi";
 
 function UserCard({ user }: User) {
+  const formattedCreatedDate = new Date(user.createdAt).toLocaleDateString("fr-FR");
+
   return (
     <article className="group overflow-hidden rounded-lg bg-orange-100 shadow-lg transition-transform hover:scale-103 hover:shadow-2xl">
       <a href={`/users/${user.id}`} className="flex grow-3 items-center gap-4 p-4">
@@ -23,7 +25,7 @@ function UserCard({ user }: User) {
           </div>
 
           <span className="text-emerald-400 font-bold">
-            {user.email}
+            Existe depuis le : {formattedCreatedDate}
           </span>
         </div>
       </a>
