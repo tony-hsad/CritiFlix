@@ -8,10 +8,14 @@ import Image from "../atoms/Image";
 import Link from "../atoms/Link";
 import type { User } from "@/types/UsersApi";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
-import {getFriendshipByUsers, sendFriendRequest, setFriendRequest} from "../../services/api/friendshipsApi";
+import {getFriendshipByUsers, sendFriendRequest, setFriendRequest, deleteFriendship} from "../../services/api/friendshipsApi";
 import { ROUTES } from "../../routes/routes";
 
-function UserDetail({ user }: User) {
+type UserDetailProps = {
+  user: User;
+};
+
+function UserDetail({ user }: UserDetailProps) {
   const { user: authenticatedUser } = useAuth();
   const userAvatar = user.avatar || "https://t3.ftcdn.net/jpg/06/64/80/00/360_F_664800080_DB9Ed3O11GxDt0gPXtsqajrNDV52V84M.jpg";
   const formattedBirthDate = new Date(user.dateOfBirth).toLocaleDateString("fr-FR");
@@ -40,6 +44,13 @@ function UserDetail({ user }: User) {
     sendFriendRequest(receiverId).then((updatedFriendship) => {
       setFriendship(updatedFriendship);
     });
+  };
+
+  const removeFriendship = (friendshipId: number) => {
+    deleteFriendship(friendshipId)
+      .then(() => {
+        setFriendship(null);
+      });
   };
 
   const updateStatus = (friendshipId: number, status: boolean) => {
@@ -103,16 +114,22 @@ function UserDetail({ user }: User) {
             {friendship && friendship.status === 'pending' && (
               <div className="flex flex-row">
                 {friendship?.sender?.id === authenticatedUser?.id ? (
-                  <Chip classname="bg-black inline-flex items-center tracking-wide text-orange-400 shadow-md">
-                    Demande en attente
-                  </Chip>
+                  <div className="flex flex-row gap-2 items-center">
+                    <Button variant="secondary" Icon={<Icon name="removeFriend" />} onClick={() => removeFriendship(friendship.id)}>
+                      Annuler la demande
+                    </Button>
+
+                    <Chip classname="bg-black inline-flex items-center tracking-wide text-orange-400 shadow-md">
+                      Demande en attente
+                    </Chip>
+                  </div>
                 ) : (
                   <div className="flex flex-row gap-2">
-                    <Button variant="green" Icon={<Icon name="friends" />} onClick={() => updateStatus(friendship.id, true)}>
+                    <Button variant="green" Icon={<Icon name="acceptFriend" />} onClick={() => updateStatus(friendship.id, true)}>
                       Accepter la demande
                     </Button>
 
-                    <Button variant="secondary" Icon={<Icon name="friends" />} onClick={() => updateStatus(friendship.id, false)}>
+                    <Button variant="secondary" Icon={<Icon name="removeFriend" />} onClick={() => updateStatus(friendship.id, false)}>
                       Refuser la demande
                     </Button>
                   </div>
@@ -121,9 +138,15 @@ function UserDetail({ user }: User) {
             )}
 
             {friendship && friendship.status === 'accepted' && (
-              <Chip classname="bg-black inline-flex items-center tracking-wide text-orange-400 shadow-md">
-                Vous êtes amis
-              </Chip>
+              <div className="flex flex-row gap-2 items-center">
+                <Button variant="secondary" Icon={<Icon name="removeFriend" />} onClick={() => removeFriendship(friendship.id)}>
+                  Retirer des amis
+                </Button>
+
+                <Chip classname="bg-black inline-flex items-center tracking-wide text-orange-400 shadow-md">
+                  Vous êtes amis
+                </Chip>
+              </div>
             )}
           </div>
         )}
