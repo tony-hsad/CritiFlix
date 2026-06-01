@@ -22,7 +22,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: ['groups' => ['content:read', 'content:collection:read']]
         ),
         new Post(
-            uriTemplate: '/api/contents',
             normalizationContext: ['groups' => ['content:read']],
             denormalizationContext: ['groups' => ['content:write']],
             security: "is_granted('ROLE_USER')",
