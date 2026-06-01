@@ -1,4 +1,5 @@
 import { Content, ContentsCollection } from "@/types/molecules";
+import {User, UsersCollection} from "@/types/UsersApi";
 
 export type APIPlatformListResponse<T> = {
   "@context": string;
@@ -85,4 +86,8 @@ abstract class APIPlatformClient<T, TC> extends HTTPClient {
 
 export class ContentClient extends APIPlatformClient<Content, ContentsCollection> {
   protected resource = 'contents';
+}
+
+export class UserClient extends APIPlatformClient<User, UsersCollection> {
+  protected resource = 'users';
 }

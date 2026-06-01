@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import paginationFromCollectionView from "../services/transformers/paginationFromCollectionView";
 import type { UsersCollection } from "@/types/UsersApi";
+import type { APIPlatformListResponse } from "../services/api/client";
 
-function usePaginatedUsers(promise: Promise<UsersCollection>) {
+function usePaginatedUsers(promise: Promise<APIPlatformListResponse<UsersCollection>>) {
   const [currentPromise, setCurrentPromise] = useState(promise);
   const [usersData, setUsersData] = useState([]);
   const [pagination, setPagination] = useState(null);
@@ -24,7 +25,7 @@ function usePaginatedUsers(promise: Promise<UsersCollection>) {
       });
   }, [currentPromise]);
 
-  function changePromise(newPromise: Promise<UsersCollection>) {
+  function changePromise(newPromise: Promise<APIPlatformListResponse<UsersCollection>>) {
     setCurrentPromise(newPromise);
   }
 
