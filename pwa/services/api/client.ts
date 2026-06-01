@@ -1,6 +1,6 @@
 import { Content, ContentsCollection } from "@/types/molecules";
 
-type APIPlatformListResponse<T> = {
+export type APIPlatformListResponse<T> = {
   "@context": string;
   member: ReadonlyArray<T>;
 }
@@ -34,9 +34,9 @@ class HTTPClient {
   }
 }
 
-abstract class APIPlatformClient<T> extends HTTPClient {
+abstract class APIPlatformClient<T, TC> extends HTTPClient {
   private baseURL: string;
-  protected resource: string;
+  protected abstract resource: string;
 
   constructor() {
     super();
@@ -57,16 +57,21 @@ abstract class APIPlatformClient<T> extends HTTPClient {
     return headers;
   }
 
-  getList(urlParameters?: URLSearchParams | null): Promise<APIPlatformListResponse<T>> {
+  getList(urlParameters?: URLSearchParams | null): Promise<APIPlatformListResponse<TC>> {
     return this.get(`${this.baseURL}/${this.resource}?${urlParameters?.toString()}`, this.getCommonHeaders()).then((response) => response);
   }
 
-  getItem(id: number) {
+  getItem(id: number): Promise<APIPlatformListResponse<T>> {
     return this.get(`${this.baseURL}/${this.resource}/${id}`, this.getCommonHeaders()).then((response) => response);
   }
 
-  create(body: any) {
-    return this.post(`${this.baseURL}/${this.resource}`, this.getCommonHeaders(), body).then((response) => response);
+  create(body: any): Promise<APIPlatformListResponse<T>> {
+    const headers: Record<string, string> = {
+      ...this.getCommonHeaders(),
+      "Content-Type": "application/ld+json"
+    }
+
+    return this.post(`${this.baseURL}/api/${this.resource}`, headers, body).then((response) => response);
   }
 
   update(id: number, body: any) {
@@ -78,6 +83,6 @@ abstract class APIPlatformClient<T> extends HTTPClient {
   }
 }
 
-export class ContentClient extends APIPlatformClient<Content | ContentsCollection> {
+export class ContentClient extends APIPlatformClient<Content, ContentsCollection> {
   protected resource = 'contents';
 }
