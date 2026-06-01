@@ -3,6 +3,8 @@ import Icon from "../atoms/Icon";
 import type { PaginationProps, PaginationType} from "@/types/Pagination";
 
 function Pagination({ pagination, onChangePage }: PaginationProps) {
+  if (!pagination) return null;
+
   function getMorePaginationButtons(pagination: PaginationType) {
     const additionalPagesAmount = 2;
     const leftCurrent = pagination.current - additionalPagesAmount;

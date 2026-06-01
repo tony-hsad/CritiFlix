@@ -51,7 +51,7 @@ function MovieList() {
         ))}
       </div>
 
-      <Pagination pagination={pagination} onChangePage={updatePageNumber} />
+      {pagination && <Pagination pagination={pagination} onChangePage={updatePageNumber} />}
     </section>
   );
 }
