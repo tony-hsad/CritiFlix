@@ -1,5 +1,7 @@
 import { Content, ContentsCollection } from "@/types/molecules";
 import {User, UsersCollection} from "@/types/UsersApi";
+import { Friendship, FriendshipsCollection } from "@/types/FriendshipsApi";
+import { API_BASE_URL } from "./authApi";
 
 export type APIPlatformListResponse<T> = {
   "@context": string;
@@ -19,15 +21,33 @@ class HTTPClient {
   }
 
   get(url: string, headers: Record<string, string>) {
-    return this.fetch(url, "GET", headers).then((response) => response.json());
+    return this.fetch(url, "GET", headers)
+      .then((response) => {
+        if (!response.ok) {
+          throw response.status;
+        }
+        return response.json();
+    });
   }
 
   post(url: string, headers: Record<string, string>, body?: BodyInit | null) {
-    return this.fetch(url, "POST", headers, body).then((response) => response.json());
+    return this.fetch(url, "POST", headers, body)
+      .then((response) => {
+        if (!response.ok) {
+          throw response.status;
+        }
+        return response.json();
+    });
   }
 
   patch(url: string, headers: Record<string, string>, body?: BodyInit | null) {
-    return this.fetch(url, "PATCH", headers, body).then((response) => response.json());
+    return this.fetch(url, "PATCH", headers, body)
+      .then((response) => {
+        if (!response.ok) {
+          throw response.status;
+        }
+        return response.json();
+    });
   }
 
   delete(url: string, headers: Record<string, string>) {
@@ -72,11 +92,15 @@ abstract class APIPlatformClient<T, TC> extends HTTPClient {
       "Content-Type": "application/ld+json"
     }
 
-    return this.post(`${this.baseURL}/api/${this.resource}`, headers, body).then((response) => response);
+    return this.post(`${this.baseURL}/${this.resource}`, headers, body).then((response) => response);
   }
 
   update(id: number, body: any) {
-    return this.patch(`${this.baseURL}/${this.resource}/${id}`, this.getCommonHeaders(), body).then((response) => response);
+    const headers: Record<string, string> = {
+      ...this.getCommonHeaders(),
+      "Content-Type": "application/merge-patch+json"
+    }
+    return this.patch(`${this.baseURL}/${this.resource}/${id}`, headers, body).then((response) => response);
   }
 
   remove(id: number) {
@@ -90,4 +114,13 @@ export class ContentClient extends APIPlatformClient<Content, ContentsCollection
 
 export class UserClient extends APIPlatformClient<User, UsersCollection> {
   protected resource = 'users';
+}
+
+export class FriendshipClient extends APIPlatformClient<Friendship, FriendshipsCollection> {
+  protected resource = 'friendships';
+
+  getUsersFrienship(authenticatedUserId: number, userDetailId: number): Promise<APIPlatformListResponse<Friendship>> {
+    const url = `${API_BASE_URL}/${this.resource}/${authenticatedUserId}/${userDetailId}`;
+    return this.get(url, this.getCommonHeaders());
+  }
 }
