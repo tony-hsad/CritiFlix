@@ -6,11 +6,12 @@ import MovieDetail from "../../components/organisms/MovieDetail";
 import { getContentById } from "../../services/api/contentsApi";
 import { ROUTES } from "../../routes/routes";
 import {Mercure} from "../../services/realtime/mercure";
+import {Content} from "@/types/molecules";
 
 export default function MoviePage() {
   const router = useRouter();
   const { id } = router.query;
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState<Content>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,7 +19,7 @@ export default function MoviePage() {
       return
     }
 
-    const es = Mercure.subscribe('home', `/contents/${id}`, (message) => setContent(message.data))
+    const es = Mercure.subscribe('home', `/contents/${id}`, (message) => setContent(message.data as Content))
 
     console.log(es)
     return () => es.close()
@@ -27,7 +28,7 @@ export default function MoviePage() {
   useEffect(() => {
     if (!id) return;
 
-    getContentById(id)
+    getContentById(id.toString())
       .then((data) => {
         if (!data?.id) {
           router.push(ROUTES.HOME);
@@ -56,7 +57,7 @@ export default function MoviePage() {
 
   return (
     <HomeTemplate>
-      {content && <MovieDetail content={content} />}
+      {content && <MovieDetail {...content} />}
     </HomeTemplate>
   );
 }

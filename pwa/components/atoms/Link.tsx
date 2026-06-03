@@ -4,11 +4,10 @@ type LinkProps = {
   to: string;
   target?: string;
   classname?: string;
-  content?: string;
-}
+} & (React.PropsWithChildren<{}> | { content: string })
 
-function Link({ to, target = '_blank', classname = '', content = '' }: LinkProps) {
-  return <NextLink className={classname} href={to} target={target}>{content}</NextLink>;
+function Link({ to, target = '', classname = '', children, ...rest }: React.PropsWithChildren<LinkProps>) {
+  return <NextLink className={classname} href={to} target={target}>{children || ('content' in rest && rest['content'])}</NextLink>;
 }
 
 export default Link;

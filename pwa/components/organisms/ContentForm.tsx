@@ -3,10 +3,8 @@ import { useRouter } from "next/router";
 import { ROUTES } from "../../routes/routes";
 import Button from "../atoms/Button";
 import H1 from "../atoms/H1";
-import Icon from "../atoms/Icon";
 import InputField from "../molecules/InputField";
 import { createContent } from "../../services/api/contentsApi";
-import {Content} from "@/types/molecules";
 
 function ContentForm() {
   const router = useRouter();
@@ -30,7 +28,7 @@ function ContentForm() {
       poster: formData.get("poster"),
     };
 
-    createContent({content: contentData as Content['content']})
+    createContent({content: contentData})
       .then(() => {
         router.push(ROUTES.HOME);
       })
@@ -109,7 +107,7 @@ function ContentForm() {
       <Button
         type="submit"
         variant="green"
-        Icon={loading ? <Icon name="loading" className="animate-spin" /> : <Icon name="plus" />}
+        icon={loading ? { name: 'loading', className: 'animate-spin' } : { name: 'plus' }}
         disabled={loading}
       >
         {loading ? "Chargement..." : "Proposer votre contenu aux utilisateurs"}

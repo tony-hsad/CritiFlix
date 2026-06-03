@@ -12,8 +12,8 @@ WORKDIR /srv/app
 
 RUN npm install -g corepack@latest && \
     corepack enable && \
-	corepack prepare --activate pnpm@latest && \
-	pnpm config -g set store-dir /.pnpm-store
+	corepack prepare --activate pnpm@latest
+#	pnpm config -g set store-dir /.pnpm-store
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry

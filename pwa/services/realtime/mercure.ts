@@ -12,7 +12,7 @@ type AppMessage = Omit<IncomeMessage, 'data'> & {
 }
 
 export class Mercure {
-  static subscribed: Record<string, EventSourceInit> = {};
+  static subscribed: Record<string, EventSource> = {};
 
   static subscribe(id: string, topic: string, callback: (message: AppMessage) => void) {
     if (!this.subscribed[id]) {

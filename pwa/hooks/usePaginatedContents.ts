@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import paginationFromCollectionView from "../services/transformers/paginationFromCollectionView";
-import type {Content, ContentsCollection} from "@/types/molecules";
+import type {Content} from "@/types/molecules";
 import type {APIPlatformListResponse} from "../services/api/client";
 import {PaginationType} from "@/types/Pagination";
 

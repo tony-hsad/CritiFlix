@@ -57,7 +57,7 @@ class HTTPClient {
   }
 }
 
-abstract class APIPlatformClient<T, TC> extends HTTPClient {
+abstract class APIPlatformClient<T> extends HTTPClient {
   private baseURL: string;
   protected abstract resource: string;
 
@@ -80,21 +80,21 @@ abstract class APIPlatformClient<T, TC> extends HTTPClient {
     return headers;
   }
 
-  getList(urlParameters?: URLSearchParams | null): Promise<APIPlatformListResponse<TC>> {
+  getList(urlParameters?: URLSearchParams | null): Promise<APIPlatformListResponse<T>> {
     return this.get(`${this.baseURL}/${this.resource}?${urlParameters?.toString()}`, this.getCommonHeaders()).then((response) => response);
   }
 
-  getItem(id: number): Promise<APIPlatformListResponse<T>> {
+  getItem(id: string): Promise<T> {
     return this.get(`${this.baseURL}/${this.resource}/${id}`, this.getCommonHeaders()).then((response) => response);
   }
 
-  create(body: any): Promise<APIPlatformListResponse<T>> {
+  create(body: any): Promise<T> {
     const headers: Record<string, string> = {
       ...this.getCommonHeaders(),
       "Content-Type": "application/ld+json"
     }
 
-    return this.post(`${this.baseURL}/${this.resource}`, headers, body).then((response) => response);
+    return this.post(`${this.baseURL}/${this.resource}`, headers, JSON.stringify(body)).then((response) => response);
   }
 
   update(id: number, body: any) {
@@ -110,19 +110,18 @@ abstract class APIPlatformClient<T, TC> extends HTTPClient {
   }
 }
 
-export class ContentClient extends APIPlatformClient<Content, ContentsCollection> {
+export class ContentClient extends APIPlatformClient<Content> {
   protected resource = 'contents';
 }
 
-export class UserClient extends APIPlatformClient<User, UsersCollection> {
+export class UserClient extends APIPlatformClient<User> {
   protected resource = 'users';
 }
 
-export class FriendshipClient extends APIPlatformClient<Friendship, FriendshipsCollection> {
+export class FriendshipClient extends APIPlatformClient<Friendship> {
   protected resource = 'friendships';
 
   getUsersFrienship(authenticatedUserId: number, userDetailId: number): Promise<APIPlatformListResponse<Friendship>> {
-    const url = `${API_BASE_URL}/${this.resource}/${authenticatedUserId}/${userDetailId}`;
-    return this.get(url, this.getCommonHeaders());
+    return this.get(`${API_BASE_URL}/${this.resource}/${authenticatedUserId}/${userDetailId}`, this.getCommonHeaders());
   }
 }

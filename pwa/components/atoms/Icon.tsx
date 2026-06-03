@@ -55,7 +55,7 @@ const SIZES = {
   large: 32,
 }
 
-type IconProps = {
+export type IconProps = {
   name: AllowedIcons;
   size?: keyof typeof SIZES;
   className?: string;
