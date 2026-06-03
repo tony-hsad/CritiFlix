@@ -1,3 +1,5 @@
+import { default as NextLink } from "next/link";
+
 type LinkProps = {
   to: string;
   target?: string;
@@ -6,7 +8,7 @@ type LinkProps = {
 }
 
 function Link({ to, target = '_blank', classname = '', content = '' }: LinkProps) {
-  return <a className={classname} href={to} target={target}>{content}</a>;
+  return <NextLink className={classname} href={to} target={target}>{content}</NextLink>;
 }
 
 export default Link;

@@ -14,6 +14,7 @@ function usePaginatedUsers(promise: Promise<APIPlatformListResponse<UsersCollect
     // setIsLoading(true);
 
     currentPromise.then((data: UsersCollection) => {
+      console.log('one')
       setUsersData(data["member"]);
       setPagination(paginationFromCollectionView(data.view));
     })
@@ -21,6 +22,7 @@ function usePaginatedUsers(promise: Promise<APIPlatformListResponse<UsersCollect
         setError(err.message);
       })
       .finally(() => {
+        console.log('passed')
         setIsLoading(false);
       });
   }, [currentPromise]);

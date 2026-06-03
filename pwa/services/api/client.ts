@@ -2,10 +2,12 @@ import { Content, ContentsCollection } from "@/types/molecules";
 import {User, UsersCollection} from "@/types/UsersApi";
 import { Friendship, FriendshipsCollection } from "@/types/FriendshipsApi";
 import { API_BASE_URL } from "./authApi";
+import type {CollectionView} from "@/types/Api";
 
 export type APIPlatformListResponse<T> = {
   "@context": string;
   member: ReadonlyArray<T>;
+  view: CollectionView;
 }
 
 class HTTPClient {
