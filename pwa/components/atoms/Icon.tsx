@@ -61,7 +61,7 @@ type IconProps = {
   className?: string;
 }
 
-function Icon({ name, size, className }: IconProps): React.FC<IconProps> {
+function Icon({ name, size, className }: IconProps) {
   const DynamicIcon = mapNameToIcon(name);
   return <DynamicIcon size={size ? SIZES[size] : SIZES.small} className={className} />;
 }

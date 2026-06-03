@@ -15,9 +15,9 @@ function paginationFromCollectionView(view: CollectionView): PaginationType | un
     return undefined;
   }
 
-  const current = getPageNumber(view["@id"]);
-  const first = getPageNumber(view.first);
-  const last = getPageNumber(view.last);
+  const current = getPageNumber(view["@id"]) ?? 1;
+  const first = getPageNumber(view.first) ?? 1;
+  const last = getPageNumber(view.last) ?? 1;
 
   const pagination: PaginationType  = {
     current,
