@@ -11,8 +11,6 @@ type ContentProps = ApiResourceBase & {
   type?: string | null;
 };
 
-export type Content = {
-  content: ContentProps;
-};
+export type Content = ContentProps;
 
 export type ContentsCollection = Collection<Content>;

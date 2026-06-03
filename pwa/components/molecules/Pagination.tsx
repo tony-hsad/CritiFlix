@@ -1,13 +1,36 @@
 import Button from "../atoms/Button";
-import { ArrowLeftToLine, ArrowRightFromLine } from "lucide-react";
+import Icon from "../atoms/Icon";
 import type { PaginationProps, PaginationType} from "@/types/Pagination";
 
+function test({ pagination, onChangePage }: PaginationProps): ReadonlyArray<{label: string, value: string}> {
+  if (!pagination) {
+    return [];
+  }
+
+  const myArr = [
+    { label: 'first', value: pagination.first && `/films/${pagination.first}` },
+    { label: pagination.previous, value: pagination.previous && `/films/${pagination.previous}` },
+    { label: pagination.current, value: pagination.current && `#` },
+    { label: pagination.next, value: pagination.next && `/films/${pagination.next}` },
+    { label: 'last', value: pagination.last && `/films/${pagination.last}` },
+  ]
+
+  console.log('pagination', pagination)
+
+  return []
+}
+
 function Pagination({ pagination, onChangePage }: PaginationProps) {
+  if (!pagination) {
+    return null;
+  }
+
   function getMorePaginationButtons(pagination: PaginationType) {
     const additionalPagesAmount = 2;
     const leftCurrent = pagination.current - additionalPagesAmount;
     const rightCurrent = pagination.current + additionalPagesAmount;
 
+    // first, 2 (current), 3, 4, ..., last
     const pages = [];
     for (let p = leftCurrent; p <= rightCurrent; p++) {
       const isPageBetweenBoundaries = p > pagination.first && p < pagination.last;
@@ -26,7 +49,7 @@ function Pagination({ pagination, onChangePage }: PaginationProps) {
         onClick={() => onChangePage(pagination.first)}
         variant="secondary"
       >
-        <ArrowLeftToLine size={16} />
+        <Icon name="arrowLeft" />
         <span className="pl-2">{pagination.first}</span>
       </Button>
 
@@ -45,7 +68,7 @@ function Pagination({ pagination, onChangePage }: PaginationProps) {
         onClick={() => onChangePage(pagination.last)}
         variant="secondary"
       >
-        <ArrowRightFromLine size={16} />
+        <Icon name="arrowRight" />
         <span className="pl-2">{pagination.last}</span>
       </Button>
     </div>

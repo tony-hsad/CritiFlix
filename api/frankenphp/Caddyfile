@@ -45,6 +45,8 @@
 		subscriptions
 		# Extra directives
 		{$MERCURE_EXTRA_DIRECTIVES}
+
+		demo
 	}
 
 	vulcain

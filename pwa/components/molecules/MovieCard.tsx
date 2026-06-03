@@ -1,14 +1,15 @@
 import Chip from "../atoms/Chip";
 import Image from "../atoms/Image";
-import type { Content } from "@types/molecules";
+import Link from "../atoms/Link";
+import {Content} from "@/types/molecules";
 
-function MovieCard({ content }: Content) {
+function MovieCard(content: Content) {
   const moviePoster = content.poster || "https://t3.ftcdn.net/jpg/06/64/80/00/360_F_664800080_DB9Ed3O11GxDt0gPXtsqajrNDV52V84M.jpg";
   const formattedDate = content.releaseDate ? new Date(content.releaseDate).toLocaleDateString("fr-FR") : null;
 
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-lg bg-gray-900 shadow-lg transition-transform hover:scale-105 hover:shadow-2xl">
-      <a href={`/contents/${content.id}`}>
+      <Link to={`/contents/${content.id}`}>
         <div className="relative aspect-[2/3] w-full overflow-hidden bg-gray-800">
 
           <Image
@@ -32,7 +33,7 @@ function MovieCard({ content }: Content) {
           </div>
 
         </div>
-      </a>
+      </Link>
 
       <div className="flex flex-1 flex-col p-3">
         <h3 className="mb-1 line-clamp-1 text-sm font-bold text-white">

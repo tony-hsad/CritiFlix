@@ -1,8 +1,8 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
-import { LogIn, LogOut } from "lucide-react";
 import Button from "../atoms/Button";
+import Icon from "../atoms/Icon";
 import { ROUTES } from "../../routes/routes";
 
 function NavActions() {
@@ -28,7 +28,7 @@ function NavActions() {
         <span className="text-sm text-white pr-2">
           {user.firstname} {user.lastname}
         </span>
-        <Button variant="secondary" onClick={handleLogout} icon={<LogOut size={16} />}>
+        <Button variant="secondary" onClick={handleLogout} Icon={<Icon name="logout" />}>
           Se déconnecter
         </Button>
       </div>
@@ -37,10 +37,10 @@ function NavActions() {
 
   return (
     <div className="flex items-center gap-2">
-      <Button variant="primary" onClick={() => router.push(ROUTES.LOGIN)} icon={<LogIn size={16} />}>
+      <Button variant="primary" onClick={() => router.push(ROUTES.LOGIN)} Icon={<Icon name="login" />}>
         Se connecter
       </Button>
-      <Button variant="primary" onClick={() => router.push(ROUTES.REGISTER)} icon={<LogIn size={16} />}>
+      <Button variant="primary" onClick={() => router.push(ROUTES.REGISTER)} Icon={<Icon name="login" />}>
         S'inscrire
       </Button>
     </div>

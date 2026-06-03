@@ -1,19 +1,16 @@
-import type { ApiResourceBase } from "@/types/Api";
+import type { ApiResourceBase, Collection } from "@/types/Api";
 
-type UserBase = ApiResourceBase & {
+export type User = ApiResourceBase & {
   id: number;
   email: string;
   firstname: string;
   lastname: string;
   dateOfBirth: string;
   createdAt: string;
-};
-
-type UserProps = UserBase & {
+  avatar?: string | null;
   interactions?: ReadonlyArray<string> | null;
-  friends?: ReadonlyArray<UserBase> | null;
+  sentFriendRequests?: ReadonlyArray<User> | null;
+  receivedFriendRequests?: ReadonlyArray<User> | null;
 };
 
-export type User = UserProps & {
-  user: UserProps;
-};
+export type UsersCollection = Collection<User>;

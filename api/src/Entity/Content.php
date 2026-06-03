@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\ContentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,14 +23,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: ['groups' => ['content:read', 'content:collection:read']]
         ),
         new Post(
-            uriTemplate: '/api/contents',
             normalizationContext: ['groups' => ['content:read']],
             denormalizationContext: ['groups' => ['content:write']],
             security: "is_granted('ROLE_USER')",
             validationContext: ['groups' => ['content:write']],
         ),
+        new Put(
+            denormalizationContext: ['groups' => ['content:write']],
+        ),
     ],
-    normalizationContext: ['groups' => ['content:read']]
+    normalizationContext: ['groups' => ['content:read']],
+    mercure: true,
 )]
 #[ORM\Entity(repositoryClass: ContentRepository::class)]
 class Content
@@ -45,7 +49,7 @@ class Content
     private ?string $title = null;
 
     #[ORM\Column(length: 500, nullable: true)]
-    #[Groups(['content:read', 'content:item:read', 'content:write'])]
+    #[Groups(['content:read', 'content:write'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -57,7 +61,7 @@ class Content
     private ?int $entrances = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['content:read', 'content:item:read', 'content:write'])]
+    #[Groups(['content:read', 'content:write'])]
     private ?string $poster = null;
 
     #[ORM\Column]

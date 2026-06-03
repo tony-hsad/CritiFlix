@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import Icon from "../atoms/Icon";
 import MovieCard from "../molecules/MovieCard";
 import Pagination from "../molecules/Pagination";
 import { getContents } from "../../services/api/contentsApi";
 import usePaginatedContents from "../../hooks/usePaginatedContents";
-import { LoaderCircle } from "lucide-react";
 import { useSearch } from "../../contexts/providers/SearchContextProvider";
 
 function MovieList() {
@@ -18,7 +18,7 @@ function MovieList() {
   if (isLoading) {
     return (
       <p className="flex items-center justify-center gap-2 text-gray-400 py-12">
-        <LoaderCircle size={16} className="animate-spin" />
+        <Icon name="loading" className="animate-spin" />
         Chargement...
       </p>
     );
@@ -47,11 +47,11 @@ function MovieList() {
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         {filteredContents.map((content) => (
-          <MovieCard key={content.id} content={content} />
+          <MovieCard key={content.id} {...content} />
         ))}
       </div>
 
-      <Pagination pagination={pagination} onChangePage={updatePageNumber} />
+      {pagination && <Pagination pagination={pagination} onChangePage={updatePageNumber} />}
     </section>
   );
 }

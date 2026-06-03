@@ -9,9 +9,7 @@ function Navbar() {
     <header className="sticky top-0 z-50 bg-black/95 backdrop-blur border-b border-gray-800">
       <nav className="relative flex items-center gap-6 px-10 py-4">
         <div className="flex-shrink-0">
-          <Link classname="text-2xl font-bold text-red-600 tracking-tight" content="CritiFlix" to={`https://localhost${ROUTES.HOME}`} target="_self">
-            <Logo content="" />
-          </Link>
+          <Link classname="text-2xl font-bold text-red-600 tracking-tight" content="CritiFlix" to={`https://localhost${ROUTES.HOME}`} target="_self" />
         </div>
 
         <div className="flex flex-1 justify-center">
@@ -19,9 +17,13 @@ function Navbar() {
         </div>
 
         <div className="flex-shrink-0">
-          <ul>
+          <ul className="flex space-x-1">
             <li>
-              <span><Link classname="text-white" to={`https://localhost${ROUTES.CREATE}`} content="Proposer un film" /></span>
+              <span><Link classname="text-white" to={`https://localhost${ROUTES.CREATE}`} content="Proposer un film" target="_self" /></span>
+            </li>
+
+            <li>
+              <span><Link classname="text-white" to={`https://localhost${ROUTES.USERS}`} content="Voir les utilisateurs" target="_self" /></span>
             </li>
           </ul>
         </div>

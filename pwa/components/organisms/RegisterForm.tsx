@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
 import { ROUTES } from "../../routes/routes";
-import { LogIn, LoaderCircle } from "lucide-react";
+import Icon from "../atoms/Icon";
 import Button from "../atoms/Button";
 import H1 from "../atoms/H1";
 import InputField from "../molecules/InputField";
@@ -107,7 +107,7 @@ function RegisterForm() {
 
       <Button
         type="submit"
-        icon={loading ? <LoaderCircle size={16} className="animate-spin" /> : <LogIn size={16} />}
+        Icon={loading ? <Icon name="loading" className="animate-spin" /> : <Icon name="login" />}
         disabled={loading}
       >
         {loading ? "Chargement..." : "S'inscrire"}

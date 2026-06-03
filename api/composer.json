@@ -47,6 +47,9 @@
         "zenstruck/foundry": "^2.9"
     },
     "config": {
+        "audit": {
+            "block-insecure": false
+        },
         "optimize-autoloader": true,
         "preferred-install": {
             "*": "dist"
