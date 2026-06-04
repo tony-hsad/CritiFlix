@@ -1,12 +1,14 @@
 import React, {createContext, PropsWithChildren, useContext, useEffect, useState} from "react";
-import { login, getMe, logout, register } from "../../services/api/authApi";
+import {login, getMe, logout, register, registerType} from "../../services/api/authApi";
 import {User} from "@/types/UsersApi";
+
+type registerUserSignature = (u: registerType) => Promise<void>
 
 type authContext = {
   loading: boolean;
   loginUser: (u: string, p: string) => Promise<void>;
   logoutUser: () => void;
-  registerUser: (u: User & { password: string }) => Promise<void>;
+  registerUser: registerUserSignature;
   resolved: boolean;
   user?: User;
 }
@@ -68,7 +70,7 @@ function AuthContextProvider({ children }: PropsWithChildren) {
     setUser(undefined);
   };
 
-  const registerUser = (userData: User & { password: string }) => {
+  const registerUser: registerUserSignature = (userData) => {
     return register(userData)
       .then(() => loginUser(userData.email, userData.password))
       .catch((error) => {
