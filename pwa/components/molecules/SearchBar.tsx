@@ -1,11 +1,11 @@
-import React from "react";
+import React, {ChangeEventHandler} from "react";
 import { useSearch } from "../../contexts/providers/SearchContextProvider";
 import Icon from "../atoms/Icon";
 import Input from "../atoms/Input";
 
 function SearchBar() {
   const { search, setSearch } = useSearch();
-  const handleChange = (e) => {
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setSearch(e.target.value);
   };
 
@@ -16,7 +16,7 @@ function SearchBar() {
       <Input
         value={search}
         onChange={handleChange}
-        classname="w-full pl-11 px-4 py-2 rounded-md bg-gray-800 text-gray-100 placeholder-gray-400 border border-gray-700 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600"
+        className="w-full pl-11 px-4 py-2 rounded-md bg-gray-800 text-gray-100 placeholder-gray-400 border border-gray-700 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600"
         placeholder="Rechercher un film, une série, un documentaire..."
       />
     </div>

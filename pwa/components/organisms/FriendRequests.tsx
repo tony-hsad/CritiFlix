@@ -61,7 +61,7 @@ function FriendRequests() {
   return (
     <div className="flex flex-row md:flex-row gap-8 justify-around">
       <div className="flex flex-col gap-4">
-        <H1 classname="text-3xl font-bold mb-4" content={`Demandes envoyées`} />
+        <H1 className="text-3xl font-bold mb-4" content={`Demandes envoyées`} />
 
         {!usersRequested.length ? (
           <p className="text-center text-gray-400 py-12">Vous n&apos;avez envoyé aucune demande d&apos;amis</p>
@@ -73,7 +73,7 @@ function FriendRequests() {
       </div>
 
       <div className="flex flex-col gap-4">
-        <H1 classname="text-3xl font-bold mb-4" content={`Demandes reçues`} />
+        <H1 className="text-3xl font-bold mb-4" content={`Demandes reçues`} />
 
         {!usersReceived.length ? (
           <p className="text-center text-gray-400 py-12">Vous n&apos;avez reçue aucune demande d&apos;amis</p>

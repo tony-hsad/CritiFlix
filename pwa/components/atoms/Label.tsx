@@ -1,13 +1,12 @@
 import React from "react";
 
 type LabelProps = {
-  children: React.ReactNode;
-  classname?: string;
+  className?: string;
 }
 
-function Label({ children, classname = "flex flex-col gap-1"}: LabelProps) {
+function Label({ children, className = "flex flex-col gap-1"}: React.PropsWithChildren<LabelProps>) {
   return (
-    <label className={classname}>
+    <label className={className}>
       {children}
     </label>
   );

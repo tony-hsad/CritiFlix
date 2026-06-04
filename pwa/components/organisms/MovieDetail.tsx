@@ -11,14 +11,14 @@ function MovieDetail(content: Content) {
     <div className="flex flex-col md:flex-row gap-8">
       <div className="w-full md:w-1/3">
         <Image
-          classname="rounded-lg"
+          className="rounded-lg"
           src={moviePoster}
           alt={content.title}
         />
       </div>
 
       <div className="flex-1">
-        <H1 classname="text-3xl font-bold mb-4" content={content.title} />
+        <H1 className="text-3xl font-bold mb-4" content={content.title} />
         {content.type && <p className="text-sm text-red-500 mb-2">{content.type}</p>}
 
         {formattedDate && (

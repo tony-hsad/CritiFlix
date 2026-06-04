@@ -52,7 +52,7 @@ function RegisterForm() {
       className="mx-auto flex w-full max-w-1/2 flex-col gap-4 rounded-lg bg-gray-900 p-6 shadow-lg"
     >
       {error && <p className="text-red-500">{error}</p>}
-      <H1 classname="mb-2 text-2xl font-bold text-white" content="Inscription" />
+      <H1 className="mb-2 text-2xl font-bold text-white" content="Inscription" />
       <div className="flex gap-4">
         <div className="w-1/2">
           <InputField

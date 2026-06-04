@@ -14,7 +14,7 @@ type InputFieldProps = {
 
 function InputField({ label, onChange, required, type = "text", defaultValue = "", placeholder = "", name = "" }: InputFieldProps) {
   return (
-    <Label classname="flex flex-col gap-1">
+    <Label className="flex flex-col gap-1">
       <span className="text-sm font-medium text-gray-300">{label}</span>
 
       <Input
@@ -24,7 +24,7 @@ function InputField({ label, onChange, required, type = "text", defaultValue = "
         placeholder={placeholder}
         onChange={onChange}
         required={required}
-        classname="rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+        className="rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
       />
     </Label>
   );

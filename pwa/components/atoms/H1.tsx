@@ -2,13 +2,13 @@ import React from "react";
 
 type H1Props = {
   content: string;
-  classname?: string;
+  className?: string;
 
 }
 
-function H1({ content, classname = '' }: H1Props) {
+function H1({ content, className = '' }: H1Props) {
   return (
-    <h1 className={classname}>
+    <h1 className={className}>
       {content}
     </h1>
   );

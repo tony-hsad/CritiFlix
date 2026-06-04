@@ -1,13 +1,12 @@
 import React from "react";
 
 type ChipProps = {
-  children: React.ReactNode;
-  classname?: string;
+  className?: string;
 }
 
-function Chip({ children,  classname = "" }: ChipProps) {
+function Chip({ children,  className = "" }: React.PropsWithChildren<ChipProps>) {
   return (
-    <span className={`${classname} rounded-full border text-xs font-bold px-2 py-0.5`}>
+    <span className={`${className} rounded-full border text-xs font-bold px-2 py-0.5`}>
       {children}
     </span>
   );

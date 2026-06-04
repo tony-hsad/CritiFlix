@@ -63,14 +63,14 @@ function UserDetail({ user }: UserDetailProps) {
     <div className="flex flex-col md:flex-row gap-8">
       <div className="w-full md:w-1/3">
         <Image
-          classname="rounded-lg"
+          className="rounded-lg"
           src={userAvatar}
           alt={`Avatar de ${user.firstname} ${user.lastname}`}
         />
       </div>
 
       <div className="flex flex-col gap-3">
-        <H1 classname="text-3xl font-bold mb-4" content={`Informations de ${user.firstname} ${user.lastname}`} />
+        <H1 className="text-3xl font-bold mb-4" content={`Informations de ${user.firstname} ${user.lastname}`} />
 
         <p>
           Prénom :
@@ -84,7 +84,7 @@ function UserDetail({ user }: UserDetailProps) {
 
         <span>
           Email :
-          <Link to={`mailto:${user.email}`} classname="font-bold italic" target="_self" content={` ${user.email}`} />
+          <Link to={`mailto:${user.email}`} className="font-bold italic" target="_self" content={` ${user.email}`} />
         </span>
 
         <p>
@@ -118,7 +118,7 @@ function UserDetail({ user }: UserDetailProps) {
                       Annuler la demande
                     </Button>
 
-                    <Chip classname="bg-black inline-flex items-center tracking-wide text-orange-400 shadow-md">
+                    <Chip className="bg-black inline-flex items-center tracking-wide text-orange-400 shadow-md">
                       Demande en attente
                     </Chip>
                   </div>
@@ -142,7 +142,7 @@ function UserDetail({ user }: UserDetailProps) {
                   Retirer des amis
                 </Button>
 
-                <Chip classname="bg-black inline-flex items-center tracking-wide text-orange-400 shadow-md">
+                <Chip className="bg-black inline-flex items-center tracking-wide text-orange-400 shadow-md">
                   Vous êtes amis
                 </Chip>
               </div>
