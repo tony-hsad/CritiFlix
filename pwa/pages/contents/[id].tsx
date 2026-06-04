@@ -9,8 +9,7 @@ import {Mercure} from "../../services/realtime/mercure";
 import {Content} from "@/types/molecules";
 
 export default function MoviePage() {
-  const router = useRouter();
-  const { id } = router.query;
+  const { push, query: { id } } = useRouter();
   const [content, setContent] = useState<Content>();
   const [loading, setLoading] = useState(true);
 
@@ -21,7 +20,6 @@ export default function MoviePage() {
 
     const es = Mercure.subscribe('home', `/contents/${id}`, (message) => setContent(message.data as Content))
 
-    console.log(es)
     return () => es.close()
   }, [id]);
 
@@ -31,18 +29,18 @@ export default function MoviePage() {
     getContentById(id.toString())
       .then((data) => {
         if (!data?.id) {
-          router.push(ROUTES.HOME);
+          push(ROUTES.HOME);
           return;
         }
         setContent(data);
       })
       .catch(() => {
-        router.push(ROUTES.HOME);
+        push(ROUTES.HOME);
       })
       .finally(() => {
         setLoading(false);
       });
-  }, [id]);
+  }, [id, push]);
 
   if (loading) {
     return (

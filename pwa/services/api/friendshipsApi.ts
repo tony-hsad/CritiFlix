@@ -1,26 +1,20 @@
 import { FriendshipClient } from "./client";
 import type {Friendship, FriendshipsCollection} from "@/types/FriendshipsApi";
-import type { UsersCollection } from "@/types/UsersApi";
+import type {User, UsersCollection} from "@/types/UsersApi";
 import type { APIPlatformListResponse } from "./client";
 import { getUsersFromFriendship } from "../transformers/usersFromFriendship";
 
-export function sendFriendRequest(userReceiverId: number): Promise<APIPlatformListResponse<Friendship>> {
-  const body = JSON.stringify({receiver: `/users/${userReceiverId}`});
-  return new FriendshipClient().create(body);
+export function sendFriendRequest(userReceiverId: string): Promise<Friendship> {
+  return new FriendshipClient().create({receiver: `/users/${userReceiverId}`});
 }
 
-export function setFriendRequest(friendshipId:number, isAccept: boolean): Promise<APIPlatformListResponse<Friendship>> {
-  const body = JSON.stringify({status: isAccept ? "accepted": "rejected"});
-  return new FriendshipClient().update(friendshipId, body);
+export function setFriendRequest(friendshipId: string, status: 'accepted' | 'rejected'): Promise<Friendship> {
+  return new FriendshipClient().update(friendshipId, { status });
 }
 
-export function getSentFriendRequests(userId: number): Promise<any> {
-  const myNewParams = new URLSearchParams();
-  myNewParams.set("sender_id", `${userId}`);
-  myNewParams.set("status", "pending");
-
-  return new FriendshipClient().getList(myNewParams)
-    .then((data: APIPlatformListResponse<FriendshipsCollection>) => {
+export function getSentFriendRequests(userId: string) {
+  return new FriendshipClient().getList(new URLSearchParams({ sender_id: userId, status: 'pending' }))
+    .then((data) => {
       const usersReceived  = data.member.map((friendship: Friendship) => {
         return friendship.receiver;
       });
@@ -28,13 +22,13 @@ export function getSentFriendRequests(userId: number): Promise<any> {
     });
 }
 
-export function getReceivedFriendRequests(userId: number): Promise<any> {
+export function getReceivedFriendRequests(userId: string) {
   const myNewParams = new URLSearchParams();
   myNewParams.set("receiver_id", `${userId}`);
   myNewParams.set("status", "pending");
 
   return new FriendshipClient().getList(myNewParams)
-    .then((data: APIPlatformListResponse<FriendshipsCollection>) => {
+    .then((data: APIPlatformListResponse<Friendship>) => {
       const usersSent = data.member.map((friendship: Friendship) => {
         return friendship.sender;
       });
@@ -42,7 +36,7 @@ export function getReceivedFriendRequests(userId: number): Promise<any> {
     });
 }
 
-export function getFriendshipByUsers(authenticatedUserId: number, userDetailId: number): Promise<APIPlatformListResponse<Friendship>> {
+export function getFriendshipByUsers(authenticatedUserId: string, userDetailId: string): Promise<Friendship> {
   const friendshipClient = new FriendshipClient();
 
   return friendshipClient.getUsersFrienship(authenticatedUserId, userDetailId)
@@ -51,17 +45,14 @@ export function getFriendshipByUsers(authenticatedUserId: number, userDetailId: 
     });
 }
 
-export function deleteFriendship(friendshipId: number) {
+export function deleteFriendship(friendshipId: string) {
   return new FriendshipClient().remove(friendshipId);
 }
 
-export function getFriends(authenticatedUserId: number, urlParameters: URLSearchParams): Promise<APIPlatformListResponse<UsersCollection>> {
-  const myNewParams: URLSearchParams = new URLSearchParams(urlParameters);
-  myNewParams.set("status", "accepted");
-
-  return new FriendshipClient().getList(myNewParams)
-    .then((data: any) => {
-      const friends = getUsersFromFriendship(data, authenticatedUserId);
+export function getFriends(authenticatedUserId: string, urlParameters: URLSearchParams): Promise<APIPlatformListResponse<User>> {
+  return new FriendshipClient().getList(new URLSearchParams({...urlParameters, status: 'accepted'}))
+    .then((data) => {
+      const friends = getUsersFromFriendship(data.member, authenticatedUserId);
       return { ...data, member: friends };
     });
 }

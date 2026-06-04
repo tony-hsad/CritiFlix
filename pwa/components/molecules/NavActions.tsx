@@ -2,7 +2,6 @@ import React from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
 import Button from "../atoms/Button";
-import Icon from "../atoms/Icon";
 import { ROUTES } from "../../routes/routes";
 
 function NavActions() {
@@ -28,7 +27,7 @@ function NavActions() {
         <span className="text-sm text-white pr-2">
           {user.firstname} {user.lastname}
         </span>
-        <Button variant="secondary" onClick={handleLogout} Icon={<Icon name="logout" />}>
+        <Button variant="secondary" onClick={handleLogout} icon={{ name: "logout" }}>
           Se déconnecter
         </Button>
       </div>
@@ -37,11 +36,11 @@ function NavActions() {
 
   return (
     <div className="flex items-center gap-2">
-      <Button variant="primary" onClick={() => router.push(ROUTES.LOGIN)} Icon={<Icon name="login" />}>
+      <Button variant="primary" onClick={() => router.push(ROUTES.LOGIN)} icon={{name: "login"}}>
         Se connecter
       </Button>
-      <Button variant="primary" onClick={() => router.push(ROUTES.REGISTER)} Icon={<Icon name="login" />}>
-        S'inscrire
+      <Button variant="primary" onClick={() => router.push(ROUTES.REGISTER)} icon={{name: "login"}}>
+        S&apos;inscrire
       </Button>
     </div>
   );

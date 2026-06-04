@@ -1,7 +1,7 @@
 import type { ApiResourceBase, Collection } from "@/types/Api";
 
 export type User = ApiResourceBase & {
-  id: number;
+  id: string;
   email: string;
   firstname: string;
   lastname: string;

@@ -4,16 +4,17 @@ import Icon from "../atoms/Icon";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
 import UserCard from "../molecules/UserCard";
 import { getSentFriendRequests, getReceivedFriendRequests } from "../../services/api/friendshipsApi";
+import {User} from "@/types/UsersApi";
 
 function FriendRequests() {
-  const [usersRequested, setUsersRequested] = useState([]);
-  const [usersReceived, setUsersReceived] = useState([]);
+  const [usersRequested, setUsersRequested] = useState<ReadonlyArray<User>>([]);
+  const [usersReceived, setUsersReceived] = useState<ReadonlyArray<User>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const { user: authenticatedUser } = useAuth();
 
   useEffect(() => {
-    getSentFriendRequests(authenticatedUser.id)
+    getSentFriendRequests(authenticatedUser?.id ?? '')
       .then((data) => {
         setIsLoading(true);
         setUsersRequested(data);
@@ -25,7 +26,7 @@ function FriendRequests() {
         setIsLoading(false);
       });
 
-    getReceivedFriendRequests(authenticatedUser.id)
+    getReceivedFriendRequests(authenticatedUser?.id ?? '')
       .then((data) => {
         setIsLoading(true);
         setUsersReceived(data);
@@ -63,10 +64,10 @@ function FriendRequests() {
         <H1 classname="text-3xl font-bold mb-4" content={`Demandes envoyées`} />
 
         {!usersRequested.length ? (
-          <p className="text-center text-gray-400 py-12">Vous n'avez envoyé aucune demande d'amis</p>
+          <p className="text-center text-gray-400 py-12">Vous n&apos;avez envoyé aucune demande d&apos;amis</p>
         ) : (
           usersRequested.map((user) => (
-            <UserCard key={user.id} user={user} />
+            <UserCard key={user.id} {...user} />
           ))
         )}
       </div>
@@ -75,10 +76,10 @@ function FriendRequests() {
         <H1 classname="text-3xl font-bold mb-4" content={`Demandes reçues`} />
 
         {!usersReceived.length ? (
-          <p className="text-center text-gray-400 py-12">Vous n'avez reçue aucune demande d'amis</p>
+          <p className="text-center text-gray-400 py-12">Vous n&apos;avez reçue aucune demande d&apos;amis</p>
         ) : (
           usersReceived.map((user) => (
-            <UserCard key={user.id} user={user} />
+            <UserCard key={user.id} {...user} />
           ))
         )}
       </div>

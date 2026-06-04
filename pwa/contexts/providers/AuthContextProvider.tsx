@@ -1,14 +1,27 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {createContext, PropsWithChildren, useContext, useEffect, useState} from "react";
 import { login, getMe, logout, register } from "../../services/api/authApi";
+import {User} from "@/types/UsersApi";
 
-type AuthContextProviderProps = {
-  children: React.ReactNode;
+type authContext = {
+  loading: boolean;
+  loginUser: (u: string, p: string) => Promise<void>;
+  logoutUser: () => void;
+  registerUser: (u: User & { password: string }) => Promise<void>;
+  resolved: boolean;
+  user?: User;
 }
 
-const AuthContext = createContext();
+const AuthContext = createContext<authContext>({
+  loading: false,
+  loginUser: () => new Promise(() => {}),
+  logoutUser: () => {},
+  registerUser: () => new Promise(() => {}),
+  resolved: false,
+  user: undefined,
+});
 
-function AuthContextProvider({ children }: AuthContextProviderProps) {
-  const [user, setUser] = useState(null);
+function AuthContextProvider({ children }: PropsWithChildren) {
+  const [user, setUser] = useState<User>();
   const [resolved, setResolved] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +40,7 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
       })
       .catch(() => {
         logout();
-        setUser(null);
+        setUser(undefined);
       })
       .finally(() => {
         setResolved(true);
@@ -52,10 +65,10 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   const logoutUser = () => {
     logout();
-    setUser(null);
+    setUser(undefined);
   };
 
-  const registerUser = (userData) => {
+  const registerUser = (userData: User & { password: string }) => {
     return register(userData)
       .then(() => loginUser(userData.email, userData.password))
       .catch((error) => {

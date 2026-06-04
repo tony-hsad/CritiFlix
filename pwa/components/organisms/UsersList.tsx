@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import Icon from "../atoms/Icon";
 import UserCard from "../molecules/UserCard";
 import Pagination from "../molecules/Pagination";
-import usePaginatedUsers from "../../hooks/usePaginatedUsers";
 import { getUsers } from "../../services/api/usersApi";
 import { useSearch } from "../../contexts/providers/SearchContextProvider";
+import usePaginated from "../../hooks/usePaginatedContents";
 
 function UsersList() {
   const { search } = useSearch();
   const [currentPage, setCurrentPage] = useState(1);
-  const { isLoading, error, usersData, pagination, changePromise } =
-    usePaginatedUsers(getUsers(new URLSearchParams(`page=${currentPage}`)));
-  const filteredUsers = usersData.filter((user) =>
+  const { isLoading, error, data, pagination, changePromise } =
+    usePaginated(getUsers(new URLSearchParams(`page=${currentPage}`)));
+  const filteredUsers = data.filter((user) =>
     user.lastname.toLowerCase().includes(search.toLowerCase()) ||
     user.firstname.toLowerCase().includes(search.toLowerCase())
   );
@@ -33,8 +33,8 @@ function UsersList() {
     );
   }
 
-  if (!usersData.length) {
-    return <p className="text-center text-gray-400 py-12">Aucun utilisateurs d'affichés.</p>;
+  if (!data.length) {
+    return <p className="text-center text-gray-400 py-12">Aucun utilisateurs d&apos;affichés.</p>;
   }
 
   function updatePageNumber(pageNumber: number) {
@@ -49,7 +49,7 @@ function UsersList() {
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {filteredUsers.map((user) => (
-          <UserCard key={user.id} user={user} />
+          <UserCard key={user.id} {...user} />
         ))}
       </div>
 

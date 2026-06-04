@@ -3,15 +3,15 @@ import Icon from "../atoms/Icon";
 import MovieCard from "../molecules/MovieCard";
 import Pagination from "../molecules/Pagination";
 import { getContents } from "../../services/api/contentsApi";
-import usePaginatedContents from "../../hooks/usePaginatedContents";
 import { useSearch } from "../../contexts/providers/SearchContextProvider";
+import usePaginated from "../../hooks/usePaginatedContents";
 
 function MovieList() {
   const { search } = useSearch();
   const [currentPage, setCurrentPage] = useState(1);
-  const { isLoading, error, contentsData, pagination, changePromise } =
-    usePaginatedContents(getContents(new URLSearchParams(`page=${currentPage}`)));
-  const filteredContents = contentsData.filter((content) =>
+  const { isLoading, error, data, pagination, changePromise } =
+    usePaginated(getContents(new URLSearchParams(`page=${currentPage}`)));
+  const filteredContents = data.filter((content) =>
     content.title.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -32,7 +32,7 @@ function MovieList() {
     );
   }
 
-  if (!contentsData.length) {
+  if (!data.length) {
     return <p className="text-center text-gray-400 py-12">Aucun contenu disponible.</p>;
   }
 
