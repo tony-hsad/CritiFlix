@@ -1,7 +1,7 @@
 import Image from "../atoms/Image";
 import type { User } from "@/types/UsersApi";
 
-function UserCard({ user }: User) {
+function UserCard(user: User) {
   const formattedCreatedDate = new Date(user.createdAt).toLocaleDateString("fr-FR");
 
   return (
@@ -9,7 +9,7 @@ function UserCard({ user }: User) {
       <a href={`/users/${user.id}`} className="flex grow-3 items-center gap-4 p-4">
         <div className="w-24 h-24 shrink-0 overflow-hidden rounded-lg">
           <Image
-            src={user.avatar}
+            src={user.avatar ?? ''}
             alt={`Avatar de ${user.firstname} ${user.lastname}`}
           />
         </div>

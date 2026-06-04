@@ -5,31 +5,31 @@ import UserDetail from "../../components/organisms/UserDetail";
 import { getUserById } from "../../services/api/usersApi";
 import { useRouter } from "next/router";
 import { ROUTES } from "../../routes/routes";
+import {User} from "@/types/UsersApi";
 
 export default function UserPage() {
-  const router = useRouter();
-  const { id } = router.query;
-  const [user, setUser] = useState(null);
+  const { push, query: { id } } = useRouter();
+  const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id) return;
 
-    getUserById(id)
+    getUserById(id.toString())
       .then((data) => {
         if (!data?.id) {
-          router.push(ROUTES.USERS);
+          push(ROUTES.USERS);
           return;
         }
         setUser(data);
       })
       .catch(() => {
-        router.push(ROUTES.USERS);
+        push(ROUTES.USERS);
       })
       .finally(() => {
         setLoading(false);
       });
-  }, [id]);
+  }, [id, push]);
 
   if (loading) {
     return (

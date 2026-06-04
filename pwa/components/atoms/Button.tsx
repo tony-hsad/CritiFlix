@@ -7,7 +7,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   icon?: IconProps;
   classname?: string;
   type?: "button" | "submit" | "reset";
-  variant: keyof typeof variants;
+  variant?: keyof typeof variants;
 }
 
 const variants = {

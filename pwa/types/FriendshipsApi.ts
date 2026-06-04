@@ -4,7 +4,7 @@ import {User} from "@/types/UsersApi";
 type FriendshipStatusEnum = 'pending' | 'accepted' | 'rejected';
 
 export type Friendship = ApiResourceBase & {
-  id: number;
+  id: string;
   sender: User;
   receiver: User;
   status: FriendshipStatusEnum;

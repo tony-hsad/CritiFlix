@@ -1,31 +1,31 @@
-import { useState } from "react";
+import {FormEventHandler, useState} from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
 import { ROUTES } from "../../routes/routes";
-import Icon from "../atoms/Icon";
 import Button from "../atoms/Button";
 import H1 from "../atoms/H1";
 import InputField from "../molecules/InputField";
+import {User} from "@/types/UsersApi";
 
 function RegisterForm() {
   const { registerUser } = useAuth();
   const router = useRouter();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    setError(null);
+    setError('');
 
     const form = document.querySelector("form");
-    const formData = new FormData(form);
+    const formData = new FormData(form ?? undefined);
     const userData = {
-      firstname: formData.get("firstname"),
-      lastname: formData.get("lastname"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-      confirmPassword: formData.get("confirmPassword"),
-      dateOfBirth: formData.get("dateOfBirth"),
+      firstname: formData.get("firstname")?.toString() || '',
+      lastname: formData.get("lastname")?.toString() || '',
+      email: formData.get("email")?.toString() || '',
+      password: formData.get("password")?.toString() || '',
+      confirmPassword: formData.get("confirmPassword")?.toString() || '',
+      dateOfBirth: formData.get("dateOfBirth")?.toString() || '',
     };
 
     if (userData.password !== userData.confirmPassword) {
@@ -107,7 +107,7 @@ function RegisterForm() {
 
       <Button
         type="submit"
-        Icon={loading ? <Icon name="loading" className="animate-spin" /> : <Icon name="login" />}
+        icon={loading ? {name: 'loading', className: 'animate-spin'} : {name: 'login'}}
         disabled={loading}
       >
         {loading ? "Chargement..." : "S'inscrire"}

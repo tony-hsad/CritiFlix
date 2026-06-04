@@ -97,15 +97,15 @@ abstract class APIPlatformClient<T> extends HTTPClient {
     return this.post(`${this.baseURL}/${this.resource}`, headers, JSON.stringify(body)).then((response) => response);
   }
 
-  update(id: number, body: any) {
+  update(id: string, body: any) {
     const headers: Record<string, string> = {
       ...this.getCommonHeaders(),
       "Content-Type": "application/merge-patch+json"
     }
-    return this.patch(`${this.baseURL}/${this.resource}/${id}`, headers, body).then((response) => response);
+    return this.patch(`${this.baseURL}/${this.resource}/${id}`, headers, JSON.stringify(body)).then((response) => response);
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.delete(`${this.baseURL}/${this.resource}/${id}`, this.getCommonHeaders());
   }
 }
@@ -121,7 +121,7 @@ export class UserClient extends APIPlatformClient<User> {
 export class FriendshipClient extends APIPlatformClient<Friendship> {
   protected resource = 'friendships';
 
-  getUsersFrienship(authenticatedUserId: number, userDetailId: number): Promise<APIPlatformListResponse<Friendship>> {
+  getUsersFrienship(authenticatedUserId: string, userDetailId: string): Promise<Friendship> {
     return this.get(`${API_BASE_URL}/${this.resource}/${authenticatedUserId}/${userDetailId}`, this.getCommonHeaders());
   }
 }

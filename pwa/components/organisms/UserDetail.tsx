@@ -10,6 +10,7 @@ import type { User } from "@/types/UsersApi";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
 import {getFriendshipByUsers, sendFriendRequest, setFriendRequest, deleteFriendship} from "../../services/api/friendshipsApi";
 import { ROUTES } from "../../routes/routes";
+import {Friendship} from "@/types/FriendshipsApi";
 
 type UserDetailProps = {
   user: User;
@@ -22,15 +23,13 @@ function UserDetail({ user }: UserDetailProps) {
   const formattedCreatedDate = new Date(user.createdAt).toLocaleDateString("fr-FR");
   const router = useRouter();
 
-  const [friendship, setFriendship] = useState(null);
+  const [friendship, setFriendship] = useState<Friendship>();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     setIsLoading(true);
 
-    getFriendshipByUsers(authenticatedUser?.id, user?.id)
-      .then((data) => {
-        setFriendship(data)
-      })
+    getFriendshipByUsers(authenticatedUser?.id ?? '', user?.id)
+      .then(setFriendship)
       .catch((err) => {
         console.error(err);
       })
@@ -40,20 +39,20 @@ function UserDetail({ user }: UserDetailProps) {
 
   }, [authenticatedUser?.id, user?.id]);
 
-  const sendRequest = (receiverId: number) => {
+  const sendRequest = (receiverId: string) => {
     sendFriendRequest(receiverId).then((updatedFriendship) => {
       setFriendship(updatedFriendship);
     });
   };
 
-  const removeFriendship = (friendshipId: number) => {
+  const removeFriendship = (friendshipId: string) => {
     deleteFriendship(friendshipId)
       .then(() => {
-        setFriendship(null);
+        setFriendship(undefined);
       });
   };
 
-  const updateStatus = (friendshipId: number, status: boolean) => {
+  const updateStatus = (friendshipId: string, status: 'accepted' | 'rejected') => {
     setFriendRequest(friendshipId, status)
       .then((updatedFriendship) => {
         setFriendship(updatedFriendship);
@@ -101,21 +100,21 @@ function UserDetail({ user }: UserDetailProps) {
 
         {authenticatedUser && authenticatedUser?.id !== user?.id && !isLoading && (
           <div className="flex flex-row gap-2">
-            <Button variant="green" onClick={() => router.push(`mailto:${user.email}`)} Icon={<Icon name="contact" />}>
+            <Button variant="green" onClick={() => router.push(`mailto:${user.email}`)} icon={{name: "contact" }}>
               Contacter
             </Button>
 
             {!friendship && (
-              <Button Icon={<Icon name="plus" />} onClick={() => sendRequest(user.id)}>
+              <Button icon={{ name: 'plus' }} onClick={() => sendRequest(user.id)}>
                 Demander en ami
               </Button>
             )}
 
             {friendship && friendship.status === 'pending' && (
               <div className="flex flex-row">
-                {friendship?.sender?.id === authenticatedUser?.id ? (
+                {friendship.sender.id === authenticatedUser.id ? (
                   <div className="flex flex-row gap-2 items-center">
-                    <Button variant="secondary" Icon={<Icon name="removeFriend" />} onClick={() => removeFriendship(friendship.id)}>
+                    <Button variant="secondary" icon={{name: "removeFriend" }} onClick={() => removeFriendship(friendship.id)}>
                       Annuler la demande
                     </Button>
 
@@ -125,11 +124,11 @@ function UserDetail({ user }: UserDetailProps) {
                   </div>
                 ) : (
                   <div className="flex flex-row gap-2">
-                    <Button variant="green" Icon={<Icon name="acceptFriend" />} onClick={() => updateStatus(friendship.id, true)}>
+                    <Button variant="green" icon={{name: "acceptFriend" }} onClick={() => updateStatus(friendship.id, 'accepted')}>
                       Accepter la demande
                     </Button>
 
-                    <Button variant="secondary" Icon={<Icon name="removeFriend" />} onClick={() => updateStatus(friendship.id, false)}>
+                    <Button variant="secondary" icon={{name: "removeFriend" }} onClick={() => updateStatus(friendship.id, 'rejected')}>
                       Refuser la demande
                     </Button>
                   </div>
@@ -139,7 +138,7 @@ function UserDetail({ user }: UserDetailProps) {
 
             {friendship && friendship.status === 'accepted' && (
               <div className="flex flex-row gap-2 items-center">
-                <Button variant="secondary" Icon={<Icon name="removeFriend" />} onClick={() => removeFriendship(friendship.id)}>
+                <Button variant="secondary" icon={{name: "removeFriend" }} onClick={() => removeFriendship(friendship.id)}>
                   Retirer des amis
                 </Button>
 
@@ -153,12 +152,12 @@ function UserDetail({ user }: UserDetailProps) {
 
         {authenticatedUser && authenticatedUser?.id === user?.id && (
           <div className="flex space-x-2">
-            <Button variant="green" Icon={<Icon name="friends" />} onClick={() => router.push(ROUTES.FRIENDS)}>
+            <Button variant="green" icon={{name: "friends" }} onClick={() => router.push(ROUTES.FRIENDS)}>
               Voir mes amis
             </Button>
 
-            <Button variant="green" Icon={<Icon name="friends" />} onClick={() => router.push(ROUTES.FRIENDS_REQUESTS)}>
-              Voir mes demandes d'amis
+            <Button variant="green" icon={{name: "friends" }} onClick={() => router.push(ROUTES.FRIENDS_REQUESTS)}>
+              Voir mes demandes d&apos;amis
             </Button>
           </div>
         )}

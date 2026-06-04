@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import Icon from "../atoms/Icon";
 import UserCard from "../molecules/UserCard";
 import Pagination from "../molecules/Pagination";
-import usePaginatedUsers from "../../hooks/usePaginatedUsers";
 import { getFriends } from "../../services/api/friendshipsApi";
 import { useSearch } from "../../contexts/providers/SearchContextProvider";
 import { useAuth } from "../../contexts/providers/AuthContextProvider";
+import usePaginated from "../../hooks/usePaginatedContents";
 
 function FriendsList() {
   const { user: authenticatedUser } = useAuth();
   const { search } = useSearch();
   const [currentPage, setCurrentPage] = useState(1);
-  const { isLoading, error, usersData, pagination, changePromise } =
-    usePaginatedUsers(getFriends(authenticatedUser.id, new URLSearchParams(`page=${currentPage}`)));
-  const filteredUsers = usersData.filter((user) =>
+  const { isLoading, error, data, pagination, changePromise } =
+    usePaginated(getFriends(authenticatedUser?.id ?? '', new URLSearchParams(`page=${currentPage}`)));
+  const filteredUsers = data.filter((user) =>
     user.lastname.toLowerCase().includes(search.toLowerCase()) ||
     user.firstname.toLowerCase().includes(search.toLowerCase())
   );
@@ -35,13 +35,13 @@ function FriendsList() {
     );
   }
 
-  if (!usersData.length) {
-    return <p className="text-center text-gray-400 py-12">Vous n'avez pas encore d'amis</p>;
+  if (!data.length) {
+    return <p className="text-center text-gray-400 py-12">Vous n&apos;avez pas encore d&apos;amis</p>;
   }
 
   function updatePageNumber(pageNumber: number) {
     setCurrentPage(pageNumber);
-    changePromise(getFriends(authenticatedUser.id, new URLSearchParams(`page=${pageNumber}`)));
+    changePromise(getFriends(authenticatedUser?.id ?? '', new URLSearchParams(`page=${pageNumber}`)));
   }
 
 
@@ -51,7 +51,7 @@ function FriendsList() {
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {filteredUsers.map((user) => (
-          <UserCard key={user.id} user={user} />
+          <UserCard key={user.id} {...user} />
         ))}
       </div>
 

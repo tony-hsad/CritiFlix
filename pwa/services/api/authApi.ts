@@ -60,7 +60,8 @@ export function getMe(): Promise<User> {
     });
 }
 
-export function register(userData: User): Promise<User> {
+export type registerType = Omit<User, '@context' | '@id' | '@type' | 'id' | 'createdAt'> & { password: string }
+export function register(userData: registerType): Promise<User> {
   const headers = {
     "Content-Type": "application/ld+json",
   };

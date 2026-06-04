@@ -4,9 +4,9 @@ import type {Content} from "@/types/molecules";
 import type {APIPlatformListResponse} from "../services/api/client";
 import {PaginationType} from "@/types/Pagination";
 
-function usePaginatedContents(promise: Promise<APIPlatformListResponse<Content>>) {
+function usePaginated<T>(promise: Promise<APIPlatformListResponse<T>>) {
   const [currentPromise, setCurrentPromise] = useState(promise);
-  const [contentsData, setContentsData] = useState<ReadonlyArray<Content>>([]);
+  const [data, setData] = useState<ReadonlyArray<T>>([]);
   const [pagination, setPagination] = useState<PaginationType>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,8 +14,8 @@ function usePaginatedContents(promise: Promise<APIPlatformListResponse<Content>>
   useEffect(() => {
     setIsLoading(true);
 
-    currentPromise.then((data: APIPlatformListResponse<Content>) => {
-      setContentsData(data.member);
+    currentPromise.then((data: APIPlatformListResponse<T>) => {
+      setData(data.member);
       setPagination(paginationFromCollectionView(data.view));
     })
     .catch((err) => {
@@ -26,17 +26,17 @@ function usePaginatedContents(promise: Promise<APIPlatformListResponse<Content>>
     });
   }, [currentPromise]);
 
-  function changePromise(newPromise: Promise<APIPlatformListResponse<Content>>) {
+  function changePromise(newPromise: Promise<APIPlatformListResponse<T>>) {
     setCurrentPromise(newPromise);
   }
 
   return {
     isLoading,
     error,
-    contentsData,
+    data,
     pagination,
     changePromise,
   };
 }
 
-export default usePaginatedContents;
+export default usePaginated;
