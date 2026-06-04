@@ -1,13 +1,13 @@
 type ImageProps = {
   src: string;
   alt: string;
-  classname?: string;
+  className?: string;
 }
 
-function Image({ classname = '', ...rest }: ImageProps) {
+function Image({ className = '', ...rest }: ImageProps) {
   return (
     <img
-      className={`w-full h-full object-cover ${classname}`}
+      className={`w-full h-full object-cover ${className}`}
       width={600}
       height={400}
       loading="lazy"

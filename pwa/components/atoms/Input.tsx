@@ -1,25 +1,7 @@
-import React from "react";
+import React, {ChangeEventHandler} from "react";
 
-type InputProps = {
-  onChange?: () => void;
-  type?: string;
-  classname?: string;
-  defaultValue?: string;
-  placeholder?: string;
-  name?: string;
-  required: boolean;
-}
-
-function Input({ onChange, type = "text", classname = "", defaultValue, ...rest }: InputProps) {
-  return (
-    <input
-      type={type}
-      defaultValue={defaultValue}
-      className={classname}
-      onChange={onChange}
-      {...rest}
-    />
-  );
+function Input({ onChange, type = "text", defaultValue, ...rest }: React.InputHTMLAttributes<HTMLInputElement>) {
+  return <input {...rest} />;
 }
 
 export default Input;

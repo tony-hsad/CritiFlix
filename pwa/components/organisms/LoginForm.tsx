@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {FormEventHandler, useState} from "react";
 import { useRouter } from "next/router";
 import H1 from "../atoms/H1";
 import Icon from "../atoms/Icon";
@@ -10,20 +10,20 @@ import { ROUTES } from "../../routes/routes";
 function LoginForm() {
   const router = useRouter();
   const { loginUser, loading } = useAuth();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string>();
 
-  const handleSubmit = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    setError(null);
+    setError(undefined);
 
     const form = document.querySelector("form");
-    const formData = new FormData(form);
+    const formData = new FormData(form ?? undefined);
     const userData = {
       email: formData.get("email"),
       password: formData.get("password"),
     };
 
-    loginUser(userData.email, userData.password)
+    loginUser(userData.email?.toString() ?? '', userData.password?.toString() ?? '')
       .then(() => {
         router.push(ROUTES.HOME);
       })
@@ -37,7 +37,7 @@ function LoginForm() {
       onSubmit={handleSubmit}
       className="mx-auto flex w-full max-w-md flex-col gap-4 rounded-lg bg-gray-900 p-6 shadow-lg"
     >
-      <H1 classname="mb-2 text-2xl font-bold text-white" content="Connexion" />
+      <H1 className="mb-2 text-2xl font-bold text-white" content="Connexion" />
 
       <InputField
         name="email"
@@ -60,7 +60,7 @@ function LoginForm() {
       <Button
         type="submit"
         disabled={loading}
-        Icon={loading ? <Icon name="loading" className="animate-spin" /> : <Icon name="login" />}
+        icon={{ name: loading ? 'loading' : 'login' }}
       >
         {loading ? "Connexion..." : "Se connecter"}
       </Button>

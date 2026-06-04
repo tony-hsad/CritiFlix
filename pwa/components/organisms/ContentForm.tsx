@@ -19,16 +19,16 @@ function ContentForm() {
     setLoading(true);
 
     const contentData = {
-      title: formData.get("title"),
-      description: formData.get("description"),
-      type: formData.get("type"),
+      title: formData.get("title")?.toString() ?? '',
+      description: formData.get("description")?.toString() ?? '',
+      type: formData.get("type")?.toString() ?? '',
       minimalAge: Number(formData.get("minimalAge")),
       entrances: Number(formData.get("entrances")),
-      releaseDate: formData.get("releaseDate"),
-      poster: formData.get("poster"),
+      releaseDate: formData.get("releaseDate")?.toString() ?? '',
+      poster: formData.get("poster")?.toString() ?? '',
     };
 
-    createContent({content: contentData})
+    createContent(contentData)
       .then(() => {
         router.push(ROUTES.HOME);
       })
@@ -46,7 +46,7 @@ function ContentForm() {
       className="mx-auto flex w-full max-w-1/2 flex-col gap-4 rounded-lg bg-gray-900 p-6 shadow-lg"
     >
       {error && <p className="text-red-500">{error}</p>}
-      <H1 classname="mb-2 text-2xl font-bold text-white" content="Ajouter le film de votre choix" />
+      <H1 className="mb-2 text-2xl font-bold text-white" content="Ajouter le film de votre choix" />
       <div className="flex gap-4">
         <div className="w-1/2">
           <InputField

@@ -15,18 +15,18 @@ function MovieCard(content: Content) {
           <Image
             src={moviePoster}
             alt={content.title}
-            classname="transition-transform duration-300 group-hover:scale-110"
+            className="transition-transform duration-300 group-hover:scale-110"
           />
 
           <div className="absolute left-2 right-2 top-2 flex items-start justify-between gap-2">
             {content.type && (
-              <Chip classname="bg-black uppercase tracking-wide text-orange-400 shadow-md">
+              <Chip className="bg-black uppercase tracking-wide text-orange-400 shadow-md">
                 {content.type}
               </Chip>
             )}
 
             {content.minimalAge && (
-              <Chip classname="border-red-500 bg-black/70 text-red-400 backdrop-blur-sm">
+              <Chip className="border-red-500 bg-black/70 text-red-400 backdrop-blur-sm">
                 {content.minimalAge}+
               </Chip>
             )}

@@ -1,11 +1,7 @@
 import React, { useState, useContext } from "react";
 import SearchContext from "../SearchContext";
 
-type SearchContextProviderProps = {
-  children: React.ReactNode;
-}
-
-function SearchContextProvider({ children }: SearchContextProviderProps) {
+function SearchContextProvider({ children }: React.PropsWithChildren) {
   const [search, setSearch] = useState("");
 
   return (

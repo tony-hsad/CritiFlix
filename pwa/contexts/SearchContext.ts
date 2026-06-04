@@ -1,8 +1,8 @@
-import { createContext } from "react";
+import {createContext, Dispatch, SetStateAction} from "react";
 
-const SearchContext = createContext({
+const SearchContext = createContext<{ search: string; setSearch: Dispatch<SetStateAction<string>> }>({
   search: "",
-  setSearch: () => {},
+  setSearch: (e) => {},
 });
 
 export default SearchContext;

@@ -1,11 +1,11 @@
 type LogoProps = {
   content: string;
-  classname?: string;
+  className?: string;
 }
 
-function Logo({ content, classname = '' }: LogoProps) {
+function Logo({ content, className = '' }: LogoProps) {
   return (
-    <span className={classname}>
+    <span className={className}>
       {content}
     </span>
   );
