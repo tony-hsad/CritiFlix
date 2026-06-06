@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\ContentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,8 +29,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
             security: "is_granted('ROLE_USER')",
             validationContext: ['groups' => ['content:write']],
         ),
+        new Put(
+            denormalizationContext: ['groups' => ['content:write']],
+        ),
     ],
-    normalizationContext: ['groups' => ['content:read']]
+    normalizationContext: ['groups' => ['content:read']],
+    mercure: true,
 )]
 #[ORM\UniqueConstraint(name: 'uniq_title_release', columns: ['title', 'release_date'])]
 #[ORM\Entity(repositoryClass: ContentRepository::class)]

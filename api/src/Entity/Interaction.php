@@ -11,7 +11,6 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Repository\InteractionRepository;
-use App\State\InteractionProvider;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -23,11 +22,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
             uriTemplate: '/interactions/{user_id}/{content_id}',
             normalizationContext: ['groups' => ['interaction:read', 'interaction:user:read']],
             security: "is_granted('ROLE_USER')",
-            //provider: InteractionProvider::class
         ),
         new GetCollection(
             normalizationContext: ['groups' => ['interaction:read', 'interaction:user:read']],
-            //security: "is_granted('ROLE_ADMIN')",
         ),
         new Post(
             normalizationContext: ['groups' => ['interaction:read']],
