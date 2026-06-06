@@ -66,7 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read', 'user:patch:read'])]
+    #[Groups(['user:read', 'user:patch:read', 'interaction:user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
@@ -117,11 +117,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $interactions;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:read', 'user:patch:read', 'user:write'])]
+    #[Groups(['user:read', 'user:patch:read', 'user:write', 'interaction:user:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:read', 'user:patch:read', 'user:write'])]
+    #[Groups(['user:read', 'user:patch:read', 'user:write', 'interaction:user:read'])]
     private ?string $lastname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -133,7 +133,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:item:read', 'user:me'])]
+    #[Groups(['user:read', 'user:item:read', 'user:me', 'interaction:user:read'])]
     private ?string $avatar = null;
 
     /**

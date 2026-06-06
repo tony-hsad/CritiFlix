@@ -12,10 +12,12 @@ import {
   UsersRound,
   UserPlus,
   UserMinus,
+  Pencil,
+  Trash2,
   LucideProps
 } from "lucide-react";
 
-type AllowedIcons = 'login' | 'logout' | 'loading' | 'search' | 'plus' | 'arrowLeft' | 'arrowRight' | 'contact' | 'friends' | 'acceptFriend' | 'removeFriend';
+type AllowedIcons = 'login' | 'logout' | 'loading' | 'search' | 'plus' | 'arrowLeft' | 'arrowRight' | 'contact' | 'friends' | 'acceptFriend' | 'removeFriend' | 'edit' | 'delete';
 
 type RenderableIcon = ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
 
@@ -43,6 +45,10 @@ function mapNameToIcon(name: AllowedIcons): RenderableIcon {
       return UserPlus;
     case 'removeFriend':
       return UserMinus;
+    case 'edit':
+      return Pencil;
+    case 'delete':
+      return Trash2;
 
     default:
       return House;

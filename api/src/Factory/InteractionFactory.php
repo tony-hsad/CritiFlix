@@ -3,8 +3,6 @@
 namespace App\Factory;
 
 use App\Entity\Interaction;
-use App\Factory\ContentFactory;
-use App\Factory\UserFactory;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**
@@ -40,7 +38,7 @@ final class InteractionFactory extends PersistentObjectFactory
             'associatedUser' => UserFactory::random(),
             'comment' => self::faker()->sentence(5, false),
             'date' => self::faker()->dateTime(),
-            'isLiked' => self::faker()->boolean(0.5),
+            'isLiked' => self::faker()->boolean(),
             'rate' => self::faker()->randomFloat(1, 1, 5),
         ];
     }
