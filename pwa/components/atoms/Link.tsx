@@ -1,3 +1,6 @@
+import React from "react";
+import { default as NextLink } from "next/link";
+
 type LinkProps = {
   to: string;
   target?: string;
