@@ -72,7 +72,7 @@ class Interaction
 
     #[ORM\ManyToOne(inversedBy: 'interactions')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['interaction:read', 'interaction:write'])]
+    #[Groups(['interaction:read', 'interaction:write', 'interaction:user:read'])]
     private ?User $associatedUser = null;
 
     #[ORM\ManyToOne(inversedBy: 'interactions')]
