@@ -1,6 +1,7 @@
 import H1 from "../atoms/H1";
 import Image from "../atoms/Image";
 import type { Content } from "@/types/molecules";
+import { API_POSTER_URL } from "../../services/api/contentsApi";
 
 function MovieDetail(content: Content) {
   const moviePoster = content.poster || "https://t3.ftcdn.net/jpg/06/64/80/00/360_F_664800080_DB9Ed3O11GxDt0gPXtsqajrNDV52V84M.jpg";
@@ -12,7 +13,7 @@ function MovieDetail(content: Content) {
       <div className="w-full md:w-1/3">
         <Image
           className="rounded-lg"
-          src={moviePoster}
+          src={`${API_POSTER_URL}${content.poster}`}
           alt={content.title}
         />
       </div>
@@ -29,9 +30,6 @@ function MovieDetail(content: Content) {
 
         {content.description && <p className="text-gray-200">{content.description}</p>}
 
-        <p className="mt-4 text-gray-400">
-          {entrances}
-        </p>
       </div>
     </div>
   );

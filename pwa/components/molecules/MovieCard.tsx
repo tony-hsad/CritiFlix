@@ -2,9 +2,9 @@ import Chip from "../atoms/Chip";
 import Image from "../atoms/Image";
 import Link from "../atoms/Link";
 import {Content} from "@/types/molecules";
+import { API_POSTER_URL } from "../../services/api/contentsApi";
 
 function MovieCard(content: Content) {
-  const moviePoster = content.poster || "https://t3.ftcdn.net/jpg/06/64/80/00/360_F_664800080_DB9Ed3O11GxDt0gPXtsqajrNDV52V84M.jpg";
   const formattedDate = content.releaseDate ? new Date(content.releaseDate).toLocaleDateString("fr-FR") : null;
 
   return (
@@ -13,7 +13,7 @@ function MovieCard(content: Content) {
         <div className="relative aspect-[2/3] w-full overflow-hidden bg-gray-800">
 
           <Image
-            src={moviePoster}
+            src={`${API_POSTER_URL}${content.poster}`}
             alt={content.title}
             className="transition-transform duration-300 group-hover:scale-110"
           />
