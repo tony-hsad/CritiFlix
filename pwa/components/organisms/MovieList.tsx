@@ -8,7 +8,7 @@ import usePaginated from "../../hooks/usePaginatedContents";
 
 function MovieList() {
   const { search } = useSearch();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState('1');
   const { isLoading, error, data, pagination, changePromise } =
     usePaginated(getContents(new URLSearchParams(`page=${currentPage}`)));
   const filteredContents = data.filter((content) =>
@@ -36,7 +36,7 @@ function MovieList() {
     return <p className="text-center text-gray-400 py-12">Aucun contenu disponible.</p>;
   }
 
-  function updatePageNumber(pageNumber: number) {
+  function updatePageNumber(pageNumber: string) {
     setCurrentPage(pageNumber);
     changePromise(getContents(new URLSearchParams(`page=${pageNumber}`)));
   }

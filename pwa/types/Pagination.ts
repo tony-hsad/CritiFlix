@@ -1,12 +1,12 @@
 export type PaginationType = {
-  current: number;
-  first: number;
-  last: number;
-  previous?: number | undefined;
-  next?: number | undefined;
+  current: string;
+  first: string;
+  last: string;
+  previous?: string;
+  next?: string;
 }
 
 export type PaginationProps = {
   pagination: PaginationType;
-  onChangePage: (page: number) => void;
+  onChangePage: (page: string) => void;
 }

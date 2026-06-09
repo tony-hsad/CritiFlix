@@ -1,6 +1,6 @@
-import { Content, ContentsCollection } from "@/types/molecules";
-import {User, UsersCollection} from "@/types/UsersApi";
-import { Friendship, FriendshipsCollection } from "@/types/FriendshipsApi";
+import { Content } from "@/types/molecules";
+import {User} from "@/types/UsersApi";
+import { Friendship } from "@/types/FriendshipsApi";
 import { API_BASE_URL } from "./authApi";
 import type {CollectionView} from "@/types/Api";
 
@@ -57,9 +57,14 @@ class HTTPClient {
   }
 }
 
+interface Normalizer<T, U = T> {
+  normalize: (item: T) => U
+}
+
 abstract class APIPlatformClient<T> extends HTTPClient {
   private baseURL: string;
   protected abstract resource: string;
+  protected normalizer?: Normalizer<T>;
 
   constructor() {
     super();
@@ -81,7 +86,13 @@ abstract class APIPlatformClient<T> extends HTTPClient {
   }
 
   getList(urlParameters?: URLSearchParams | null): Promise<APIPlatformListResponse<T>> {
-    return this.get(`${this.baseURL}/${this.resource}?${urlParameters?.toString()}`, this.getCommonHeaders()).then((response) => response);
+    return this.get(`${this.baseURL}/${this.resource}?${urlParameters?.toString()}`, this.getCommonHeaders()).then((response: APIPlatformListResponse<T>) => {
+      if (this.normalizer) {
+        response.member = response.member.map(this.normalizer.normalize)
+      }
+
+      return response
+    });
   }
 
   getItem(id: string): Promise<T> {
@@ -110,8 +121,17 @@ abstract class APIPlatformClient<T> extends HTTPClient {
   }
 }
 
+class ContentNormalizer implements Normalizer<Content> {
+  normalize(item: Content): Content {
+    item.poster = `https://image.tmdb.org/t/p/original${item.poster}`
+
+    return item;
+  }
+}
+
 export class ContentClient extends APIPlatformClient<Content> {
   protected resource = 'contents';
+  protected normalizer = new ContentNormalizer()
 }
 
 export class UserClient extends APIPlatformClient<User> {

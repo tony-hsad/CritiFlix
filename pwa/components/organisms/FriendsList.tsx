@@ -10,7 +10,7 @@ import usePaginated from "../../hooks/usePaginatedContents";
 function FriendsList() {
   const { user: authenticatedUser } = useAuth();
   const { search } = useSearch();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState('1');
   const { isLoading, error, data, pagination, changePromise } =
     usePaginated(getFriends(authenticatedUser?.id ?? '', new URLSearchParams(`page=${currentPage}`)));
   const filteredUsers = data.filter((user) =>
@@ -39,7 +39,7 @@ function FriendsList() {
     return <p className="text-center text-gray-400 py-12">Vous n&apos;avez pas encore d&apos;amis</p>;
   }
 
-  function updatePageNumber(pageNumber: number) {
+  function updatePageNumber(pageNumber: string) {
     setCurrentPage(pageNumber);
     changePromise(getFriends(authenticatedUser?.id ?? '', new URLSearchParams(`page=${pageNumber}`)));
   }
