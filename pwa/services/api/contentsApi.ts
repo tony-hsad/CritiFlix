@@ -2,6 +2,8 @@ import type { Content } from "@/types/molecules";
 import type { APIPlatformListResponse } from "./client";
 import { ContentClient } from "./client";
 
+export const TMDB_IMG_URL = "https://image.tmdb.org/t/p/original/";
+
 export function getContents(urlParameters: URLSearchParams): Promise<APIPlatformListResponse<Content>> {
   return new ContentClient().getList(urlParameters);
 }
