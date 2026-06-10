@@ -42,7 +42,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
             security: "is_granted('ROLE_USER') and object.getAssociatedUser() == user",
         ),
     ],
-    normalizationContext: ['groups' => ['interaction:read']]
+    normalizationContext: ['groups' => ['interaction:read']],
+    mercure: true
 )]
 #[ORM\Entity(repositoryClass: InteractionRepository::class)]
 #[ApiFilter(SearchFilter::class, properties: ['associatedContent' => 'exact'])]
