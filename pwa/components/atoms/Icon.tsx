@@ -1,6 +1,8 @@
 import React, { RefAttributes, ForwardRefExoticComponent } from "react";
 import {
   Star,
+  ThumbsUp,
+  ThumbsDown,
   House,
   LogIn,
   LogOut,
@@ -18,7 +20,7 @@ import {
   LucideProps
 } from "lucide-react";
 
-type AllowedIcons = 'star' | 'login' | 'logout' | 'loading' | 'search' | 'plus' | 'arrowLeft' | 'arrowRight' | 'contact' | 'friends' | 'acceptFriend' | 'removeFriend' | 'edit' | 'delete';
+type AllowedIcons = 'star' | 'like' | 'dislike' | 'login' | 'logout' | 'loading' | 'search' | 'plus' | 'arrowLeft' | 'arrowRight' | 'contact' | 'friends' | 'acceptFriend' | 'removeFriend' | 'edit' | 'delete';
 
 type RenderableIcon = ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
 
@@ -26,6 +28,10 @@ function mapNameToIcon(name: AllowedIcons): RenderableIcon {
   switch (name) {
     case 'star':
       return Star;
+    case 'like':
+      return ThumbsUp;
+    case 'dislike':
+      return ThumbsDown;
     case 'login':
       return LogIn;
     case 'logout':
