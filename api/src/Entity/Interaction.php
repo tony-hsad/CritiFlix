@@ -28,7 +28,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: ['groups' => ['interaction:read', 'interaction:user:read']],
         ),
         new Post(
-            normalizationContext: ['groups' => ['interaction:read']],
+            normalizationContext: ['groups' => ['interaction:read', 'interaction:user:read']],
             denormalizationContext: ['groups' => ['interaction:write']],
             security: "is_granted('ROLE_USER')",
             validationContext: ['groups' => ['interaction:write']],

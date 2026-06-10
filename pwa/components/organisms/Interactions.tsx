@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Icon from "../atoms/Icon";
 import InteractionCard from "./InteractionCard";
+import InteractionForm from "../molecules/InteractionForm";
 import { getInteractionsByContent } from "../../services/api/interactionsApi";
 import type { Content } from "@/types/molecules";
 import type { User } from "@/types/UsersApi";
@@ -75,10 +76,6 @@ function Interactions({ content, authenticatedUser }: InteractionsProps) {
     );
   }
 
-  if (!interactions.length) {
-    return <p className="text-center text-gray-400 py-12">Aucune interactions n'existe encore pour ce contenu.</p>;
-  }
-
   const totalLikes = interactions.reduce((acc, interaction: Interaction) => acc + interaction.isLiked, 0);
   const rateAverage = interactions.reduce((sum, interaction: Interaction) => sum + interaction.rate, 0) / interactions.length || 0;
   const comments = interactions.map((interaction: Interaction) => interaction.comment);
@@ -100,10 +97,20 @@ function Interactions({ content, authenticatedUser }: InteractionsProps) {
 
       <h3 className="text-xl font-semibold mb-4">Il y a {comments.length} commentaires</h3>
 
+      {authenticatedUser && (
+        <div className="flex flex-col mb-8">
+          <InteractionForm content={content} authenticatedUser={authenticatedUser} />
+        </div>
+      )}
+
       <div className="flex flex-col gap-4">
-        {interactions.map((interaction: Interaction) => (
-          <InteractionCard key={interaction.id} interaction={interaction} authenticatedUser={authenticatedUser} />
-        ))}
+        {!interactions.length ? (
+          <p className="text-center text-gray-400 py-12">Aucune interactions n'existe encore pour ce contenu.</p>
+        ) : (
+          interactions.map((interaction: Interaction) => (
+            <InteractionCard key={interaction.id} interaction={interaction} authenticatedUser={authenticatedUser} />
+          ))
+        )}
       </div>
     </div>
   );
