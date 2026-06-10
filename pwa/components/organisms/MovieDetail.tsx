@@ -7,7 +7,6 @@ import {TMDB_IMG_URL} from "../../services/api/contentsApi";
 
 function MovieDetail(content: Content) {
   const { user: authenticatedUser } = useAuth();
-  //const moviePoster = content.poster || "https://t3.ftcdn.net/jpg/06/64/80/00/360_F_664800080_DB9Ed3O11GxDt0gPXtsqajrNDV52V84M.jpg";
   const moviePoster = `${TMDB_IMG_URL}${content.poster}` || "https://t3.ftcdn.net/jpg/06/64/80/00/360_F_664800080_DB9Ed3O11GxDt0gPXtsqajrNDV52V84M.jpg";
   const formattedDate = content.releaseDate ? new Date(content.releaseDate).toLocaleDateString("fr-FR") : null;
 
@@ -37,5 +36,4 @@ function MovieDetail(content: Content) {
     </div>
   );
 }
-
 export default MovieDetail;
