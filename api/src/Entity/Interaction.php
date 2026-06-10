@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\InteractionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,7 +34,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             validationContext: ['groups' => ['interaction:write']],
         ),
         new Patch(
-            normalizationContext: ['groups' => ['interaction:read']],
+            normalizationContext: ['groups' => ['interaction:read', 'interaction:user:read']],
             denormalizationContext: ['groups' => ['interaction:update']],
             security: "is_granted('ROLE_USER') and object.getAssociatedUser() == user",
             validationContext: ['groups' => ['interaction:write']],

@@ -6,7 +6,7 @@ import type { Content } from "@/types/molecules";
 import type { User } from "@/types/UsersApi";
 import type { Interaction } from "@/types/InteractionApi";
 import type { APIPlatformListResponse } from "../../services/api/client";
-import UserCard from "../molecules/UserCard";
+import { Mercure } from "../../services/realtime/mercure";
 
 type InteractionsProps = {
   content: Content;
@@ -17,6 +17,31 @@ function Interactions({ content, authenticatedUser }: InteractionsProps) {
   const [interactions, setInteractions] = useState<ReadonlyArray<Interaction>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!content?.id) {
+      return;
+    }
+
+    Mercure.subscribe('interactions', `/interactions/{id}`, (message) => {
+      if (message.data.associatedContent !== `/contents/${content.id}`) {
+        return;
+      }
+
+      setInteractions((prevInteractions: ReadonlyArray<Interaction>) => {
+        if (!prevInteractions.some(i => i.id === message.data.id)) {
+          return [...prevInteractions, message.data];
+        }
+
+        return prevInteractions.map((i: Interaction) => {
+          const messageData = {...message.data, associatedUser: i.associatedUser};
+          return i.id === message.data.id ? messageData : i;
+        });
+      });
+    });
+
+    return () => Mercure.unsubscribe('interactions');
+  }, [content?.id]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -31,9 +56,7 @@ function Interactions({ content, authenticatedUser }: InteractionsProps) {
       .finally(() => {
       setIsLoading(false);
     });
-  }, []);
-
-  console.log(interactions);
+  }, [content?.id]);
 
   if (isLoading) {
     return (
