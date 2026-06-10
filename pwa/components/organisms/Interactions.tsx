@@ -65,7 +65,7 @@ function Interactions({ content, authenticatedUser }: InteractionsProps) {
       <div className="flex gap-8 mb-6 bg-gray-800 p-4 rounded-lg">
         <div>
           <p className="text-sm text-gray-400">Note moyenne</p>
-          <p className="text-2xl font-bold text-yellow-400">{rateAverage}</p>
+          <p className="text-2xl font-bold text-yellow-400">{rateAverage.toFixed(1)}</p>
         </div>
 
         <div>
