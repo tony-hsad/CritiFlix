@@ -1,5 +1,5 @@
 import type { Interaction } from "@/types/InteractionApi";
-import type { APIPlatformListResponse } from "./client";
+import {APIPlatformListResponse, ContentClient, FriendshipClient} from "./client";
 import { InteractionClient } from "./client";
 
 export function getInteractionsByContent(contentId: number): Promise<APIPlatformListResponse<Interaction>> {
@@ -7,6 +7,19 @@ export function getInteractionsByContent(contentId: number): Promise<APIPlatform
   params.set("associatedContent", `/contents/${contentId}`);
 
   return new InteractionClient().getList(params);
+}
+
+export function sendInteraction(isLiked: boolean, rate: number, comment: string, content: string, user: string): Promise<Interaction> {
+  const body = {
+    isLiked,
+    rate,
+    comment,
+    associatedContent: content,
+    associatedUser: user,
+    date: new Date().toISOString()
+  };
+
+  return new InteractionClient().create(body);
 }
 
 export function updateInteraction(interactionId:number, isLiked: boolean, rate: number, comment:string): Promise<APIPlatformListResponse<Interaction>> {
