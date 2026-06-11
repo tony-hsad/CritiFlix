@@ -74,7 +74,7 @@ function UserDetail({ user }: UserDetailProps) {
 
         <p>
           Prénom :
-          <span className="font-bold"> {user.lastname}</span>
+          <span className="font-bold"> {user.firstname}</span>
         </p>
 
         <p>
