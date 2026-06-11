@@ -8,8 +8,8 @@ FROM node:lts AS node_upstream
 # Base stage for dev and build
 FROM node_upstream AS base
 
-ARG API_URL
-ENV REACT_APP_API_URL=$API_URL
+ARG NEXT_PUBLIC_API
+ENV NEXT_PUBLIC_API=$NEXT_PUBLIC_API
 
 WORKDIR /srv/app
 
@@ -30,8 +30,8 @@ FROM base AS dev
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME=localhost
-ARG API_URL=API_URL
-ENV API_URL=$API_URL
+ARG NEXT_PUBLIC_API=NEXT_PUBLIC_API
+ENV NEXT_PUBLIC_API=$NEXT_PUBLIC_API
 
 CMD ["sh", "-c", "pnpm install; pnpm dev"]
 
