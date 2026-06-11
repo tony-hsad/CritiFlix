@@ -1,11 +1,8 @@
 import React, {ButtonHTMLAttributes} from "react";
 import {IconProps, default as Icon} from "./Icon";
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  children: React.ReactNode;
-  onClick?: () => void;
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   icon?: IconProps;
-  className?: string;
   type?: "button" | "submit" | "reset";
   variant?: keyof typeof variants;
 }

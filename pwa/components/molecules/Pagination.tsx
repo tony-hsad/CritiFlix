@@ -1,76 +1,32 @@
-import Button from "../atoms/Button";
-import Icon from "../atoms/Icon";
-import type { PaginationProps, PaginationType} from "@/types/Pagination";
+import Button, {ButtonProps} from "../atoms/Button";
+import type { PaginationProps } from "@/types/Pagination";
+import React from "react";
 
-function test({ pagination, onChangePage }: PaginationProps): ReadonlyArray<{label: string, value: string}> {
-  if (!pagination) {
-    return [];
-  }
-
-  const myArr = [
-    { label: 'first', value: pagination.first && `/films/${pagination.first}` },
-    { label: pagination.previous, value: pagination.previous && `/films/${pagination.previous}` },
-    { label: pagination.current, value: pagination.current && `#` },
-    { label: pagination.next, value: pagination.next && `/films/${pagination.next}` },
-    { label: 'last', value: pagination.last && `/films/${pagination.last}` },
-  ]
-
-  console.log('pagination', pagination)
-
-  return []
-}
+type PaginationButtonProps = { current: string; page?: string; onClick: (page: string) => void; buttonProps?: Pick<ButtonProps, 'icon' | 'type' | 'variant'>};
+const PaginationButton: React.FC<PaginationButtonProps> = ({ current, onClick, page, buttonProps = {} }) => page && (
+  <Button disabled={current === page} onClick={() => current !== page && onClick(page)} {...buttonProps}>
+    {page}
+  </Button>
+)
 
 function Pagination({ pagination, onChangePage }: PaginationProps) {
   if (!pagination) {
     return null;
   }
 
-  function getMorePaginationButtons(pagination: PaginationType) {
-    const additionalPagesAmount = 2;
-    const leftCurrent = pagination.current - additionalPagesAmount;
-    const rightCurrent = pagination.current + additionalPagesAmount;
-
-    // first, 2 (current), 3, 4, ..., last
-    const pages = [];
-    for (let p = leftCurrent; p <= rightCurrent; p++) {
-      const isPageBetweenBoundaries = p > pagination.first && p < pagination.last;
-      if (isPageBetweenBoundaries) {
-        pages.push(p);
-      }
-    }
-
-    return pages;
-  }
-
-  const pages = getMorePaginationButtons(pagination);
   return (
     <div className="mt-8 flex items-center justify-center gap-2">
-      <Button
-        onClick={() => onChangePage(pagination.first)}
-        variant="secondary"
-      >
-        <Icon name="arrowLeft" />
-        <span className="pl-2">{pagination.first}</span>
-      </Button>
-
-      {pages.map((pCurrent) => (
-        <Button
-          key={pCurrent}
-          onClick={() => onChangePage(pCurrent)}
-          variant={pCurrent === pagination.current ? "green" : "primary"}
-        >
-          {pCurrent}
-        </Button>
-      ))}
-
-
-      <Button
-        onClick={() => onChangePage(pagination.last)}
-        variant="secondary"
-      >
-        <Icon name="arrowRight" />
-        <span className="pl-2">{pagination.last}</span>
-      </Button>
+      <PaginationButton current={pagination.current} page={pagination.first} onClick={onChangePage} buttonProps={{
+        variant: 'secondary',
+        icon: { name: 'arrowLeft' }
+      }} />
+      <PaginationButton current={pagination.current} page={pagination.first !== pagination.previous ? pagination.previous : ''} onClick={onChangePage} />
+      Current {pagination.current}
+      <PaginationButton current={pagination.current} page={pagination.last !== pagination.next ? pagination.next : ''} onClick={onChangePage} />
+      <PaginationButton current={pagination.current} page={pagination.last} onClick={onChangePage} buttonProps={{
+        variant: 'secondary',
+        icon: { name: 'arrowRight' }
+      }} />
     </div>
   );
 }
