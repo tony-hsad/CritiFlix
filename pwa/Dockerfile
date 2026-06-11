@@ -12,8 +12,8 @@ WORKDIR /srv/app
 
 RUN npm install -g corepack@latest && \
     corepack enable && \
-	corepack prepare --activate pnpm@latest
-#	pnpm config -g set store-dir /.pnpm-store
+	corepack prepare --activate pnpm@latest # \
+	# pnpm config -g set store-dir /.pnpm-store
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
@@ -33,13 +33,13 @@ CMD ["sh", "-c", "pnpm install; pnpm dev"]
 
 FROM base AS builder
 
-COPY --link pnpm-lock.yaml ./
-RUN pnpm fetch --prod
+# COPY --link pnpm-lock.yaml ./
+# RUN pnpm fetch --prod
 
 COPY --link . .
 
-RUN	pnpm install --frozen-lockfile --offline --prod && \
-	pnpm run build
+RUN	pnpm install # --frozen-lockfile --offline --prod
+RUN	pnpm run build
 
 
 # Production image, copy all the files and run next
