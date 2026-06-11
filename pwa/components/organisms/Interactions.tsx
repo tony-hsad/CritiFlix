@@ -25,6 +25,14 @@ function Interactions({ content, authenticatedUser }: InteractionsProps) {
     }
 
     Mercure.subscribe('interactions', `/interactions/{id}`, (message) => {
+      const isInteractionDeleted = !message.data.id;
+      if (isInteractionDeleted) {
+        const deletedId = message.data["@id"].split("/").at(-1);
+
+        setInteractions((prevInteractions: ReadonlyArray<Interaction>) => prevInteractions.filter( i => i.id !== Number(deletedId)) );
+        return;
+      }
+
       if (message.data.associatedContent !== `/contents/${content.id}`) {
         return;
       }
