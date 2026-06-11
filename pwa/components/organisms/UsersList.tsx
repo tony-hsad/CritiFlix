@@ -8,7 +8,7 @@ import usePaginated from "../../hooks/usePaginatedContents";
 
 function UsersList() {
   const { search } = useSearch();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState('1');
   const { isLoading, error, data, pagination, changePromise } =
     usePaginated(getUsers(new URLSearchParams(`page=${currentPage}`)));
   const filteredUsers = data.filter((user) =>
@@ -37,7 +37,7 @@ function UsersList() {
     return <p className="text-center text-gray-400 py-12">Aucun utilisateurs d&apos;affichés.</p>;
   }
 
-  function updatePageNumber(pageNumber: number) {
+  function updatePageNumber(pageNumber: string) {
     setCurrentPage(pageNumber);
     changePromise(getUsers(new URLSearchParams(`page=${pageNumber}`)));
   }
