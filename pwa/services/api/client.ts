@@ -87,6 +87,8 @@ abstract class APIPlatformClient<T> extends HTTPClient {
   }
 
   getList(urlParameters?: URLSearchParams | null): Promise<APIPlatformListResponse<T>> {
+    console.log("API =>", process.env.NEXT_PUBLIC_API);
+
     return this.get(`${this.baseURL}/${this.resource}?${urlParameters?.toString()}`, this.getCommonHeaders()).then((response: APIPlatformListResponse<T>) => {
       if (this.normalizer) {
         response.member = response.member.map(this.normalizer.normalize)
