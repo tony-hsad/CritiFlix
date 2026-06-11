@@ -1,6 +1,7 @@
 import { Content } from "@/types/molecules";
 import {User} from "@/types/UsersApi";
 import { Friendship } from "@/types/FriendshipsApi";
+import { Interaction } from "@/types/InteractionApi";
 import type {CollectionView} from "@/types/Api";
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API ?? 'https://localhost';
@@ -147,4 +148,8 @@ export class FriendshipClient extends APIPlatformClient<Friendship> {
   getUsersFrienship(authenticatedUserId: string, userDetailId: string): Promise<Friendship> {
     return this.get(`${API_BASE_URL}/${this.resource}/${authenticatedUserId}/${userDetailId}`, this.getCommonHeaders());
   }
+}
+
+export class InteractionClient extends APIPlatformClient<Interaction> {
+  protected resource = 'interactions';
 }
