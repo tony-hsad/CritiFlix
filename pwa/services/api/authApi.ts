@@ -1,7 +1,6 @@
 import { ROUTES_API } from "../../routes/routes";
 import type { User } from "@/types/UsersApi";
-
-export const API_BASE_URL = "https://localhost";
+import {API_BASE_URL} from "./client";
 
 export function login(email: string, password: string): Promise<string> {
   return fetch(`${API_BASE_URL}/api${ROUTES_API.LOGIN}`, {

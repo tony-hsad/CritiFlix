@@ -1,5 +1,6 @@
-const BASE_API_URL = 'https://localhost'
-const BASE_MERCURE_URL = `${BASE_API_URL}/.well-known/mercure`
+import {API_BASE_URL} from "../api/client";
+
+const BASE_MERCURE_URL = `${API_BASE_URL}/.well-known/mercure`
 
 type IncomeMessage = {
   data: string;
@@ -16,7 +17,7 @@ export class Mercure {
 
   static subscribe(id: string, topic: string, callback: (message: AppMessage) => void) {
     if (!this.subscribed[id]) {
-      const es = new EventSource(`${BASE_MERCURE_URL}?${new URLSearchParams({ topic: `${BASE_API_URL}${topic}` }).toString()}`);
+      const es = new EventSource(`${BASE_MERCURE_URL}?${new URLSearchParams({ topic: `${API_BASE_URL}${topic}` }).toString()}`);
       es.onmessage = (msg) => {
         callback({ lastEventId: msg.lastEventId, type: msg.type, data: JSON.parse(msg.data) })
       }
