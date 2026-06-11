@@ -43,7 +43,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             security: "is_granted('ROLE_USER') and object.getAssociatedUser() == user",
         ),
     ],
-    normalizationContext: ['groups' => ['interaction:read']],
+    normalizationContext: ['groups' => ['interaction:read', 'interaction:user:read']],
     mercure: true
 )]
 #[ORM\Entity(repositoryClass: InteractionRepository::class)]
