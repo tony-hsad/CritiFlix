@@ -43,12 +43,12 @@ function ContentForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-auto flex w-full max-w-1/2 flex-col gap-4 rounded-lg bg-gray-900 p-6 shadow-lg"
+      className="mx-auto flex w-full max-w-md md:max-w-2xl flex-col gap-4 rounded-lg bg-gray-900 px-4 py-6 sm:p-6 shadow-lg"
     >
       {error && <p className="text-red-500">{error}</p>}
       <H1 className="mb-2 text-2xl font-bold text-white" content="Ajouter le film de votre choix" />
-      <div className="flex gap-4">
-        <div className="w-1/2">
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="w-full md:w-1/2">
           <InputField
             name="title"
             label="Titre"
@@ -57,7 +57,7 @@ function ContentForm() {
           />
         </div>
 
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <InputField
             name="description"
             label="Description"
