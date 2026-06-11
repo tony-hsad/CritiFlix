@@ -1,8 +1,9 @@
 import { Content } from "@/types/molecules";
 import {User} from "@/types/UsersApi";
 import { Friendship } from "@/types/FriendshipsApi";
-import { API_BASE_URL } from "./authApi";
 import type {CollectionView} from "@/types/Api";
+
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API ?? 'https://localhost';
 
 export type APIPlatformListResponse<T> = {
   "@context": string;
@@ -68,7 +69,7 @@ abstract class APIPlatformClient<T> extends HTTPClient {
 
   constructor() {
     super();
-    this.baseURL = "https://localhost";
+    this.baseURL = API_BASE_URL;
   }
 
   protected getCommonHeaders() {
