@@ -1,4 +1,3 @@
-import Logo from "../atoms/Logo";
 import Link from "../atoms/Link";
 import NavActions from "../molecules/NavActions";
 import SearchBar from "../molecules/SearchBar";
