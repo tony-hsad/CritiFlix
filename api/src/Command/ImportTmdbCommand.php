@@ -26,7 +26,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class ImportTmdbCommand extends Command
 {
     const string TMDB_BASE_URL = 'https://api.themoviedb.org/3';
-    const string SEARCH_MOVIE = self::TMDB_BASE_URL.'/search/movie?query=%s&include_adult=true&year=%d&page=%d';
+    const string SEARCH_MOVIE = self::TMDB_BASE_URL.'/search/movie?query=%s&include_adult=false&year=%d&page=%d';
 
     const int YEAR_START = 1901;
 

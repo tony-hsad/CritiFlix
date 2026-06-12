@@ -8,6 +8,9 @@ FROM node:lts AS node_upstream
 # Base stage for dev and build
 FROM node_upstream AS base
 
+ARG NEXT_PUBLIC_API
+ENV NEXT_PUBLIC_API=${NEXT_PUBLIC_API}
+
 WORKDIR /srv/app
 
 RUN npm install -g corepack@latest && \
@@ -27,6 +30,8 @@ FROM base AS dev
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME=localhost
+ARG NEXT_PUBLIC_API
+ENV NEXT_PUBLIC_API=${NEXT_PUBLIC_API}
 
 CMD ["sh", "-c", "pnpm install; pnpm dev"]
 
