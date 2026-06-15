@@ -27,4 +27,9 @@ export class Mercure {
 
     return this.subscribed[id]
   }
+
+  static unsubscribe(id: string) {
+    this.subscribed[id]?.close();
+    delete this.subscribed[id];
+  }
 }

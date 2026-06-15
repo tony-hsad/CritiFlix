@@ -51,7 +51,7 @@ class Content
     private ?string $title = null;
 
     #[ORM\Column(length: 500, nullable: true)]
-    #[Groups(['content:read', 'content:write'])]
+    #[Groups(['content:read', 'content:item:read', 'content:write'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -63,7 +63,7 @@ class Content
     private ?int $entrances = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['content:read', 'content:write'])]
+    #[Groups(['content:read', 'content:item:read', 'content:write'])]
     private ?string $poster = null;
 
     #[ORM\Column]

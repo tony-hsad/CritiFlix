@@ -2,9 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\InteractionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,16 +18,36 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     operations: [
+        new Get(),
         new Get(
-            normalizationContext: ['groups' => ['interaction:read', 'interaction:item:read']]
+            uriTemplate: '/interactions/{user_id}/{content_id}',
+            normalizationContext: ['groups' => ['interaction:read', 'interaction:user:read']],
+            security: "is_granted('ROLE_USER')",
         ),
         new GetCollection(
-            normalizationContext: ['groups' => ['interaction:read', 'interaction:collection:read']]
+            normalizationContext: ['groups' => ['interaction:read', 'interaction:user:read']],
+        ),
+        new Post(
+            normalizationContext: ['groups' => ['interaction:read', 'interaction:user:read']],
+            denormalizationContext: ['groups' => ['interaction:write']],
+            security: "is_granted('ROLE_USER')",
+            validationContext: ['groups' => ['interaction:write']],
+        ),
+        new Patch(
+            normalizationContext: ['groups' => ['interaction:read', 'interaction:user:read']],
+            denormalizationContext: ['groups' => ['interaction:update']],
+            security: "is_granted('ROLE_USER') and object.getAssociatedUser() == user",
+            validationContext: ['groups' => ['interaction:write']],
+        ),
+        new Delete(
+            security: "is_granted('ROLE_USER') and object.getAssociatedUser() == user",
         ),
     ],
-    normalizationContext: ['groups' => ['interaction:read']]
+    normalizationContext: ['groups' => ['interaction:read', 'interaction:user:read']],
+    mercure: true
 )]
 #[ORM\Entity(repositoryClass: InteractionRepository::class)]
+#[ApiFilter(SearchFilter::class, properties: ['associatedContent' => 'exact'])]
 class Interaction
 {
     #[ORM\Id]
@@ -31,29 +57,29 @@ class Interaction
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['interaction:read'])]
+    #[Groups(['interaction:read', 'interaction:write', 'interaction:update'])]
     private ?bool $isLiked = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['interaction:read'])]
+    #[Groups(['interaction:read', 'interaction:write', 'interaction:update'])]
     private ?float $rate = null;
 
     #[ORM\Column(length: 1000, nullable: true)]
-    #[Groups(['interaction:item:read'])]
+    #[Groups(['interaction:read', 'interaction:write', 'interaction:update'])]
     private ?string $comment = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['interaction:read'])]
+    #[Groups(['interaction:read', 'interaction:write'])]
     private ?\DateTime $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'interactions')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['interaction:read'])]
+    #[Groups(['interaction:read', 'interaction:write', 'interaction:user:read'])]
     private ?User $associatedUser = null;
 
     #[ORM\ManyToOne(inversedBy: 'interactions')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['interaction:read'])]
+    #[Groups(['interaction:read', 'interaction:write'])]
     private ?Content $associatedContent = null;
 
     public function getId(): ?int
@@ -61,7 +87,7 @@ class Interaction
         return $this->id;
     }
 
-    public function isLiked(): ?bool
+    public function getIsLiked(): ?bool
     {
         return $this->isLiked;
     }

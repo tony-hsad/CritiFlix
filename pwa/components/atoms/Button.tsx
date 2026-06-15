@@ -5,20 +5,23 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   icon?: IconProps;
   type?: "button" | "submit" | "reset";
   variant?: keyof typeof variants;
+  disabled?: boolean;
 }
 
 const variants = {
   primary: "bg-blue-600 hover:bg-blue-700",
   secondary: "bg-red-500 hover:bg-red-800",
   green: "bg-green-600 hover:bg-green-800",
+  ghost: "bg-gray-600",
 };
 
-function Button({ children, onClick, icon, className = "text-white px-4 py-2 rounded-md text-sm transition-colors cursor-pointer", type = "button", variant = "primary" }: ButtonProps) {
+function Button({ children, onClick, icon, className = "text-white px-4 py-2 rounded-md text-sm transition-colors cursor-pointer", type = "button", variant = "primary", disabled = false }: ButtonProps) {
   return (
     <button
       type={type}
       className={`${className} ${variants[variant]} flex items-center`}
       onClick={onClick}
+      disabled={disabled}
     >
       {icon && <span className="w-4 h-4 pr-5">{<Icon {...icon} />}</span>}
       {children}
