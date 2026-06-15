@@ -27,7 +27,7 @@ function Interactions({ content, authenticatedUser }: InteractionsProps) {
     Mercure.subscribe('interactions', `/interactions/{id}`, (message) => {
       const isInteractionDeleted = !message.data.id;
       if (isInteractionDeleted) {
-        const deletedId = message.data["@id"].split("/").at(-1);
+        const deletedId = message.data["@id"].split("/").pop();
 
         setInteractions((prevInteractions: ReadonlyArray<Interaction>) => prevInteractions.filter( i => i.id !== Number(deletedId)) );
         return;
@@ -84,7 +84,7 @@ function Interactions({ content, authenticatedUser }: InteractionsProps) {
     );
   }
 
-  const totalLikes = interactions.reduce((acc, interaction: Interaction) => acc + interaction.isLiked, 0);
+  const totalLikes = interactions.filter((interaction: Interaction) => interaction.isLiked).length;
   const rateAverage = interactions.reduce((sum, interaction: Interaction) => sum + interaction.rate, 0) / interactions.length || 0;
   const comments = interactions.map((interaction: Interaction) => interaction.comment);
 

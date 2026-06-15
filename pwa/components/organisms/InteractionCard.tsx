@@ -39,7 +39,6 @@ function InteractionCard({ interaction, authenticatedUser }: InteractionCardProp
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCurrentComment(e.target.value);
-    //console.log(e.target.value);
     if (!e.target.value || e.target.value.trim() === "") {
       setError("Vous ne pouvez pas envoyer de commentaires vides");
       return;
@@ -108,8 +107,6 @@ function InteractionCard({ interaction, authenticatedUser }: InteractionCardProp
               </Button>
             </div>
           )}
-
-
         </div>
       )}
     </div>

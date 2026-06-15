@@ -32,7 +32,7 @@ function InteractionForm({ content, authenticatedUser }: InteractionsFormProps) 
     const interactionData = {
       comment: formData.get("comment")?.toString() || '',
       rate: Number(formData.get("rate")) || 0,
-      isLiked: newIsLiked || true,
+      isLiked: newIsLiked ?? true,
     }
 
     setIsSubmitting(true);
@@ -43,7 +43,7 @@ function InteractionForm({ content, authenticatedUser }: InteractionsFormProps) 
           form.reset();
         }
 
-        setNewIsLiked(interactionData.isLiked);
+        setNewIsLiked(true);
         setCurrentComment("");
         setErrorComment(null);
       })
