@@ -20,6 +20,9 @@ function InteractionForm({ content, authenticatedUser }: InteractionsFormProps) 
   const [error, setError] = useState(null);
   const [errorComment, setErrorComment] = useState<string | null>(null);
 
+  const rateOptions = [1, 2, 3, 4,5];
+  const MAX_OPTIONS = rateOptions.length;
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
@@ -36,7 +39,10 @@ function InteractionForm({ content, authenticatedUser }: InteractionsFormProps) 
 
     sendInteraction(interactionData.isLiked, interactionData.rate, interactionData.comment, `/contents/${content.id}`, `/users/${authenticatedUser?.id}`)
       .then(() => {
-        if (form) form.reset();
+        if (form) {
+          form.reset();
+        }
+
         setNewIsLiked(interactionData.isLiked);
         setCurrentComment("");
         setErrorComment(null);
@@ -52,7 +58,7 @@ function InteractionForm({ content, authenticatedUser }: InteractionsFormProps) 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCurrentComment(e.target.value);
 
-    if (!e.target.value || !e.target.value.trim()) {
+    if (!e.target.value?.trim()) {
       setErrorComment("Vous ne pouvez pas envoyer de commentaires vides");
       return;
     }
@@ -78,11 +84,7 @@ function InteractionForm({ content, authenticatedUser }: InteractionsFormProps) 
             defaultValue={3}
             className="bg-gray-800 text-white p-2 rounded border border-gray-700 focus:outline-none focus:border-violet-500"
           >
-            <option value={1}>{1}/5</option>
-            <option value={2}>{2}/5</option>
-            <option value={3}>{3}/5</option>
-            <option value={4}>{4}/5</option>
-            <option value={5}>{5}/5</option>
+            {rateOptions.map((value: number) => <option key={value} value={value}>{value}/{MAX_OPTIONS}</option>)}
           </select>
         </div>
 
@@ -98,7 +100,7 @@ function InteractionForm({ content, authenticatedUser }: InteractionsFormProps) 
 
             <Button
               type="button"
-              variant={!newIsLiked ? "secondary" : "ghost"}
+              variant={newIsLiked ? "ghost" : "secondary"}
               onClick={() => setNewIsLiked(false)}
               icon={{ name: "dislike", size: "small" }}
             />
