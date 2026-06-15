@@ -22,10 +22,10 @@ export function sendInteraction(isLiked: boolean, rate: number, comment: string,
   return new InteractionClient().create(body);
 }
 
-export function updateInteraction(interactionId:number, isLiked: boolean, rate: number, comment:string): Promise<APIPlatformListResponse<Interaction>> {
-  const interactionFields = {isLiked: isLiked, rate: rate, comment: comment};
+export function updateInteraction(interaction: Interaction): Promise<APIPlatformListResponse<Interaction>> {
+  const interactionFields = {isLiked: interaction.isLiked, rate: interaction.rate, comment: interaction.comment};
 
-  return new InteractionClient().update(interactionId.toString(), interactionFields);
+  return new InteractionClient().update(interaction.id.toString(), interactionFields);
 }
 
 export function deleteInteraction(interactionId:number): Promise<Response> {

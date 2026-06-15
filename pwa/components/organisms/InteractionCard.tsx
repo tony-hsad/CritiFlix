@@ -21,7 +21,7 @@ function InteractionCard({ interaction, authenticatedUser }: InteractionCardProp
 
   const handleUpdate = () => {
     setIsLoading(true);
-    updateInteraction(interaction.id, interaction.isLiked, interaction.rate, currentComment)
+    updateInteraction({...interaction, comment: currentComment})
       .then(() => {
         interaction.comment = currentComment;
       })
